@@ -1,0 +1,37 @@
+{
+  "name": "excellence-hr-backend",
+  "version": "1.0.0",
+  "description": "Backend for Excellence Coaching Hub Employee Contract Portal",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@sendgrid/mail": "latest",
+    "bcryptjs": "latest",
+    "cloudinary": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "express-validator": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest",
+    "multer": "latest",
+    "multer-storage-cloudinary": "latest",
+    "node-fetch": "latest",
+    "pdf-lib": "latest",
+    "qrcode": "latest",
+    "streamifier": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-n": "latest",
+    "eslint-plugin-promise": "latest",
+    "nodemon": "latest"
+  }
+}
