@@ -157,58 +157,162 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   })
 
   // Ensure we have enough space for signatures
-  if (cursorY < 250) {
+  if (cursorY < 420) {
     currentPage = addNewPage()
   }
 
-  currentPage.drawText('Signatures', { x: margin, y: cursorY, size: 14, font: titleFont })
-  cursorY -= 24
+  // Draw a decorative line
+  currentPage.drawLine({
+    start: { x: margin, y: cursorY - 5 },
+    end: { x: width - margin, y: cursorY - 5 },
+    thickness: 1.5,
+    color: rgb(0.12, 0.25, 0.69)
+  })
+  cursorY -= 25
 
+  currentPage.drawText('APPROVALS AND SIGNATURES', { x: margin, y: cursorY, size: 14, font: titleFont, color: rgb(0.12, 0.25, 0.69) })
+  cursorY -= 28
+
+  // Chairman Section
+  const chairmanX = margin
+  const chairmanWidth = 160
+  currentPage.drawText('CHAIRMAN', { x: chairmanX, y: cursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  cursorY -= 50
+  currentPage.drawLine({
+    start: { x: chairmanX, y: cursorY },
+    end: { x: chairmanX + chairmanWidth, y: cursorY },
+    thickness: 1,
+    color: rgb(0.5, 0.5, 0.5)
+  })
+  cursorY -= 14
+  currentPage.drawText('Abdala Nzabandora', { x: chairmanX, y: cursorY, size: 10, font: bodyFont })
+  cursorY -= 12
+  currentPage.drawText('Signature & Stamp', { x: chairmanX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  cursorY -= 40
+
+  // Managing Director Section
+  const mdX = chairmanX + 200
+  const mdWidth = 160
+  currentPage.drawText('MANAGING DIRECTOR', { x: mdX, y: cursorY + 40, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  cursorY -= 50
+  currentPage.drawLine({
+    start: { x: mdX, y: cursorY + 40 },
+    end: { x: mdX + mdWidth, y: cursorY + 40 },
+    thickness: 1,
+    color: rgb(0.5, 0.5, 0.5)
+  })
+  currentPage.drawText('Hashimu Imfuransa', { x: mdX, y: cursorY + 26, size: 10, font: bodyFont })
+  currentPage.drawText('Signature & Stamp', { x: mdX, y: cursorY + 14, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  
+  cursorY -= 70
+
+  // Dividing space
+  cursorY -= 15
+
+  // Employee Section
+  const employeeX = margin
+  const employeeWidth = 160
+  currentPage.drawText('EMPLOYEE', { x: employeeX, y: cursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  cursorY -= 50
+  currentPage.drawLine({
+    start: { x: employeeX, y: cursorY },
+    end: { x: employeeX + employeeWidth, y: cursorY },
+    thickness: 1,
+    color: rgb(0.5, 0.5, 0.5)
+  })
+  cursorY -= 14
   const employeeSignature = options.employeeSignature || employee.name
-  currentPage.drawText('Employee Signature:', { x: margin, y: cursorY, size: 12, font: bodyFont })
-  currentPage.drawText(employeeSignature, { x: margin + 160, y: cursorY, size: 12, font: bodyFont })
-  cursorY -= 24
+  currentPage.drawText(employeeSignature, { x: employeeX, y: cursorY, size: 10, font: bodyFont })
+  cursorY -= 12
+  currentPage.drawText('Signature', { x: employeeX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  cursorY -= 30
 
-  currentPage.drawText('HR Signature:', { x: margin, y: cursorY, size: 12, font: bodyFont })
+  // HR Section
+  const hrX = employeeX + 200
+  const hrWidth = 160
+  currentPage.drawText('HR REPRESENTATIVE', { x: hrX, y: cursorY + 30, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  cursorY -= 20
   const hrSignatureBytes = await fetchImage(options.hrSignatureUrl)
   if (hrSignatureBytes) {
     try {
       const hrSignatureImage = await pdfDoc.embedPng(hrSignatureBytes)
-      const signatureWidth = 120
+      const signatureWidth = 100
       const ratio = hrSignatureImage.width / hrSignatureImage.height
       const signatureHeight = signatureWidth / ratio
       currentPage.drawImage(hrSignatureImage, {
-        x: margin + 160,
-        y: cursorY - signatureHeight + 12,
+        x: hrX,
+        y: cursorY - 20 - signatureHeight,
         width: signatureWidth,
         height: signatureHeight
       })
+      cursorY -= signatureHeight + 10
     } catch (error) {
-      currentPage.drawText('Authorized HR Signature', { x: margin + 160, y: cursorY, size: 12, font: bodyFont })
+      cursorY -= 40
     }
   } else {
-    currentPage.drawText('Authorized HR Signature', { x: margin + 160, y: cursorY, size: 12, font: bodyFont })
+    cursorY -= 40
   }
-  cursorY -= 40
+  cursorY -= 30
+  currentPage.drawLine({
+    start: { x: hrX, y: cursorY },
+    end: { x: hrX + hrWidth, y: cursorY },
+    thickness: 1,
+    color: rgb(0.5, 0.5, 0.5)
+  })
+  cursorY -= 14
+  currentPage.drawText('Authorized Signature', { x: hrX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  cursorY -= 30
 
-  currentPage.drawText('Date:', { x: margin, y: cursorY, size: 12, font: bodyFont })
-  currentPage.drawText(new Date().toLocaleDateString(), { x: margin + 40, y: cursorY, size: 12, font: bodyFont })
-  cursorY -= 40
+  // Date Section
+  currentPage.drawText('Date Signed:', { x: margin, y: cursorY, size: 11, font: bodyFont })
+  currentPage.drawText(new Date().toLocaleDateString(), { x: margin + 100, y: cursorY, size: 11, font: bodyFont })
+  
+  cursorY -= 50
 
+  // Company Stamp Area
+  currentPage.drawText('COMPANY STAMP & SEAL', { x: margin, y: cursorY, size: 10, font: titleFont, color: rgb(0.12, 0.25, 0.69) })
+  cursorY -= 35
+
+  // Draw a box for stamp area
+  currentPage.drawRectangle({
+    x: margin,
+    y: cursorY - 80,
+    width: 140,
+    height: 80,
+    borderColor: rgb(0.12, 0.25, 0.69),
+    borderWidth: 1.5
+  })
+  
+  currentPage.drawText('(Affix official stamp here)', { x: margin + 10, y: cursorY - 35, size: 9, font: bodyFont, color: rgb(0.5, 0.5, 0.5) })
+
+  // Footer
+  cursorY -= 150
+  currentPage.drawLine({
+    start: { x: margin, y: cursorY },
+    end: { x: width - margin, y: cursorY },
+    thickness: 1,
+    color: rgb(0.8, 0.8, 0.8)
+  })
+  
+  cursorY -= 15
+  currentPage.drawText('Excellence Coaching Hub HR System', { x: margin, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  currentPage.drawText('Document ID: ' + contract.id, { x: width - margin - 120, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+
+  // QR Code
   const qrContent = options.qrContent || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/${contract.id}`
   const qrDataUrl = await QRCode.toDataURL(qrContent)
   const qrBase64 = qrDataUrl.split(',')[1]
   const qrBytes = Uint8Array.from(Buffer.from(qrBase64, 'base64'))
   const qrImage = await pdfDoc.embedPng(qrBytes)
-  const qrSize = 100
+  const qrSize = 80
   currentPage.drawImage(qrImage, {
-    x: width - margin - qrSize,
-    y: margin,
+    x: width - margin - qrSize - 10,
+    y: margin + 15,
     width: qrSize,
     height: qrSize
   })
 
-  currentPage.drawText('Scan to verify contract authenticity', { x: width - margin - qrSize - 40, y: margin + qrSize + 10, size: 10, font: bodyFont })
+  currentPage.drawText('Verify authenticity', { x: width - margin - qrSize - 35, y: margin + qrSize + 20, size: 8, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
 
   const pdfBytes = await pdfDoc.save()
   return Buffer.from(pdfBytes)

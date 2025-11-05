@@ -72,6 +72,7 @@ export default function ContractForm() {
     
     // Job Information (Pre-filled by HR - Job Title/Dept editable)
     jobTitle: '',
+    teachingCategory: '',
     department: '',
     reportsTo: '',
     jobDescription: 'To be defined by department manager in collaboration with the employee.',
@@ -131,6 +132,8 @@ export default function ContractForm() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [showCustomDepartment, setShowCustomDepartment] = useState(false)
+  const [customDepartment, setCustomDepartment] = useState('')
   const [expandedSections, setExpandedSections] = useState({
     identification: true,
     jobInfo: true,
@@ -146,11 +149,57 @@ export default function ContractForm() {
     documents: false
   })
 
+  // Teaching categories based on the image
+  const teachingCategories = [
+    'Professional Coaching',
+    'Business & Entrepreneurship Coaching',
+    'Academic Coaching',
+    'Language Coaching',
+    'Technical & Digital Coaching',
+    'Job Seeker Coaching',
+    'Personal & Corporate Development'
+  ]
+
+  // Department options
+  const departmentOptions = [
+    'Teaching',
+    'Technical',
+    'Professional Coaching',
+    'Business & Entrepreneurship',
+    'Academic Coaching',
+    'Language Coaching',
+    'Technical & Digital Coaching',
+    'Job Seeker Coaching',
+    'Personal & Corporate Development',
+    'HR & Administration',
+    'Finance & Operations',
+    'Marketing & Business Development',
+    'Other Departments'
+  ]
+
   const token = localStorage.getItem('token')
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleDepartmentChange = (value) => {
+    if (value === 'add-custom') {
+      setShowCustomDepartment(true)
+      setCustomDepartment('')
+    } else {
+      setFormData(prev => ({ ...prev, department: value }))
+      setShowCustomDepartment(false)
+    }
+  }
+
+  const handleAddCustomDepartment = () => {
+    if (customDepartment.trim()) {
+      setFormData(prev => ({ ...prev, department: customDepartment.trim() }))
+      setShowCustomDepartment(false)
+      setCustomDepartment('')
+    }
   }
 
   const handleFileChange = (e) => {
@@ -354,20 +403,78 @@ export default function ContractForm() {
                   required
                   hint="💼 Your position title"
                 />
-                <FormField 
-                  label="Department" 
-                  name="department"
-                  value={formData.department}
-                  onChange={handleInputChange}
-                  required
-                />
+                <div className="form-group">
+                  <label>
+                    Teaching Category
+                    <span style={{ color: '#999', marginLeft: '5px' }}>(Optional)</span>
+                  </label>
+                  <select name="teachingCategory" value={formData.teachingCategory} onChange={handleInputChange}>
+                    <option value="">-- Select a teaching category --</option>
+                    {teachingCategories.map(category => (
+                      <option key={category} value={category}>{category}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>
+                    Department
+                    <span className="required-star">*</span>
+                  </label>
+                  {!showCustomDepartment ? (
+                    <select value={formData.department} onChange={(e) => handleDepartmentChange(e.target.value)} required>
+                      <option value="">-- Select a department --</option>
+                      {departmentOptions.map(dept => (
+                        <option key={dept} value={dept}>{dept}</option>
+                      ))}
+                      <option value="add-custom">+ Add Custom Department</option>
+                    </select>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <input 
+                        type="text"
+                        placeholder="Enter custom department name"
+                        value={customDepartment}
+                        onChange={(e) => setCustomDepartment(e.target.value)}
+                        style={{ flex: 1 }}
+                      />
+                      <button 
+                        type="button"
+                        onClick={handleAddCustomDepartment}
+                        style={{ 
+                          padding: '8px 16px',
+                          backgroundColor: '#007bff',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Add
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setShowCustomDepartment(false)}
+                        style={{ 
+                          padding: '8px 16px',
+                          backgroundColor: '#6c757d',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <FormField 
                   label="Reports To (Supervisor)" 
                   name="reportsTo"
                   value={formData.reportsTo}
                   onChange={handleInputChange}
-                  required
-                  hint="👨‍💼 Direct supervisor name"
+                  required={false}
+                  hint="👨‍💼 Direct supervisor name (Optional)"
                 />
                 <div style={{ gridColumn: '1 / -1' }}></div>
                 <FormField 
@@ -467,6 +574,7 @@ export default function ContractForm() {
                   </label>
                   <select name="contractType" value={formData.contractType} onChange={handleInputChange} required>
                     <option value="Fixed-term">Fixed-term</option>
+                    <option value="Temporary">Temporary</option>
                     <option value="Indefinite">Indefinite</option>
                   </select>
                 </div>
@@ -499,7 +607,7 @@ export default function ContractForm() {
                   value={formData.baseSalary}
                   onChange={handleInputChange}
                   required
-                  hint="💵 Annual salary or hourly rate - Employee to enter negotiated amount"
+                  hint="💵 Annual salary or hourly rate - Employee may be paid according to courses taught, student sessions, or other revenue-generating activities. Negotiated amount to be agreed upon."
                 />
                 <div className="form-group">
                   <label>
@@ -511,6 +619,10 @@ export default function ContractForm() {
                     <option value="Monthly">Monthly</option>
                     <option value="Weekly">Weekly</option>
                     <option value="Bi-weekly">Bi-weekly</option>
+                    <option value="Per Lesson">Per Lesson</option>
+                    <option value="Per Session">Per Session</option>
+                    <option value="Per Course">Per Course</option>
+                    <option value="Commission-based">Commission-based</option>
                   </select>
                 </div>
                 <FormField 
