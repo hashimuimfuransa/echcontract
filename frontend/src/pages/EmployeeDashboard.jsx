@@ -253,15 +253,46 @@ export default function EmployeeDashboard() {
             <div className="empty-state-content">
               <div className="empty-icon">📋</div>
               <h2>Get Started with Your Contract</h2>
-              <p>You haven't submitted an employment contract yet. Let's get you set up! Click the button below to create and submit your contract.</p>
-              <Link to="/employee/contract" className="action-btn primary">
-                <span className="btn-icon">✍️</span>
-                <span className="btn-text">Create & Submit Contract</span>
-              </Link>
+              <p>You haven't submitted an employment contract yet. Browse available positions or create your contract now.</p>
+              <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+                <Link to="/jobs" className="action-btn primary" style={{ marginBottom: '10px' }}>
+                  <span className="btn-icon">💼</span>
+                  <span className="btn-text">Browse Available Jobs</span>
+                </Link>
+                <Link to="/employee/contract" className="action-btn primary">
+                  <span className="btn-icon">✍️</span>
+                  <span className="btn-text">Create & Submit Contract</span>
+                </Link>
+              </div>
             </div>
           </div>
           )}
+        </div>
+
+        <div style={{ marginTop: '40px' }}>
+          <div className="section-header">
+            <h2>💼 Quick Actions</h2>
+            <p>Access key features</p>
           </div>
+          <div className="quick-actions-grid">
+            <Link to="/jobs" className="action-card">
+              <div className="action-icon">💼</div>
+              <div className="action-content">
+                <h4>Browse Jobs</h4>
+                <p>Explore available job positions and find opportunities that match your interests</p>
+              </div>
+              <div className="action-arrow">→</div>
+            </Link>
+            <Link to="/employee/contract" className="action-card">
+              <div className="action-icon">📝</div>
+              <div className="action-content">
+                <h4>Create Contract</h4>
+                <p>Create and submit your employment contract</p>
+              </div>
+              <div className="action-arrow">→</div>
+            </Link>
+          </div>
+        </div>
     </div>
   </div>
 )

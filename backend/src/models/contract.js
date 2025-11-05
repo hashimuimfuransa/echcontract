@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 
 const contractSchema = new mongoose.Schema({
   employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', required: true },
+  job: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
   formData: { type: mongoose.Schema.Types.Mixed, required: true },
   status: { type: String, enum: ['Draft', 'Under Review', 'Approved', 'Rejected'], default: 'Draft' },
   pdfUrl: { type: String },

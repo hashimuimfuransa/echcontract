@@ -76,6 +76,13 @@ export default function AdminDashboard() {
         </div>
 
         <nav className="admin-nav">
+          <Link to="/admin/jobs" className="nav-link">
+            <div className="nav-icon">💼</div>
+            <div className="nav-content">
+              <span className="nav-title">Manage Job Postings</span>
+              <span className="nav-desc">Create and manage job positions</span>
+            </div>
+          </Link>
           <Link to="/admin/employees" className="nav-link">
             <div className="nav-icon">👥</div>
             <div className="nav-content">
@@ -179,6 +186,14 @@ export default function AdminDashboard() {
                 <p>Common tasks and shortcuts</p>
               </div>
               <div className="quick-actions-grid">
+                <Link to="/admin/jobs" className="action-card">
+                  <div className="action-icon">💼</div>
+                  <div className="action-content">
+                    <h4>Post New Job</h4>
+                    <p>Create and manage job postings</p>
+                  </div>
+                  <div className="action-arrow">→</div>
+                </Link>
                 <Link to="/admin/contracts" className="action-card">
                   <div className="action-icon">📋</div>
                   <div className="action-content">
@@ -196,15 +211,6 @@ export default function AdminDashboard() {
                     <h4>Manage Employees</h4>
                     <p>View and update employee status</p>
                     <span className="action-badge">{metrics?.totalEmployees || 0} total</span>
-                  </div>
-                  <div className="action-arrow">→</div>
-                </Link>
-                <Link to="/admin/employees?status=active" className="action-card">
-                  <div className="action-icon">✅</div>
-                  <div className="action-content">
-                    <h4>Active Employees</h4>
-                    <p>View all approved employees</p>
-                    <span className="action-badge success">{metrics?.activeEmployees || 0} active</span>
                   </div>
                   <div className="action-arrow">→</div>
                 </Link>

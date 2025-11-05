@@ -12,6 +12,14 @@ import {
   approveContract,
   rejectContract
 } from '../controllers/adminController.js'
+import {
+  createJob,
+  updateJob,
+  getJobById,
+  listAllJobs,
+  deleteJob,
+  getJobStats
+} from '../controllers/jobController.js'
 
 const router = Router()
 
@@ -51,5 +59,26 @@ router.patch('/employees/:employeeId/status', [
   param('employeeId').isMongoId(),
   body('status').isIn(['active', 'inactive', 'terminated'])
 ], updateEmployeeStatus)
+
+// Job Management Routes
+router.post('/jobs', [
+  body('title').notEmpty().isString(),
+  body('description').notEmpty().isString(),
+  body('department').notEmpty().isString(),
+  body('category').notEmpty().isString(),
+  body('location').notEmpty().isString()
+], createJob)
+
+router.get('/jobs/stats', getJobStats)
+
+router.get('/jobs', listAllJobs)
+
+router.get('/jobs/:jobId', param('jobId').isMongoId(), getJobById)
+
+router.put('/jobs/:jobId', [
+  param('jobId').isMongoId()
+], updateJob)
+
+router.delete('/jobs/:jobId', param('jobId').isMongoId(), deleteJob)
 
 export default router

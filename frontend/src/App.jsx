@@ -7,6 +7,10 @@ import ContractForm from './pages/ContractForm'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminEmployees from './pages/AdminEmployees'
 import AdminContracts from './pages/AdminContracts'
+import AdminJobsManagement from './pages/AdminJobsManagement'
+import JobListings from './pages/JobListings'
+import JobDetails from './pages/JobDetails'
+import ContractFromJob from './pages/ContractFromJob'
 import VerifyEmail from './pages/VerifyEmail'
 import VerifyContract from './pages/VerifyContract'
 import './styles/App.css'
@@ -89,6 +93,39 @@ export default function App() {
           element={
             <ProtectedRoute requiredRole="admin">
               <AdminContracts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/jobs"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminJobsManagement />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/jobs"
+          element={
+            <ProtectedRoute requiredRole="employee">
+              <JobListings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/jobs/:jobId"
+          element={
+            <ProtectedRoute requiredRole="employee">
+              <JobDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/contract-from-job"
+          element={
+            <ProtectedRoute requiredRole="employee">
+              <ContractFromJob />
             </ProtectedRoute>
           }
         />

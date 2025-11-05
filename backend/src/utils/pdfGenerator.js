@@ -4,6 +4,14 @@ import contractTemplate from './contractTemplate.js'
 
 let fetchRef
 
+const sanitizeTextForPDF = (text) => {
+  if (!text) return ''
+  return String(text)
+    .replace(/[\r\n\t]/g, ' ')  // Replace newlines, tabs with spaces
+    .replace(/\s+/g, ' ')       // Replace multiple spaces with single space
+    .trim()
+}
+
 const getFetch = async () => {
   if (typeof fetch !== 'undefined') {
     return fetch
@@ -34,29 +42,55 @@ const fetchImage = async (url) => {
 
 const drawMultilineText = (page, text, x, y, options, addNewPage, margin, height) => {
   const { font, size, maxWidth, lineHeight } = options
-  const words = text.split(' ')
+  
+  // Clean text: remove newlines, carriage returns, and other problematic characters
+  const cleanText = String(text)
+    .replace(/[\r\n\t]/g, ' ')  // Replace newlines, carriage returns, tabs with spaces
+    .replace(/\s+/g, ' ')       // Replace multiple spaces with single space
+    .trim()
+  
+  const words = cleanText.split(' ').filter(word => word.length > 0)
   let line = ''
   let cursorY = y
   let currentPage = page
 
   words.forEach((word, index) => {
-    const testLine = `${line}${line ? ' ' : ''}${word}`
-    const width = font.widthOfTextAtSize(testLine, size)
-    if (width > maxWidth && line) {
-      currentPage.drawText(line, { x, y: cursorY, size, font, color: rgb(0, 0, 0) })
-      line = word
-      cursorY -= lineHeight
+    // Sanitize word to remove any problematic characters
+    const sanitizedWord = word.replace(/[^\x20-\x7E]/g, '')
+    if (!sanitizedWord) return // Skip empty words after sanitization
+    
+    const testLine = `${line}${line ? ' ' : ''}${sanitizedWord}`
+    
+    try {
+      const width = font.widthOfTextAtSize(testLine, size)
+      if (width > maxWidth && line) {
+        currentPage.drawText(line, { x, y: cursorY, size, font, color: rgb(0, 0, 0) })
+        line = sanitizedWord
+        cursorY -= lineHeight
 
-      // Check if we need a new page
-      if (cursorY < margin + 50) {
-        currentPage = addNewPage()
-        cursorY = height - margin
+        // Check if we need a new page
+        if (cursorY < margin + 50) {
+          currentPage = addNewPage()
+          cursorY = height - margin
+        }
+      } else {
+        line = testLine
       }
-    } else {
-      line = testLine
+    } catch (error) {
+      console.warn(`Warning: Could not measure text "${testLine}". Skipping problematic characters.`)
+      // Fallback: try with basic ASCII only
+      const asciiWord = sanitizedWord.replace(/[^\x20-\x7E]/g, '')
+      if (asciiWord) {
+        line = `${line}${line ? ' ' : ''}${asciiWord}`
+      }
     }
+    
     if (index === words.length - 1 && line) {
-      currentPage.drawText(line, { x, y: cursorY, size, font, color: rgb(0, 0, 0) })
+      try {
+        currentPage.drawText(line, { x, y: cursorY, size, font, color: rgb(0, 0, 0) })
+      } catch (error) {
+        console.warn(`Warning: Could not draw final line "${line}".`)
+      }
       cursorY -= lineHeight
 
       // Check if we need a new page after the last line
@@ -110,13 +144,13 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   currentPage.drawText('Employment Contract', { x: margin, y: cursorY, size: 20, font: titleFont, color: rgb(0.12, 0.25, 0.69) })
   cursorY -= 30
 
-  currentPage.drawText(`Employee: ${employee.name}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
+  currentPage.drawText(`Employee: ${sanitizeTextForPDF(employee.name)}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
   cursorY -= 18
   if (employee.position) {
-    currentPage.drawText(`Position: ${employee.position}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
+    currentPage.drawText(`Position: ${sanitizeTextForPDF(employee.position)}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
     cursorY -= 18
   }
-  currentPage.drawText(`Status: ${contract.status}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
+  currentPage.drawText(`Status: ${sanitizeTextForPDF(contract.status)}`, { x: margin, y: cursorY, size: 12, font: bodyFont })
   cursorY -= 30
 
   currentPage.drawText('Contract Details', { x: margin, y: cursorY, size: 14, font: titleFont })
@@ -133,7 +167,10 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
     currentPage.drawText(`${field.label}:`, { x: margin, y: cursorY, size: 12, font: bodyFont })
     cursorY -= 16
 
-    const value = formData[field.key] ?? ''
+    let value = formData[field.key] ?? ''
+    // Sanitize the value
+    value = sanitizeTextForPDF(value)
+    
     if (value !== '') {
       // Use multiline text for textarea fields and long text fields
       if (field.type === 'textarea' || String(value).length > 50) {
@@ -237,7 +274,7 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
     color: rgb(0.5, 0.5, 0.5)
   })
   cursorY -= 14
-  const employeeSignature = options.employeeSignature || employee.name
+  const employeeSignature = sanitizeTextForPDF(options.employeeSignature || employee.name)
   currentPage.drawText(employeeSignature, { x: employeeX, y: cursorY, size: 10, font: bodyFont })
   cursorY -= 12
   currentPage.drawText('Signature', { x: employeeX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
@@ -276,7 +313,7 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   
   cursorY -= 15
   currentPage.drawText('Excellence Coaching Hub HR System', { x: margin, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
-  currentPage.drawText('Document ID: ' + contract.id, { x: width - margin - 120, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  currentPage.drawText('Document ID: ' + sanitizeTextForPDF(contract.id), { x: width - margin - 120, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
 
   // QR Code
   const qrContent = options.qrContent || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/contract/${contract.id}`
