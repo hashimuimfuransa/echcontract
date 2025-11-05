@@ -206,6 +206,22 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   
   cursorY -= 70
 
+  // Chief Technology Officer Section
+  const ctoCursorY = cursorY + 40
+  const ctoX = chairmanX + 200
+  const ctoWidth = 160
+  currentPage.drawText('CHIEF TECHNOLOGY OFFICER', { x: ctoX, y: ctoCursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  currentPage.drawLine({
+    start: { x: ctoX, y: ctoCursorY - 25 },
+    end: { x: ctoX + ctoWidth, y: ctoCursorY - 25 },
+    thickness: 1,
+    color: rgb(0.5, 0.5, 0.5)
+  })
+  currentPage.drawText('Tuyizere Dieudonne', { x: ctoX, y: ctoCursorY - 39, size: 10, font: bodyFont })
+  currentPage.drawText('Signature & Stamp', { x: ctoX, y: ctoCursorY - 51, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  
+  cursorY -= 70
+
   // Dividing space
   cursorY -= 15
 
@@ -225,42 +241,6 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   currentPage.drawText(employeeSignature, { x: employeeX, y: cursorY, size: 10, font: bodyFont })
   cursorY -= 12
   currentPage.drawText('Signature', { x: employeeX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
-  cursorY -= 30
-
-  // HR Section
-  const hrX = employeeX + 200
-  const hrWidth = 160
-  currentPage.drawText('HR REPRESENTATIVE', { x: hrX, y: cursorY + 30, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
-  cursorY -= 20
-  const hrSignatureBytes = await fetchImage(options.hrSignatureUrl)
-  if (hrSignatureBytes) {
-    try {
-      const hrSignatureImage = await pdfDoc.embedPng(hrSignatureBytes)
-      const signatureWidth = 100
-      const ratio = hrSignatureImage.width / hrSignatureImage.height
-      const signatureHeight = signatureWidth / ratio
-      currentPage.drawImage(hrSignatureImage, {
-        x: hrX,
-        y: cursorY - 20 - signatureHeight,
-        width: signatureWidth,
-        height: signatureHeight
-      })
-      cursorY -= signatureHeight + 10
-    } catch (error) {
-      cursorY -= 40
-    }
-  } else {
-    cursorY -= 40
-  }
-  cursorY -= 30
-  currentPage.drawLine({
-    start: { x: hrX, y: cursorY },
-    end: { x: hrX + hrWidth, y: cursorY },
-    thickness: 1,
-    color: rgb(0.5, 0.5, 0.5)
-  })
-  cursorY -= 14
-  currentPage.drawText('Authorized Signature', { x: hrX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
   cursorY -= 30
 
   // Date Section
