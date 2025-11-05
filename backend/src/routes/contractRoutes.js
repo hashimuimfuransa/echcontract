@@ -6,7 +6,8 @@ import {
   getMyContract,
   submitContract,
   uploadDocuments,
-  downloadContractPdf
+  downloadContractPdf,
+  verifyContract
 } from '../controllers/contractController.js'
 
 const router = Router()
@@ -18,6 +19,7 @@ const contractValidation = [
 router.get('/me', authenticate(['employee']), getMyContract)
 router.post('/', authenticate(['employee']), contractValidation, submitContract)
 router.post('/documents', authenticate(['employee']), upload.array('files', 5), uploadDocuments)
+router.get('/verify/:contractId', verifyContract)
 router.get('/:contractId/pdf', authenticate(['employee', 'admin']), downloadContractPdf)
 
 export default router

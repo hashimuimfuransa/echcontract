@@ -279,7 +279,7 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   currentPage.drawText('Document ID: ' + contract.id, { x: width - margin - 120, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
 
   // QR Code
-  const qrContent = options.qrContent || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/${contract.id}`
+  const qrContent = options.qrContent || `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/contract/${contract.id}`
   const qrDataUrl = await QRCode.toDataURL(qrContent)
   const qrBase64 = qrDataUrl.split(',')[1]
   const qrBytes = Uint8Array.from(Buffer.from(qrBase64, 'base64'))

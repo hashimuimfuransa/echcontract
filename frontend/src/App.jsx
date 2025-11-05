@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import AdminEmployees from './pages/AdminEmployees'
 import AdminContracts from './pages/AdminContracts'
 import VerifyEmail from './pages/VerifyEmail'
+import VerifyContract from './pages/VerifyContract'
 import './styles/App.css'
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
+        <Route path="/verify/contract/:contractId" element={<VerifyContract />} />
         
         <Route
           path="/employee"

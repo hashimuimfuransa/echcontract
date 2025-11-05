@@ -99,11 +99,52 @@ export const downloadContractPdf = async (req, res, next) => {
       logoUrl: process.env.CONTRACT_LOGO_URL,
       hrSignatureUrl: process.env.HR_SIGNATURE_URL,
       employeeSignature: contract.employee.name,
-      qrContent: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/${contract.id}`
+      qrContent: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/contract/${contract.id}`
     })
     res.setHeader('Content-Type', 'application/pdf')
     res.setHeader('Content-Disposition', `attachment; filename=contract-${contract.employee.name.replace(/\s+/g, '-').toLowerCase()}.pdf`)
     res.send(buffer)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const verifyContract = async (req, res, next) => {
+  try {
+    const { contractId } = req.params
+    const contract = await Contract.findById(contractId).populate('employee', 'name email position')
+    
+    if (!contract) {
+      return res.status(404).json({ 
+        verified: false,
+        message: 'Contract not found' 
+      })
+    }
+
+    // Only approved contracts can be verified
+    if (contract.status !== 'Approved') {
+      return res.status(403).json({ 
+        verified: false,
+        message: `Contract status is ${contract.status}, verification requires Approved status` 
+      })
+    }
+
+    res.json({ 
+      verified: true,
+      message: 'Contract verified successfully',
+      contract: {
+        _id: contract._id,
+        status: contract.status,
+        formData: contract.formData,
+        createdAt: contract.createdAt,
+        approvedAt: contract.approvedAt
+      },
+      employee: {
+        name: contract.employee.name,
+        email: contract.employee.email,
+        position: contract.employee.position
+      }
+    })
   } catch (error) {
     next(error)
   }
