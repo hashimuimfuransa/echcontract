@@ -91,6 +91,12 @@ export default function ContractForm() {
     // Compensation and Benefits (Editable by employee)
     baseSalary: '',
     paymentFrequency: 'Monthly',
+    // New payment fields
+    amountPerSession: '',
+    modeOfPayment: '',
+    paymentTerms: '',
+    rateAdjustment: '',
+    // End of new payment fields
     bonusesCommissions: 'Performance bonus eligible based on organizational performance and individual KPIs.',
     benefits: 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
     
@@ -625,6 +631,46 @@ export default function ContractForm() {
                     <option value="Commission-based">Commission-based</option>
                   </select>
                 </div>
+                
+                {/* New Payment Fields */}
+                <FormField 
+                  label="Amount to be Paid Per Session" 
+                  name="amountPerSession"
+                  value={formData.amountPerSession}
+                  onChange={handleInputChange}
+                  placeholder="Enter the amount to be paid per session..."
+                  hint="💵 The fixed amount that will be paid for each session conducted."
+                />
+                <FormField 
+                  label="Mode of Payment" 
+                  name="modeOfPayment"
+                  value={formData.modeOfPayment}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Bank Transfer, Mobile Money, Cash..."
+                  hint="💳 How payments will be made (Bank Transfer, Mobile Money, Cash, etc.)"
+                />
+                <FormField 
+                  label="Terms and Conditions for Payment" 
+                  name="paymentTerms"
+                  type="textarea"
+                  value={formData.paymentTerms}
+                  onChange={handleInputChange}
+                  placeholder="Enter payment terms and conditions..."
+                  fullWidth
+                  hint="📋 Conditions that apply to payments (e.g., payment deadlines, late payment penalties, etc.)"
+                />
+                <FormField 
+                  label="Rate Adjustment for Contract Renewal" 
+                  name="rateAdjustment"
+                  type="textarea"
+                  value={formData.rateAdjustment}
+                  onChange={handleInputChange}
+                  placeholder="Enter how rates will be adjusted for contract renewal..."
+                  fullWidth
+                  hint="📈 How the payment rate will be adjusted when the contract is renewed (e.g., annual cost of living adjustments, performance-based increases, etc.)"
+                />
+                {/* End of New Payment Fields */}
+                
                 <FormField 
                   label="Bonuses / Commissions" 
                   name="bonusesCommissions"

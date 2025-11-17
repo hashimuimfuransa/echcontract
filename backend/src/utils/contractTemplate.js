@@ -27,6 +27,12 @@ const contractTemplate = {
     // Compensation and Benefits
     { label: 'Base Salary', type: 'text', key: 'baseSalary' },
     { label: 'Payment Frequency', type: 'text', key: 'paymentFrequency' },
+    // New payment fields
+    { label: 'Amount to be Paid Per Session', type: 'text', key: 'amountPerSession' },
+    { label: 'Mode of Payment', type: 'text', key: 'modeOfPayment' },
+    { label: 'Terms and Conditions for Payment', type: 'textarea', key: 'paymentTerms' },
+    { label: 'Rate Adjustment for Contract Renewal', type: 'textarea', key: 'rateAdjustment' },
+    // End of new payment fields
     { label: 'Bonuses & Commissions', type: 'textarea', key: 'bonusesCommissions' },
     { label: 'Benefits', type: 'textarea', key: 'benefits' },
 
