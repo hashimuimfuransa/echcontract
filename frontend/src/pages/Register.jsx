@@ -41,8 +41,8 @@ export default function Register() {
     setLoading(true)
 
     try {
-      await api.post('/auth/register', formData)
-      setSuccess('Registration successful! Please check your email to verify your account.')
+      const response = await api.post('/auth/register', formData)
+      setSuccess(response.data.message) // Use the message from the backend
       setFormData({ name: '', email: '', password: '', position: '' })
       setTimeout(() => navigate('/login'), 3500)
     } catch (err) {

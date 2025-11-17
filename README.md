@@ -6,9 +6,9 @@ A comprehensive web-based platform for managing employee contracts and digital o
 
 ### Employee Features
 - **User Registration & Authentication**
-  - Email-based registration with verification
+  - Email-based registration with optional verification
   - Secure login with JWT tokens
-  - Email verification links
+  - Email verification links (optional)
   - Password security with bcrypt hashing
 
 - **Contract Management**

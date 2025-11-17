@@ -12,7 +12,7 @@ import express from 'express'
 import cors from 'cors'
 import router from './routes/index.js'
 
-console.log('Loaded env vars:', { CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ? '***' : undefined, CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? '***' : undefined })
+console.log('Loaded env vars:', { CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ? '***' : undefined, CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ? '***' : undefined, SENDGRID_API_KEY: process.env.SENDGRID_API_KEY ? '***' : undefined })
 import { connectDatabase } from './config/db.js'
 
 const app = express()

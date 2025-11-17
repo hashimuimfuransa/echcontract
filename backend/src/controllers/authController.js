@@ -51,7 +51,18 @@ export const register = async (req, res, next) => {
       html: verificationEmailTemplate(name, link),
       text: `Welcome ${name}, please verify your account: ${link}`
     })
-    res.status(201).json({ message: 'Registration successful. Please verify your email.' })
+    // Updated message to indicate email verification is optional
+    res.status(201).json({ 
+      message: 'Registration successful. You can login now. Email verification is optional.', 
+      employee: {
+        id: employee.id,
+        name: employee.name,
+        email: employee.email,
+        role: employee.role,
+        position: employee.position,
+        verified: employee.verified
+      }
+    })
   } catch (error) {
     console.error('Registration error:', error.message)
     next(error)
@@ -90,9 +101,6 @@ export const login = async (req, res, next) => {
     if (!valid) {
       return res.status(401).json({ message: 'Invalid credentials' })
     }
-    if (!employee.verified) {
-      return res.status(403).json({ message: 'Please verify your email before logging in' })
-    }
     if (employee.status !== 'active') {
       return res.status(403).json({ message: 'Account inactive. Contact administrator.' })
     }
@@ -104,7 +112,8 @@ export const login = async (req, res, next) => {
         name: employee.name,
         email: employee.email,
         role: employee.role,
-        position: employee.position
+        position: employee.position,
+        verified: employee.verified // Include verification status in response
       }
     })
   } catch (error) {

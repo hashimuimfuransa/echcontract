@@ -197,7 +197,7 @@ The frontend will run on port 5173 by default and proxies API requests to http:/
 
 ### Employee Flow
 1. Register new account
-2. Verify email via link sent to inbox
+2. (Optional) Verify email via link sent to inbox
 3. Login
 4. Fill and submit employment contract
 5. Upload supporting documents
@@ -242,6 +242,7 @@ The frontend will run on port 5173 by default and proxies API requests to http:/
 - Implement rate limiting for API endpoints
 - Validate and sanitize all user inputs
 - Keep dependencies updated
+- Email verification is optional for user convenience, but recommended for production use
 
 ## Next Steps
 
