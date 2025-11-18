@@ -533,9 +533,9 @@ export default function AdminJobsManagement() {
                 {/* Day-specific working hours */}
                 <div className="form-group full-width">
                   <label>Working Hours by Day</label>
-                  <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px', backgroundColor: '#f9f9f9' }}>
+                  <div className="working-hours-container">
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
-                      <div key={day} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', alignItems: 'center', marginBottom: '10px' }}>
+                      <div key={day} className="day-hours-row">
                         <div>
                           <input 
                             type="checkbox" 
@@ -551,7 +551,7 @@ export default function AdminJobsManagement() {
                               setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                             }}
                           />
-                          <label htmlFor={`workingDay-${day}`} style={{ marginLeft: '8px' }}>{day}</label>
+                          <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                         </div>
                         {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
                           <>
@@ -582,7 +582,7 @@ export default function AdminJobsManagement() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div className="form-grid">
                   <div className="form-group">
                     <label>Salary Payment Frequency</label>
                     <select name="salaryPaymentFrequency" value={formData.salaryPaymentFrequency} onChange={handleInputChange}>
@@ -596,10 +596,10 @@ export default function AdminJobsManagement() {
                 </div>
 
                 {/* Payment Information Section */}
-                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f0f8ff', borderRadius: '8px', border: '1px solid #cce6ff' }}>
-                  <h4 style={{ color: '#0066cc', marginBottom: '15px' }}>💳 Payment Information</h4>
+                <div className="form-section payment-section">
+                  <h4 className="section-title payment-title">💳 Payment Information</h4>
                   
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div className="form-grid">
                     <div className="form-group">
                       <label>Base Salary Min</label>
                       <input type="number" name="baseSalaryMin" value={formData.baseSalaryMin} onChange={handleInputChange} />
@@ -610,7 +610,7 @@ export default function AdminJobsManagement() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div className="form-grid">
                     <div className="form-group">
                       <label>Amount to be Paid Per Session</label>
                       <input 
@@ -620,7 +620,7 @@ export default function AdminJobsManagement() {
                         onChange={handleInputChange} 
                         placeholder="Enter amount in RWF"
                       />
-                      <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                      <div className="form-hint">
                         💵 The fixed amount that will be paid for each session conducted.
                       </div>
                     </div>
@@ -633,7 +633,7 @@ export default function AdminJobsManagement() {
                         onChange={handleInputChange} 
                         placeholder="e.g., Bank Transfer, Mobile Money, Cash"
                       />
-                      <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                      <div className="form-hint">
                         💳 How payments will be made (Bank Transfer, Mobile Money, Cash, etc.)
                       </div>
                     </div>
@@ -648,7 +648,7 @@ export default function AdminJobsManagement() {
                       rows="3"
                       placeholder="Enter payment terms and conditions..."
                     />
-                    <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                    <div className="form-hint">
                       📋 Conditions that apply to payments (e.g., payment deadlines, late payment penalties, etc.)
                     </div>
                   </div>
@@ -662,7 +662,7 @@ export default function AdminJobsManagement() {
                       rows="2"
                       placeholder="Enter rate adjustment terms..."
                     />
-                    <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                    <div className="form-hint">
                       📈 Terms for adjusting payment rates during contract renewal
                     </div>
                   </div>
@@ -678,7 +678,7 @@ export default function AdminJobsManagement() {
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div className="form-grid">
                   <div className="form-group">
                     <label>Remote Work Policy</label>
                     <select name="remoteWorkPolicy" value={formData.remoteWorkPolicy} onChange={handleInputChange}>
@@ -704,7 +704,7 @@ export default function AdminJobsManagement() {
                   </select>
                 </div>
 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                <div className="form-actions">
                   <button type="submit" className="btn btn-primary">
                     {editingJob ? 'Update Job' : 'Create Job'}
                   </button>
@@ -716,7 +716,7 @@ export default function AdminJobsManagement() {
             </div>
           )}
 
-          <div className="filter-controls" style={{ marginBottom: '20px' }}>
+          <div className="filter-controls">
             <div className="filter-group">
               <label>Filter by Status:</label>
               <select

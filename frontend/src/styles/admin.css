@@ -767,6 +767,129 @@
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
 }
 
+/* Job Creation Form Styles */
+.form-container {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.form-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.8);
+}
+
+.form-section.payment-section {
+  margin-top: 20px;
+  background-color: #f0f8ff;
+  border: 1px solid #cce6ff;
+}
+
+.section-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.section-title {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.section-title.payment-title {
+  color: #0066cc;
+  margin-bottom: 15px;
+}
+
+.section-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.section-content {
+  padding-top: 15px;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.working-hours-container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.day-hours-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.day-label {
+  margin-left: 8px;
+}
+
 .quick-actions-section {
   margin-top: 40px;
 }
@@ -1026,6 +1149,33 @@
   .pagination-info {
     order: -1;
   }
+
+  /* Job Creation Form Responsive Styles */
+  .form-container {
+    padding: 15px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-group.full-width {
+    grid-column: 1;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .day-hours-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1075,5 +1225,34 @@
 
   .filter-header h3 {
     font-size: 20px;
+  }
+
+  /* Job Creation Form Extra Small Screen Styles */
+  .form-container {
+    padding: 12px;
+  }
+
+  .form-section {
+    padding: 12px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .day-hours-row {
+    gap: 6px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
   }
 }
