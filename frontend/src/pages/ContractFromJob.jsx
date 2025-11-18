@@ -503,8 +503,8 @@ export default function ContractFromJob() {
                     hours.start && hours.end ? (
                       <div key={day} className="working-hours-day">
                         <strong>{day}:</strong> {hours.start} - {hours.end}
-                        {job.workingHoursByDay && job.workingHoursByDay[day] && job.workingHoursByDay[day].payment > 0 && (
-                          <span> (Payment: {job.workingHoursByDay[day].payment.toLocaleString()} RWF)</span>
+                        {job.workingHoursByDay && job.workingHoursByDay[day] && job.workingHoursByDay[day].payment && (
+                          <span> (Payment: {job.workingHoursByDay[day].payment})</span>
                         )}
                       </div>
                     ) : null

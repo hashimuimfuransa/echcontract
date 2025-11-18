@@ -653,18 +653,19 @@ export default function AdminJobsManagement() {
                               placeholder="End time"
                             />
                             <input 
-                              type="number" 
+                              type="text" 
                               value={formData.workingHoursByDay[day].payment || ''}
                               onChange={(e) => {
                                 const newWorkingHoursByDay = { ...formData.workingHoursByDay };
                                 newWorkingHoursByDay[day].payment = e.target.value;
                                 setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                               }}
-                              placeholder="Payment (RWF)"
+                              placeholder="Payment details"
                               className="payment-input"
                             />
                           </>
                         )}
+
                       </div>
                     ))}
                   </div>

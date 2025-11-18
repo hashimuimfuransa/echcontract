@@ -28,7 +28,7 @@ const jobSchema = new mongoose.Schema({
     of: {
       start: String,
       end: String,
-      payment: { type: Number, default: 0 } // Added payment field
+      payment: { type: String, default: '' } // Changed from Number to String
     },
     default: {}
   },

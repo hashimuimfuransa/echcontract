@@ -150,7 +150,7 @@ export default function JobDetails() {
                     hours.start && hours.end ? (
                       <p key={day} style={{ margin: '0 0 3px 0', color: '#2c3e50', fontSize: '13px' }}>
                         {day}: {hours.start} - {hours.end}
-                        {hours.payment > 0 && ` (Payment: ${hours.payment.toLocaleString()} RWF)`}
+                        {hours.payment && ` (Payment: ${hours.payment})`}
                       </p>
                     ) : null
                   ))}

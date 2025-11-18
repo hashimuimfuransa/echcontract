@@ -180,11 +180,11 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
           if (workingHoursByDay[day]) {
             const start = workingHoursByDay[day].start || '';
             const end = workingHoursByDay[day].end || '';
-            const payment = workingHoursByDay[day].payment || 0;
+            const payment = workingHoursByDay[day].payment || '';
             if (start && end) {
               workingHoursText += `${day}: ${start} - ${end}`;
-              if (payment > 0) {
-                workingHoursText += ` (Payment: ${Number(payment).toLocaleString()} RWF)`;
+              if (payment) {
+                workingHoursText += ` (Payment: ${payment})`;
               }
               workingHoursText += '\n';
             }
