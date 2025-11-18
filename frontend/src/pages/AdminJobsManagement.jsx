@@ -231,12 +231,13 @@ export default function AdminJobsManagement() {
       // Log the data being sent for debugging
       console.log('Auto-saving job data:', dataToSubmit);
       
+      let response;
       if (editingJob) {
-        const response = await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
+        response = await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
         console.log('Job updated successfully', response.data)
       } else {
         // For new jobs, we'll save as draft
-        const response = await api.post('/admin/jobs', dataToSubmit)
+        response = await api.post('/admin/jobs', dataToSubmit)
         // Set the editing job to the newly created job
         setEditingJob(response.data.job)
         console.log('Job created successfully', response.data)
@@ -244,6 +245,19 @@ export default function AdminJobsManagement() {
       
       setError('')
       hasUnsavedChanges.current = false; // Reset the unsaved changes flag
+      
+      // Update the form data with the response to ensure consistency
+      if (response && response.data && response.data.job) {
+        setFormData(prev => ({
+          ...prev,
+          ...response.data.job,
+          requirements: Array.isArray(response.data.job.requirements) ? response.data.job.requirements.join(', ') : prev.requirements,
+          qualifications: Array.isArray(response.data.job.qualifications) ? response.data.job.qualifications.join(', ') : prev.qualifications,
+          responsibilities: Array.isArray(response.data.job.responsibilities) ? response.data.job.responsibilities.join(', ') : prev.responsibilities,
+          requiredDocuments: Array.isArray(response.data.job.requiredDocuments) ? response.data.job.requiredDocuments.join(', ') : prev.requiredDocuments,
+          benefits: Array.isArray(response.data.job.benefits) ? response.data.job.benefits.join(', ') : prev.benefits
+        }));
+      }
     } catch (err) {
       console.error('Auto-save failed:', err)
       console.error('Request data:', formData)
@@ -302,11 +316,13 @@ export default function AdminJobsManagement() {
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    hasUnsavedChanges.current = true; // Mark as having unsaved changes
   }
 
   const handleArrayInputChange = (e, field) => {
     const { value } = e.target
     setFormData(prev => ({ ...prev, [field]: value }))
+    hasUnsavedChanges.current = true; // Mark as having unsaved changes
   }
 
   const handleSubcategoryChange = (subcategory) => {
@@ -316,6 +332,7 @@ export default function AdminJobsManagement() {
         : [...prev.subcategories, subcategory]
       return { ...prev, subcategories: subs }
     })
+    hasUnsavedChanges.current = true; // Mark as having unsaved changes
   }
 
   const handleSubmit = async (e) => {
@@ -348,12 +365,13 @@ export default function AdminJobsManagement() {
           .filter(item => item)
       }
       
+      let response;
       if (editingJob) {
-        await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
+        response = await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
         setError('')
         setEditingJob(null)
       } else {
-        await api.post('/admin/jobs', dataToSubmit)
+        response = await api.post('/admin/jobs', dataToSubmit)
       }
       
       // Reset form and refresh job list
@@ -754,6 +772,7 @@ export default function AdminJobsManagement() {
                                 delete newWorkingHoursByDay[day];
                               }
                               setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              hasUnsavedChanges.current = true; // Mark as having unsaved changes
                             }}
                           />
                           <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
@@ -768,6 +787,7 @@ export default function AdminJobsManagement() {
                                   const newWorkingHoursByDay = { ...formData.workingHoursByDay };
                                   newWorkingHoursByDay[day].start = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="Start time"
                                 style={{ width: '100%' }}
@@ -781,6 +801,7 @@ export default function AdminJobsManagement() {
                                   const newWorkingHoursByDay = { ...formData.workingHoursByDay };
                                   newWorkingHoursByDay[day].end = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="End time"
                                 style={{ width: '100%' }}
@@ -794,6 +815,7 @@ export default function AdminJobsManagement() {
                                   const newWorkingHoursByDay = { ...formData.workingHoursByDay };
                                   newWorkingHoursByDay[day].payment = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="Payment details"
                                 className="payment-input"

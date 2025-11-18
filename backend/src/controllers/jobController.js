@@ -9,11 +9,6 @@ export const createJob = async (req, res, next) => {
     
     if (!isDraft) {
       // Only validate required fields for non-draft jobs
-      const errors = validationResult(req)
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-      }
-      
       if (!req.body.title) {
         return res.status(400).json({ message: 'Title is required for non-draft jobs' })
       }
@@ -30,16 +25,25 @@ export const createJob = async (req, res, next) => {
 
     const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, location, startDate, status } = req.body
 
+    // Handle array fields properly for create
+    const processArrayField = (field) => {
+      if (Array.isArray(field)) return field;
+      if (typeof field === 'string') {
+        return field.split(',').map(item => item.trim()).filter(item => item);
+      }
+      return [];
+    };
+
     const job = new Job({
       title: title || '',
       description: description || '',
       department: department || '',
       category: category || '',
-      subcategories: subcategories || [],
-      requirements: requirements || [],
-      qualifications: qualifications || [],
-      responsibilities: responsibilities || [],
-      requiredDocuments: requiredDocuments || [],
+      subcategories: processArrayField(subcategories),
+      requirements: processArrayField(requirements),
+      qualifications: processArrayField(qualifications),
+      responsibilities: processArrayField(responsibilities),
+      requiredDocuments: processArrayField(requiredDocuments),
       baseSalaryMin,
       baseSalaryMax,
       salaryPaymentFrequency,
@@ -47,7 +51,7 @@ export const createJob = async (req, res, next) => {
       modeOfPayment,
       paymentTerms,
       rateAdjustment,
-      benefits: benefits || [],
+      benefits: processArrayField(benefits),
       contractType,
       contractDurationMonths,
       workingHoursPerWeek,
@@ -64,15 +68,28 @@ export const createJob = async (req, res, next) => {
     await job.save()
     res.status(201).json({ message: 'Job created successfully', job })
   } catch (error) {
+    console.error('Error creating job:', error)
     next(error)
   }
 }
 
 export const updateJob = async (req, res, next) => {
   try {
+    const { jobId } = req.params
+    const job = await Job.findById(jobId)
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' })
+    }
+
+    // Only admin who created the job can update it
+    if (job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to update this job' })
+    }
+
     // For auto-save updates, we allow partial updates
     // Only validate required fields if status is being changed from Draft to Active
-    const isStatusChangeToActive = req.body.status === 'Active' && req.job.status === 'Draft'
+    const isStatusChangeToActive = req.body.status === 'Active' && job.status === 'Draft'
     
     if (isStatusChangeToActive) {
       // Only validate required fields when publishing a draft
@@ -90,23 +107,16 @@ export const updateJob = async (req, res, next) => {
       }
     }
 
-    const { jobId } = req.params
-    const job = await Job.findById(jobId)
-
-    if (!job) {
-      return res.status(404).json({ message: 'Job not found' })
-    }
-
-    // Only admin who created the job can update it
-    if (job.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Not authorized to update this job' })
-    }
-
     // Handle array fields properly
     const arrayFields = ['subcategories', 'requirements', 'qualifications', 'responsibilities', 'requiredDocuments', 'benefits']
     arrayFields.forEach(field => {
-      if (req.body[field] && !Array.isArray(req.body[field])) {
-        req.body[field] = [req.body[field]]
+      if (req.body[field] !== undefined && !Array.isArray(req.body[field])) {
+        // Convert comma-separated string to array if needed
+        if (typeof req.body[field] === 'string') {
+          req.body[field] = req.body[field].split(',').map(item => item.trim()).filter(item => item)
+        } else {
+          req.body[field] = [req.body[field]]
+        }
       }
     })
 
@@ -125,12 +135,19 @@ export const updateJob = async (req, res, next) => {
       })
     }
 
-    Object.assign(job, req.body)
+    // Merge the updated fields with the existing job data
+    Object.keys(req.body).forEach(key => {
+      if (req.body[key] !== undefined) {
+        job[key] = req.body[key]
+      }
+    })
+    
     job.updatedAt = new Date()
     await job.save()
 
     res.json({ message: 'Job updated successfully', job })
   } catch (error) {
+    console.error('Error updating job:', error)
     next(error)
   }
 }
