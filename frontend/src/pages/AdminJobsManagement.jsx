@@ -520,44 +520,51 @@ const AdminJobsManagement = () => {
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <h1 className="dashboard-title">Job Management</h1>
-        <button 
-          onClick={() => {
-            setEditingJob(null)
-            setFormData({
-              title: '',
-              description: '',
-              department: '',
-              category: '',
-              subcategories: [],
-              requirements: '',
-              qualifications: '',
-              responsibilities: '',
-              requiredDocuments: '',
-              baseSalaryMin: '',
-              baseSalaryMax: '',
-              salaryPaymentFrequency: 'Per Month',
-              amountPerSession: '',
-              modeOfPayment: '',
-              paymentTerms: '',
-              rateAdjustment: '',
-              benefits: '',
-              contractType: 'Indefinite',
-              contractDurationMonths: '',
-              workingHoursPerWeek: 40,
-              workingHoursStart: '',
-              workingHoursEnd: '',
-              workingHoursByDay: {},
-              remoteWorkPolicy: 'Flexible',
-              location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
-              startDate: '',
-              status: 'Draft'
-            })
-            setShowForm(true)
-          }}
-          className="btn btn-primary"
-        >
-          Create New Job
-        </button>
+        <div className="header-actions">
+          <button 
+            onClick={() => {
+              setEditingJob(null)
+              setFormData({
+                title: '',
+                description: '',
+                department: '',
+                category: '',
+                subcategories: [],
+                requirements: '',
+                qualifications: '',
+                responsibilities: '',
+                requiredDocuments: '',
+                salaryPaymentFrequency: 'Per Month',
+                amountPerSession: '',
+                modeOfPayment: '',
+                paymentTerms: '',
+                rateAdjustment: '',
+                benefits: '',
+                contractType: 'Indefinite',
+                contractDurationMonths: '',
+                workingHoursPerWeek: 40,
+                workingHoursStart: '',
+                workingHoursEnd: '',
+                workingHoursByDay: {},
+                remoteWorkPolicy: 'Flexible',
+                location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
+                startDate: '',
+                status: 'Draft'
+              })
+              setShowForm(true)
+            }}
+            className="btn btn-primary"
+          >
+            Create New Job
+          </button>
+          <button 
+            onClick={() => window.history.back()}
+            className="btn btn-secondary"
+            style={{ marginLeft: '10px' }}
+          >
+            Back
+          </button>
+        </div>
       </div>
 
       {error && (

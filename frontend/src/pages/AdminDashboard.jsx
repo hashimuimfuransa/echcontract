@@ -7,7 +7,9 @@ const AdminDashboard = () => {
     totalJobs: 0,
     activeJobs: 0,
     applications: 0,
-    interviews: 0
+    interviews: 0,
+    pendingContracts: 0,
+    totalContracts: 0
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -20,7 +22,16 @@ const AdminDashboard = () => {
     try {
       setLoading(true)
       const response = await api.get('/admin/jobs/stats')
-      setStats(response.data)
+      
+      // Fetch contract stats
+      const contractResponse = await api.get('/admin/contracts')
+      const pendingContracts = contractResponse.data.contracts.filter(contract => contract.status === 'Under Review').length
+      
+      setStats({
+        ...response.data,
+        pendingContracts,
+        totalContracts: contractResponse.data.contracts.length
+      })
       setError('')
     } catch (err) {
       setError('Failed to fetch dashboard statistics')
@@ -79,6 +90,18 @@ const AdminDashboard = () => {
           <div className="metric-title">Interviews</div>
           <div className="metric-value">{stats.interviews}</div>
           <div className="metric-trend">Scheduled</div>
+        </div>
+        
+        <div className="metric-card">
+          <div className="metric-title">Pending Contracts</div>
+          <div className="metric-value">{stats.pendingContracts}</div>
+          <div className="metric-trend">Awaiting review</div>
+        </div>
+        
+        <div className="metric-card">
+          <div className="metric-title">Total Contracts</div>
+          <div className="metric-value">{stats.totalContracts}</div>
+          <div className="metric-trend">All time</div>
         </div>
       </div>
 
