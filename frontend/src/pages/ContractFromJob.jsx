@@ -4,7 +4,55 @@ import api from '../utils/api'
 import '../styles/employee.css'
 import '../styles/contractForm.css'
 
-// FormField and CollapsibleSection components are shared components (duplicated for performance optimization)
+// FormField component
+const FormField = ({ label, name, type = 'text', placeholder = '', required = false, hint = '', fullWidth = false, value, onChange, readOnly = false, loading = false }) => (
+  <div className={`form-group ${fullWidth ? 'full-width' : ''} ${readOnly ? 'read-only-field' : ''}`}>
+    <label>
+      {label}
+      {required && <span className="required-star">*</span>}
+      {readOnly && <span className="read-only-badge">Pre-filled by HR</span>}
+    </label>
+    {type === 'textarea' ? (
+      <textarea
+        name={name}
+        value={value}
+        onChange={readOnly ? undefined : onChange}
+        required={required}
+        disabled={loading || readOnly}
+        placeholder={placeholder}
+        rows="4"
+        className={readOnly ? 'read-only' : ''}
+      />
+    ) : (
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={readOnly ? undefined : onChange}
+        required={required}
+        disabled={loading || readOnly}
+        placeholder={placeholder}
+        className={readOnly ? 'read-only' : ''}
+      />
+    )}
+    {hint && <p className="form-hint">{hint}</p>}
+  </div>
+)
+
+// CollapsibleSection component
+const CollapsibleSection = ({ id, icon, title, subtitle, children, expandedSections, toggleSection }) => (
+  <div className="form-section">
+    <div className="section-header" onClick={() => toggleSection(id)}>
+      <span className="section-icon">{icon}</span>
+      <div className="section-title-group">
+        <h2 className="section-title">{title}</h2>
+        <p className="section-subtitle">{subtitle}</p>
+      </div>
+      <span className={`toggle-icon ${expandedSections[id] ? 'expanded' : ''}`}>▼</span>
+    </div>
+    {expandedSections[id] && <div className="section-content">{children}</div>}
+  </div>
+)
 
 export default function ContractFromJob() {
   const navigate = useNavigate()
