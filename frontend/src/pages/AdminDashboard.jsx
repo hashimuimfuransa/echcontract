@@ -19,8 +19,8 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/admin/dashboard/stats')
-      setStats(response.data.stats)
+      const response = await api.get('/admin/jobs/stats')
+      setStats(response.data)
       setError('')
     } catch (err) {
       setError('Failed to fetch dashboard statistics')

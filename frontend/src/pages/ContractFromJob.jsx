@@ -90,6 +90,9 @@ export default function ContractFromJob() {
     bonusesCommissions: '',
     benefits: 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
     workingHoursPerWeek: '40',
+    workingHoursStart: '',
+    workingHoursEnd: '',
+    workingHoursByDay: {},
     overtimePolicy: 'Overtime compensation is determined by mutual agreement.',
     annualLeaveDays: '20',
     sickLeavePolicy: 'Maximum 10 sick leave days per year.',
@@ -158,6 +161,7 @@ export default function ContractFromJob() {
           workingHoursPerWeek: data.job.workingHoursPerWeek?.toString() || '40',
           workingHoursStart: data.job.workingHoursStart || '',
           workingHoursEnd: data.job.workingHoursEnd || '',
+          workingHoursByDay: data.job.workingHoursByDay || {},
           benefits: data.job.benefits?.join(', ') || 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
           paymentFrequency: data.job.salaryPaymentFrequency || 'Per Month',
           amountPerSession: data.job.amountPerSession?.toString() || '',
@@ -512,6 +516,80 @@ export default function ContractFromJob() {
                 </div>
               </div>
             )}
+            
+            {/* Day-specific working hours */}
+            <div className="form-group full-width">
+              <label>Working Hours by Day</label>
+              <div className="working-hours-container">
+                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                  <div key={day} className="day-hours-row">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <input 
+                        type="checkbox" 
+                        id={`workingDay-${day}`}
+                        checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
+                        onChange={(e) => {
+                          const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                          if (e.target.checked) {
+                            newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
+                          } else {
+                            delete newWorkingHoursByDay[day];
+                          }
+                          setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                        }}
+                      />
+                      <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
+                    </div>
+                    {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
+                            <input 
+                              type="time" 
+                              value={formData.workingHoursByDay[day].start}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].start = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                            />
+                          </div>
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                            <input 
+                              type="time" 
+                              value={formData.workingHoursByDay[day].end}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].end = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                          <input 
+                            type="text" 
+                            value={formData.workingHoursByDay[day].payment || ''}
+                            onChange={(e) => {
+                              const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                              newWorkingHoursByDay[day].payment = e.target.value;
+                              setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                            }}
+                            placeholder="Payment details (e.g., 15,000 RWF per hour)"
+                            style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
             <FormField label="Overtime Policy" name="overtimePolicy" type="textarea" value={formData.overtimePolicy} readOnly={true} />
             <FormField label="Annual Leave Days" name="annualLeaveDays" type="number" value={formData.annualLeaveDays} readOnly={true} />
             <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />

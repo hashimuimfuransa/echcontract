@@ -104,7 +104,8 @@ export default function ContractForm() {
     // Work Hours and Leave (Pre-filled by HR - Read Only)
     workingHoursPerWeek: '40',
     workingHoursStart: '',
-    workingHoursEnd: ''
+    workingHoursEnd: '',
+    workingHoursByDay: {}
   })
 
   const [documents, setDocuments] = useState([])
@@ -822,6 +823,80 @@ export default function ContractForm() {
                     </div>
                   </div>
                 )}
+                
+                {/* Day-specific working hours */}
+                <div className="form-group full-width">
+                  <label>Working Hours by Day</label>
+                  <div className="working-hours-container">
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                      <div key={day} className="day-hours-row">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                          <input 
+                            type="checkbox" 
+                            id={`workingDay-${day}`}
+                            checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
+                            onChange={(e) => {
+                              const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                              if (e.target.checked) {
+                                newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
+                              } else {
+                                delete newWorkingHoursByDay[day];
+                              }
+                              setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                            }}
+                          />
+                          <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
+                        </div>
+                        {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
+                                <input 
+                                  type="time" 
+                                  value={formData.workingHoursByDay[day].start}
+                                  onChange={(e) => {
+                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                    newWorkingHoursByDay[day].start = e.target.value;
+                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  }}
+                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                />
+                              </div>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                                <input 
+                                  type="time" 
+                                  value={formData.workingHoursByDay[day].end}
+                                  onChange={(e) => {
+                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                    newWorkingHoursByDay[day].end = e.target.value;
+                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  }}
+                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                              <input 
+                                type="text" 
+                                value={formData.workingHoursByDay[day].payment || ''}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].payment = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                placeholder="Payment details (e.g., 15,000 RWF per hour)"
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </CollapsibleSection>
 

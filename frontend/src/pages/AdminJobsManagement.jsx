@@ -161,12 +161,12 @@ const AdminJobsManagement = () => {
     status: 'Draft'
   })
 
-  // Set flag when form data changes
+  // Clear subcategories when category changes
   useEffect(() => {
-    if (showForm) {
-      hasUnsavedChanges.current = true;
+    if (formData.category === '') {
+      setFormData(prev => ({ ...prev, subcategories: [] }));
     }
-  }, [formData, showForm]);
+  }, [formData.category]);
 
   const fetchJobs = async (pageNum, status, category) => {
     try {
@@ -322,7 +322,7 @@ const AdminJobsManagement = () => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       }
     }
-  }, [showForm, formData, editingJob])
+  }, [showForm, formData, editingJob, formData.category])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -706,26 +706,34 @@ const AdminJobsManagement = () => {
 
               <div className="form-group">
                 <label htmlFor="department">Department *</label>
-                <input
-                  type="text"
+                <select
                   id="department"
                   name="department"
                   value={formData.department}
                   onChange={handleInputChange}
                   required
-                />
+                >
+                  <option value="">Select a department</option>
+                  {departments.map(dept => (
+                    <option key={dept} value={dept}>{dept}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group">
                 <label htmlFor="category">Category *</label>
-                <input
-                  type="text"
+                <select
                   id="category"
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
                   required
-                />
+                >
+                  <option value="">Select a category</option>
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group">
@@ -759,21 +767,25 @@ const AdminJobsManagement = () => {
               <div className="form-group full-width">
                 <label>Subcategories</label>
                 <div className="subcategory-grid">
-                  {['Teaching', 'Coaching', 'Training', 'Mentoring', 'Consulting', 'Speaking', 'Writing', 'Research'].map(sub => (
-                    <div 
-                      key={sub}
-                      className={`subcategory-item ${formData.subcategories.includes(sub) ? 'selected' : ''}`}
-                      onClick={() => handleSubcategoryChange(sub)}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.subcategories.includes(sub)}
-                        onChange={() => {}}
-                        style={{ margin: 0 }}
-                      />
-                      <span>{sub}</span>
-                    </div>
-                  ))}
+                  {formData.category && categorySubcategories[formData.category] ? (
+                    categorySubcategories[formData.category].map(sub => (
+                      <div 
+                        key={sub}
+                        className={`subcategory-item ${formData.subcategories.includes(sub) ? 'selected' : ''}`}
+                        onClick={() => handleSubcategoryChange(sub)}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.subcategories.includes(sub)}
+                          onChange={() => {}}
+                          style={{ margin: 0 }}
+                        />
+                        <span>{sub}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Please select a category first to see available subcategories</p>
+                  )}
                 </div>
               </div>
 

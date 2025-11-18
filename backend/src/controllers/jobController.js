@@ -265,8 +265,8 @@ export const getJobStats = async (req, res, next) => {
     res.json({
       totalJobs,
       activeJobs,
-      draftJobs,
-      closedJobs
+      applications: 0, // Placeholder until we have application data
+      interviews: 0    // Placeholder until we have interview data
     })
   } catch (error) {
     next(error)
