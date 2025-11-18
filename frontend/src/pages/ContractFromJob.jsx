@@ -83,6 +83,10 @@ export default function ContractFromJob() {
     endDate: '',
     baseSalary: '',
     paymentFrequency: 'Per Month',
+    amountPerSession: '',
+    modeOfPayment: '',
+    paymentTerms: '',
+    rateAdjustment: '',
     bonusesCommissions: '',
     benefits: 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
     workingHoursPerWeek: '40',
@@ -240,6 +244,10 @@ export default function ContractFromJob() {
           workingHoursPerWeek: data.job.workingHoursPerWeek?.toString() || '40',
           benefits: data.job.benefits?.join(', ') || 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
           paymentFrequency: data.job.salaryPaymentFrequency || 'Per Month',
+          amountPerSession: data.job.amountPerSession?.toString() || '',
+          modeOfPayment: data.job.modeOfPayment || '',
+          paymentTerms: data.job.paymentTerms || '',
+          rateAdjustment: data.job.rateAdjustment || '',
           contractType: data.job.contractType,
           endDate: data.job.contractDurationMonths ? calculateEndDate(data.job.startDate, data.job.contractDurationMonths) : '',
           startDate: data.job.startDate ? data.job.startDate.split('T')[0] : '',
@@ -551,6 +559,12 @@ export default function ContractFromJob() {
                 </select>
               </div>
             </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <FormField label="Amount to be Paid Per Session" name="amountPerSession" type="number" value={formData.amountPerSession} readOnly={true} />
+              <FormField label="Mode of Payment" name="modeOfPayment" type="text" value={formData.modeOfPayment} readOnly={true} />
+            </div>
+            <FormField label="Terms and Conditions for Payment" name="paymentTerms" type="textarea" value={formData.paymentTerms} readOnly={true} />
+            <FormField label="Rate Adjustment for Contract Renewal" name="rateAdjustment" type="textarea" value={formData.rateAdjustment} readOnly={true} />
             <FormField label="Bonuses/Commissions" name="bonusesCommissions" type="textarea" value={formData.bonusesCommissions} onChange={handleInputChange} placeholder="Enter bonus and commission details (if applicable)" />
             <FormField label="Benefits" name="benefits" type="textarea" value={formData.benefits} readOnly={true} />
           </CollapsibleSection>
