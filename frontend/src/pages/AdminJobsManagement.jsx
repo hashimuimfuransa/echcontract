@@ -499,7 +499,7 @@ export default function AdminJobsManagement() {
 
                 
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px' }}>
+                <div className="form-grid">
                   <div className="form-group">
                     <label>Contract Type</label>
                     <select name="contractType" value={formData.contractType} onChange={handleInputChange}>
@@ -515,7 +515,9 @@ export default function AdminJobsManagement() {
                       <input type="number" name="contractDurationMonths" value={formData.contractDurationMonths} onChange={handleInputChange} />
                     </div>
                   )}
+                </div>
 
+                <div className="form-grid">
                   <div className="form-group">
                     <label>Working Hours/Week</label>
                     <input type="number" name="workingHoursPerWeek" value={formData.workingHoursPerWeek} onChange={handleInputChange} />
