@@ -498,10 +498,10 @@ export default function ContractFromJob() {
             {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
               <div className="form-group">
                 <label>Working Hours by Day</label>
-                <div style={{ padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '4px', fontSize: '14px' }}>
+                <div className="working-hours-display">
                   {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
                     hours.start && hours.end ? (
-                      <div key={day} style={{ marginBottom: '5px' }}>
+                      <div key={day} className="working-hours-day">
                         <strong>{day}:</strong> {hours.start} - {hours.end}
                       </div>
                     ) : null

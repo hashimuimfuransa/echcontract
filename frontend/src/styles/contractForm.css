@@ -685,3 +685,34 @@
   color: #6366f1;
   font-weight: 500;
 }
+
+/* Working Hours Display */
+.working-hours-display {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.working-hours-day {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.working-hours-day-label {
+  font-weight: 500;
+  min-width: 120px;
+}
+
+@media (max-width: 768px) {
+  .working-hours-day {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .working-hours-day-label {
+    min-width: auto;
+  }
+}

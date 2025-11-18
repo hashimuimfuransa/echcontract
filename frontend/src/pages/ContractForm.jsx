@@ -833,13 +833,13 @@ export default function ContractForm() {
                   />
                 </div>
                 {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
-                  <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                  <div className="form-group full-width">
                     <label>Working Hours by Day</label>
-                    <div style={{ padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px', border: '1px solid #e9ecef' }}>
+                    <div className="working-hours-display">
                       {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
                         hours.start && hours.end ? (
-                          <div key={day} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-                            <span style={{ fontWeight: '500', minWidth: '120px' }}>{day}:</span>
+                          <div key={day} className="working-hours-day">
+                            <span className="working-hours-day-label">{day}:</span>
                             <span>{hours.start} - {hours.end}</span>
                           </div>
                         ) : null
