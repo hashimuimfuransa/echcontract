@@ -62,19 +62,33 @@ router.patch('/employees/:employeeId/status', [
 
 // Job Management Routes
 router.post('/jobs', [
-  body('title').notEmpty().isString(),
-  body('description').notEmpty().isString(),
-  body('department').notEmpty().isString(),
-  body('category').notEmpty().isString(),
+  body('title').optional().isString(), // Make title optional for auto-save drafts
+  body('description').optional().isString(),
+  body('department').optional().isString(),
+  body('category').optional().isString(),
   body('subcategories').optional().isArray(),
-  body('location').notEmpty().isString(),
-  body('amountPerSession').optional().isNumeric(),
+  body('requirements').optional().isArray(),
+  body('qualifications').optional().isArray(),
+  body('responsibilities').optional().isArray(),
+  body('requiredDocuments').optional().isArray(),
+  body('baseSalaryMin').optional().isString(), // Changed to string to support text input
+  body('baseSalaryMax').optional().isString(), // Changed to string to support text input
+  body('salaryPaymentFrequency').optional().isString(),
+  body('amountPerSession').optional().isString(), // Changed to string to support text input
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
   body('rateAdjustment').optional().isString(),
+  body('benefits').optional().isArray(),
+  body('contractType').optional().isString(),
+  body('contractDurationMonths').optional().isNumeric(),
+  body('workingHoursPerWeek').optional().isNumeric(),
   body('workingHoursStart').optional().isString(),
   body('workingHoursEnd').optional().isString(),
-  body('workingHoursByDay').optional().isObject()
+  body('workingHoursByDay').optional().isObject(),
+  body('remoteWorkPolicy').optional().isString(),
+  body('location').optional().isString(),
+  body('startDate').optional().isISO8601(),
+  body('status').optional().isString()
 ], createJob)
 
 router.get('/jobs/stats', getJobStats)
@@ -85,14 +99,33 @@ router.get('/jobs/:jobId', param('jobId').isMongoId(), getJobById)
 
 router.put('/jobs/:jobId', [
   param('jobId').isMongoId(),
+  body('title').optional().isString(),
+  body('description').optional().isString(),
+  body('department').optional().isString(),
+  body('category').optional().isString(),
   body('subcategories').optional().isArray(),
-  body('amountPerSession').optional().isNumeric(),
+  body('requirements').optional().isArray(),
+  body('qualifications').optional().isArray(),
+  body('responsibilities').optional().isArray(),
+  body('requiredDocuments').optional().isArray(),
+  body('baseSalaryMin').optional().isString(), // Changed to string to support text input
+  body('baseSalaryMax').optional().isString(), // Changed to string to support text input
+  body('salaryPaymentFrequency').optional().isString(),
+  body('amountPerSession').optional().isString(), // Changed to string to support text input
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
   body('rateAdjustment').optional().isString(),
+  body('benefits').optional().isArray(),
+  body('contractType').optional().isString(),
+  body('contractDurationMonths').optional().isNumeric(),
+  body('workingHoursPerWeek').optional().isNumeric(),
   body('workingHoursStart').optional().isString(),
   body('workingHoursEnd').optional().isString(),
-  body('workingHoursByDay').optional().isObject()
+  body('workingHoursByDay').optional().isObject(),
+  body('remoteWorkPolicy').optional().isString(),
+  body('location').optional().isString(),
+  body('startDate').optional().isISO8601(),
+  body('status').optional().isString()
 ], updateJob)
 
 router.delete('/jobs/:jobId', param('jobId').isMongoId(), deleteJob)

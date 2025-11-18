@@ -18,6 +18,8 @@ export default function AdminJobsManagement() {
   
   // Auto-save timer reference
   const autoSaveTimer = useRef(null)
+  // Track if form has unsaved changes
+  const hasUnsavedChanges = useRef(false)
   
   const categories = [
     'Professional Coaching',
@@ -148,6 +150,13 @@ export default function AdminJobsManagement() {
     status: 'Draft'
   })
 
+  // Set flag when form data changes
+  useEffect(() => {
+    if (showForm) {
+      hasUnsavedChanges.current = true;
+    }
+  }, [formData, showForm]);
+
   const fetchJobs = async (pageNum, status, category) => {
     try {
       setLoading(true)
@@ -182,8 +191,12 @@ export default function AdminJobsManagement() {
 
   // Auto-save function
   const autoSaveJob = async () => {
-    if (!showForm || (!editingJob && !formData.title)) return;
+    // Only auto-save if form is open and has changes
+    if (!showForm || !hasUnsavedChanges.current) return;
     
+    // Don't auto-save if title is empty for new jobs
+    if (!editingJob && !formData.title) return;
+
     try {
       // Convert string fields to arrays for backend
       const dataToSubmit = {
@@ -212,16 +225,20 @@ export default function AdminJobsManagement() {
       
       if (editingJob) {
         await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
+        console.log('Job updated successfully')
       } else {
         // For new jobs, we'll save as draft
         const draftData = { ...dataToSubmit, status: 'Draft' }
         const response = await api.post('/admin/jobs', draftData)
         // Set the editing job to the newly created job
         setEditingJob(response.data.job)
+        console.log('Job created successfully')
       }
       setError('')
+      hasUnsavedChanges.current = false; // Reset the unsaved changes flag
     } catch (err) {
       console.error('Auto-save failed:', err)
+      setError(err.response?.data?.message || 'Auto-save failed')
     }
   }
 
@@ -237,12 +254,24 @@ export default function AdminJobsManagement() {
       autoSaveTimer.current = setInterval(() => {
         autoSaveJob()
       }, 60000)
-    }
-    
-    // Clean up timer on unmount or when form is closed
-    return () => {
-      if (autoSaveTimer.current) {
-        clearInterval(autoSaveTimer.current)
+      
+      // Also set up beforeunload listener to save on page exit
+      const handleBeforeUnload = (e) => {
+        if (hasUnsavedChanges.current) {
+          autoSaveJob(); // Try to save before leaving
+          e.preventDefault();
+          e.returnValue = ''; // Required for Chrome
+        }
+      };
+      
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      
+      // Clean up
+      return () => {
+        if (autoSaveTimer.current) {
+          clearInterval(autoSaveTimer.current)
+        }
+        window.removeEventListener('beforeunload', handleBeforeUnload);
       }
     }
   }, [showForm, formData, editingJob])
@@ -303,6 +332,8 @@ export default function AdminJobsManagement() {
       } else {
         await api.post('/admin/jobs', dataToSubmit)
       }
+      
+      // Reset form and refresh job list
       setFormData({
         title: '',
         description: '',
@@ -332,7 +363,9 @@ export default function AdminJobsManagement() {
         startDate: '',
         status: 'Draft'
       })
+      
       setShowForm(false)
+      hasUnsavedChanges.current = false; // Reset the unsaved changes flag
       fetchJobs(1, '', '')
       setPage(1)
       fetchStats()
@@ -388,6 +421,11 @@ export default function AdminJobsManagement() {
   }
 
   const handleCancel = () => {
+    // Try to save before canceling if there are unsaved changes
+    if (hasUnsavedChanges.current) {
+      autoSaveJob();
+    }
+    
     setShowForm(false)
     setEditingJob(null)
     // Clear auto-save timer
@@ -423,6 +461,7 @@ export default function AdminJobsManagement() {
       startDate: '',
       status: 'Draft'
     })
+    hasUnsavedChanges.current = false; // Reset the unsaved changes flag
   }
 
   return (
@@ -956,7 +995,7 @@ export default function AdminJobsManagement() {
           ) : (
             <>
               <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
                   <thead>
                     <tr style={{ backgroundColor: '#f5f5f5', borderBottom: '2px solid #ddd' }}>
                       <th style={{ padding: '12px', textAlign: 'left' }}>Title</th>

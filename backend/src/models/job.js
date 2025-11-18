@@ -41,4 +41,23 @@ const jobSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 }, { timestamps: true })
 
+// Pre-save middleware to ensure working hours by day structure
+jobSchema.pre('save', function(next) {
+  // Ensure workingHoursByDay has proper structure
+  if (this.workingHoursByDay) {
+    const workingHours = this.workingHoursByDay;
+    for (const [day, hours] of workingHours.entries()) {
+      if (typeof hours === 'object') {
+        // Ensure all required properties exist
+        workingHours.set(day, {
+          start: hours.start || '',
+          end: hours.end || '',
+          payment: hours.payment || ''
+        });
+      }
+    }
+  }
+  next();
+});
+
 export default mongoose.model('Job', jobSchema)

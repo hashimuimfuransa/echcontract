@@ -10,11 +10,30 @@ export const createJob = async (req, res, next) => {
 
     const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, location, startDate, status } = req.body
 
+    // For auto-save drafts, we allow creation without all required fields
+    // But for non-draft jobs, we still enforce required fields
+    const isDraft = status === 'Draft'
+    
+    if (!isDraft) {
+      if (!title) {
+        return res.status(400).json({ message: 'Title is required for non-draft jobs' })
+      }
+      if (!description) {
+        return res.status(400).json({ message: 'Description is required for non-draft jobs' })
+      }
+      if (!department) {
+        return res.status(400).json({ message: 'Department is required for non-draft jobs' })
+      }
+      if (!category) {
+        return res.status(400).json({ message: 'Category is required for non-draft jobs' })
+      }
+    }
+
     const job = new Job({
-      title,
-      description,
-      department,
-      category,
+      title: title || '',
+      description: description || '',
+      department: department || '',
+      category: category || '',
       subcategories: subcategories || [],
       requirements: requirements || [],
       qualifications: qualifications || [],
@@ -37,7 +56,7 @@ export const createJob = async (req, res, next) => {
       remoteWorkPolicy,
       location,
       startDate,
-      status,
+      status: status || 'Draft',
       createdBy: req.user.id
     })
 
@@ -65,6 +84,48 @@ export const updateJob = async (req, res, next) => {
     // Only admin who created the job can update it
     if (job.createdBy.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized to update this job' })
+    }
+
+    // For auto-save updates, we allow partial updates
+    // Only validate required fields if status is being changed from Draft to Active
+    const isStatusChangeToActive = req.body.status === 'Active' && job.status === 'Draft'
+    
+    if (isStatusChangeToActive) {
+      if (!req.body.title) {
+        return res.status(400).json({ message: 'Title is required for active jobs' })
+      }
+      if (!req.body.description) {
+        return res.status(400).json({ message: 'Description is required for active jobs' })
+      }
+      if (!req.body.department) {
+        return res.status(400).json({ message: 'Department is required for active jobs' })
+      }
+      if (!req.body.category) {
+        return res.status(400).json({ message: 'Category is required for active jobs' })
+      }
+    }
+
+    // Handle array fields properly
+    const arrayFields = ['subcategories', 'requirements', 'qualifications', 'responsibilities', 'requiredDocuments', 'benefits']
+    arrayFields.forEach(field => {
+      if (req.body[field] && !Array.isArray(req.body[field])) {
+        req.body[field] = [req.body[field]]
+      }
+    })
+
+    // Handle working hours by day structure
+    if (req.body.workingHoursByDay) {
+      // Ensure each day entry has the correct structure
+      Object.keys(req.body.workingHoursByDay).forEach(day => {
+        if (typeof req.body.workingHoursByDay[day] === 'object') {
+          // Ensure required properties exist
+          req.body.workingHoursByDay[day] = {
+            start: req.body.workingHoursByDay[day].start || '',
+            end: req.body.workingHoursByDay[day].end || '',
+            payment: req.body.workingHoursByDay[day].payment || ''
+          }
+        }
+      })
     }
 
     Object.assign(job, req.body)
