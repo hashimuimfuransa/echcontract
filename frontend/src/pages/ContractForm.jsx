@@ -158,7 +158,82 @@ export default function ContractForm() {
     documents: false
   })
 
-  // Coaching categories and subcategories are managed in AdminJobsManagement.jsx
+  // Coaching categories and subcategories
+  const coachingCategories = [
+    'Professional Coaching',
+    'Business & Entrepreneurship Coaching',
+    'Academic Coaching',
+    'Language Coaching',
+    'Technical & Digital Coaching',
+    'Job Seeker Coaching',
+    'Personal & Corporate Development'
+  ]
+
+  const coachingSubcategories = {
+    'Professional Coaching': [
+      'Leadership',
+      'Executive',
+      'Project Management',
+      'CPA/CAT/ACCA'
+    ],
+    'Business & Entrepreneurship Coaching': [
+      'Startup',
+      'Strategy',
+      'Finance',
+      'Marketing',
+      'Innovation'
+    ],
+    'Academic Coaching': [
+      'Primary',
+      'Secondary',
+      'University',
+      'Nursery',
+      'Exams',
+      'Research'
+    ],
+    'Language Coaching': [
+      'English',
+      'French',
+      'Kinyarwanda',
+      'Business Communication'
+    ],
+    'Technical & Digital Coaching': [
+      'AI',
+      'Data',
+      'Cybersecurity',
+      'Cloud',
+      'Dev',
+      'Digital Marketing'
+    ],
+    'Job Seeker Coaching': [
+      'Software Developer',
+      'Data Analyst',
+      'Project Manager',
+      'Marketing Manager',
+      'Sales Representative',
+      'Business Analyst',
+      'Financial Analyst',
+      'HR Specialist',
+      'Operations Manager',
+      'Quality Assurance Engineer',
+      'UX/UI Designer',
+      'DevOps Engineer',
+      'Content Writer',
+      'Graphic Designer',
+      'System Administrator',
+      'Customer Service Manager',
+      'Product Manager',
+      'Business Development Executive'
+    ],
+    'Personal & Corporate Development': [
+      'Communication',
+      'EI',
+      'Time',
+      'Team',
+      'HR',
+      'Ethics'
+    ]
+  }
 
   // Department options
   const departmentOptions = [
