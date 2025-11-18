@@ -66,6 +66,7 @@ router.post('/jobs', [
   body('description').notEmpty().isString(),
   body('department').notEmpty().isString(),
   body('category').notEmpty().isString(),
+  body('subcategories').optional().isArray(),
   body('location').notEmpty().isString()
 ], createJob)
 
@@ -76,7 +77,8 @@ router.get('/jobs', listAllJobs)
 router.get('/jobs/:jobId', param('jobId').isMongoId(), getJobById)
 
 router.put('/jobs/:jobId', [
-  param('jobId').isMongoId()
+  param('jobId').isMongoId(),
+  body('subcategories').optional().isArray()
 ], updateJob)
 
 router.delete('/jobs/:jobId', param('jobId').isMongoId(), deleteJob)

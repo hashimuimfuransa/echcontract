@@ -70,6 +70,7 @@ export default function ContractFromJob() {
     employeeAddress: '',
     jobTitle: '',
     teachingCategory: '',
+    coachingSubcategories: [],
     department: '',
     reportsTo: '',
     jobDescription: '',
@@ -126,7 +127,7 @@ export default function ContractFromJob() {
     documents: false
   })
 
-  const teachingCategories = [
+  const coachingCategories = [
     'Professional Coaching',
     'Business & Entrepreneurship Coaching',
     'Academic Coaching',
@@ -135,6 +136,84 @@ export default function ContractFromJob() {
     'Job Seeker Coaching',
     'Personal & Corporate Development'
   ]
+
+  // Subcategories for each coaching category
+  const coachingSubcategories = {
+    'Professional Coaching': [
+      'Leadership',
+      'Executive',
+      'Project Management',
+      'CPA/CAT/ACCA',
+      'Business Consulting',
+      'Career Coaching'
+    ],
+    'Business & Entrepreneurship Coaching': [
+      'Startup',
+      'Strategy',
+      'Finance',
+      'Marketing',
+      'Innovation',
+      'Business Planning'
+    ],
+    'Academic Coaching': [
+      'Nursery',
+      'Primary',
+      'Secondary',
+      'University',
+      'Exams',
+      'Research'
+    ],
+    'Language Coaching': [
+      'English',
+      'French',
+      'Kinyarwanda',
+      'Business Communication',
+      'Technical Writing'
+    ],
+    'Technical & Digital Coaching': [
+      'AI',
+      'Data',
+      'Cybersecurity',
+      'Cloud',
+      'Dev',
+      'Digital Marketing',
+      'Software Development',
+      'Network Engineering'
+    ],
+    'Job Seeker Coaching': [
+      'Software Developer',
+      'Data Analyst',
+      'Project Manager',
+      'Marketing Manager',
+      'Sales Representative',
+      'Business Analyst',
+      'Financial Analyst',
+      'HR Specialist',
+      'Operations Manager',
+      'Quality Assurance Engineer',
+      'UX/UI Designer',
+      'DevOps Engineer',
+      'Content Writer',
+      'Graphic Designer',
+      'System Administrator',
+      'Customer Service Manager',
+      'Product Manager',
+      'Business Development Executive',
+      'Accounting',
+      'Engineering',
+      'Legal',
+      'Healthcare',
+      'Education'
+    ],
+    'Personal & Corporate Development': [
+      'Communication',
+      'Emotional Intelligence',
+      'Time Management',
+      'Team Building',
+      'HR Development',
+      'Ethics'
+    ]
+  }
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -154,6 +233,7 @@ export default function ContractFromJob() {
           jobTitle: data.job.title,
           department: data.job.department,
           teachingCategory: data.job.category,
+          coachingSubcategories: data.job.subcategories || [],
           jobDescription: data.job.description,
           remoteWorkPolicy: data.job.remoteWorkPolicy || 'Flexible',
           remoteWorkDescription: `${data.job.remoteWorkPolicy} remote work arrangement available.`,
@@ -381,9 +461,22 @@ export default function ContractFromJob() {
           >
             <FormField label="Job Title" name="jobTitle" value={formData.jobTitle} readOnly={true} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Teaching Category" name="teachingCategory" value={formData.teachingCategory} readOnly={true} />
+              <FormField label="Coaching Category" name="teachingCategory" value={formData.teachingCategory} readOnly={true} />
               <FormField label="Department" name="department" value={formData.department} readOnly={true} />
             </div>
+            
+            {formData.coachingSubcategories && formData.coachingSubcategories.length > 0 && (
+              <div className="form-group">
+                <label>Coaching Subcategories</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+                  {formData.coachingSubcategories.map(sub => (
+                    <span key={sub} style={{ backgroundColor: '#f1f5f9', padding: '5px 10px', borderRadius: '4px' }}>
+                      {sub}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
             <FormField label="Reports To (Manager)" name="reportsTo" value={formData.reportsTo} onChange={handleInputChange} placeholder="Enter manager name" />
             <FormField label="Job Description" name="jobDescription" type="textarea" value={formData.jobDescription} readOnly={true} />
           </CollapsibleSection>

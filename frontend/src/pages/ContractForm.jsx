@@ -73,6 +73,7 @@ export default function ContractForm() {
     // Job Information (Pre-filled by HR - Job Title/Dept editable)
     jobTitle: '',
     teachingCategory: '',
+    coachingSubcategories: [],
     department: '',
     reportsTo: '',
     jobDescription: 'To be defined by department manager in collaboration with the employee.',
@@ -155,8 +156,8 @@ export default function ContractForm() {
     documents: false
   })
 
-  // Teaching categories based on the image
-  const teachingCategories = [
+  // Coaching categories
+  const coachingCategories = [
     'Professional Coaching',
     'Business & Entrepreneurship Coaching',
     'Academic Coaching',
@@ -166,21 +167,101 @@ export default function ContractForm() {
     'Personal & Corporate Development'
   ]
 
+  // Subcategories for each coaching category
+  const coachingSubcategories = {
+    'Professional Coaching': [
+      'Leadership',
+      'Executive',
+      'Project Management',
+      'CPA/CAT/ACCA',
+      'Business Consulting',
+      'Career Coaching'
+    ],
+    'Business & Entrepreneurship Coaching': [
+      'Startup',
+      'Strategy',
+      'Finance',
+      'Marketing',
+      'Innovation',
+      'Business Planning'
+    ],
+    'Academic Coaching': [
+      'Nursery',
+      'Primary',
+      'Secondary',
+      'University',
+      'Exams',
+      'Research'
+    ],
+    'Language Coaching': [
+      'English',
+      'French',
+      'Kinyarwanda',
+      'Business Communication',
+      'Technical Writing'
+    ],
+    'Technical & Digital Coaching': [
+      'AI',
+      'Data',
+      'Cybersecurity',
+      'Cloud',
+      'Dev',
+      'Digital Marketing',
+      'Software Development',
+      'Network Engineering'
+    ],
+    'Job Seeker Coaching': [
+      'Software Developer',
+      'Data Analyst',
+      'Project Manager',
+      'Marketing Manager',
+      'Sales Representative',
+      'Business Analyst',
+      'Financial Analyst',
+      'HR Specialist',
+      'Operations Manager',
+      'Quality Assurance Engineer',
+      'UX/UI Designer',
+      'DevOps Engineer',
+      'Content Writer',
+      'Graphic Designer',
+      'System Administrator',
+      'Customer Service Manager',
+      'Product Manager',
+      'Business Development Executive',
+      'Accounting',
+      'Engineering',
+      'Legal',
+      'Healthcare',
+      'Education'
+    ],
+    'Personal & Corporate Development': [
+      'Communication',
+      'Emotional Intelligence',
+      'Time Management',
+      'Team Building',
+      'HR Development',
+      'Ethics'
+    ]
+  }
+
   // Department options
   const departmentOptions = [
-    'Teaching',
-    'Technical',
-    'Professional Coaching',
-    'Business & Entrepreneurship',
-    'Academic Coaching',
-    'Language Coaching',
-    'Technical & Digital Coaching',
-    'Job Seeker Coaching',
-    'Personal & Corporate Development',
     'HR & Administration',
     'Finance & Operations',
     'Marketing & Business Development',
-    'Other Departments'
+    'Technical',
+    'Operations',
+    'Research & Development',
+    'Quality Assurance',
+    'Logistics & Supply Chain',
+    'Strategy & Planning',
+    'Business Development',
+    'Communications',
+    'Data Analytics',
+    'Information Technology',
+    'Recruitment',
+    'Training & Development'
   ]
 
   const token = localStorage.getItem('token')
@@ -411,16 +492,43 @@ export default function ContractForm() {
                 />
                 <div className="form-group">
                   <label>
-                    Teaching Category
+                    Coaching Category
                     <span style={{ color: '#999', marginLeft: '5px' }}>(Optional)</span>
                   </label>
                   <select name="teachingCategory" value={formData.teachingCategory} onChange={handleInputChange}>
-                    <option value="">-- Select a teaching category --</option>
-                    {teachingCategories.map(category => (
+                    <option value="">-- Select a coaching category --</option>
+                    {coachingCategories.map(category => (
                       <option key={category} value={category}>{category}</option>
                     ))}
                   </select>
                 </div>
+                
+                {formData.teachingCategory && coachingSubcategories[formData.teachingCategory] && (
+                  <div className="form-group">
+                    <label>
+                      Coaching Subcategories
+                      <span style={{ color: '#999', marginLeft: '5px' }}>(Select all that apply)</span>
+                    </label>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+                      {coachingSubcategories[formData.teachingCategory].map(sub => (
+                        <label key={sub} style={{ display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: '#f1f5f9', padding: '5px 10px', borderRadius: '4px' }}>
+                          <input
+                            type="checkbox"
+                            checked={formData.coachingSubcategories.includes(sub)}
+                            onChange={(e) => {
+                              const subs = e.target.checked
+                                ? [...formData.coachingSubcategories, sub]
+                                : formData.coachingSubcategories.filter(s => s !== sub);
+                              setFormData(prev => ({ ...prev, coachingSubcategories: subs }));
+                            }}
+                          />
+                          {sub}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="form-group">
                   <label>
                     Department
