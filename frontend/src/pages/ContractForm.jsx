@@ -223,7 +223,16 @@ export default function ContractForm() {
       'System Administrator',
       'Customer Service Manager',
       'Product Manager',
-      'Business Development Executive'
+      'Business Development Executive',
+      'Accounting and Related Fields',
+      'Engineering and Technical Roles',
+      'Healthcare and Medical Positions',
+      'Legal and Compliance Roles',
+      'Supply Chain and Logistics',
+      'Research and Development',
+      'Teaching and Education',
+      'Digital Marketing and SEO',
+      'Cybersecurity Specialist'
     ],
     'Personal & Corporate Development': [
       'Communication',
