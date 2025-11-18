@@ -141,8 +141,6 @@ const AdminJobsManagement = () => {
     qualifications: '',
     responsibilities: '',
     requiredDocuments: '',
-    baseSalaryMin: '',
-    baseSalaryMax: '',
     salaryPaymentFrequency: 'Per Month',
     amountPerSession: '',
     modeOfPayment: '',
@@ -438,8 +436,6 @@ const AdminJobsManagement = () => {
       qualifications: Array.isArray(job.qualifications) ? job.qualifications.join(', ') : '',
       responsibilities: Array.isArray(job.responsibilities) ? job.responsibilities.join(', ') : '',
       requiredDocuments: Array.isArray(job.requiredDocuments) ? job.requiredDocuments.join(', ') : '',
-      baseSalaryMin: job.baseSalaryMin || '',
-      baseSalaryMax: job.baseSalaryMax || '',
       salaryPaymentFrequency: job.salaryPaymentFrequency || 'Per Month',
       amountPerSession: job.amountPerSession || '',
       modeOfPayment: job.modeOfPayment || '',
@@ -494,8 +490,6 @@ const AdminJobsManagement = () => {
       qualifications: '',
       responsibilities: '',
       requiredDocuments: '',
-      baseSalaryMin: '',
-      baseSalaryMax: '',
       salaryPaymentFrequency: 'Per Month',
       amountPerSession: '',
       modeOfPayment: '',
@@ -850,30 +844,6 @@ const AdminJobsManagement = () => {
               </div>
 
               {/* Compensation */}
-              <div className="form-group">
-                <label htmlFor="baseSalaryMin">Base Salary Min</label>
-                <input
-                  type="text"
-                  id="baseSalaryMin"
-                  name="baseSalaryMin"
-                  value={formData.baseSalaryMin}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 200,000 RWF"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="baseSalaryMax">Base Salary Max</label>
-                <input
-                  type="text"
-                  id="baseSalaryMax"
-                  name="baseSalaryMax"
-                  value={formData.baseSalaryMax}
-                  onChange={handleInputChange}
-                  placeholder="e.g., 500,000 RWF"
-                />
-              </div>
-
               <div className="form-group">
                 <label htmlFor="salaryPaymentFrequency">Salary Payment Frequency</label>
                 <select
