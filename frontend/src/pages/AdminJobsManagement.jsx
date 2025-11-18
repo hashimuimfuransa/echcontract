@@ -3,24 +3,26 @@ import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api'
 import '../styles/admin.css'
 
-export default function AdminJobsManagement() {
+const AdminJobsManagement = () => {
   const navigate = useNavigate()
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [stats, setStats] = useState(null)
   const [showForm, setShowForm] = useState(false)
   const [editingJob, setEditingJob] = useState(null)
   const [page, setPage] = useState(1)
-  const [pagination, setPagination] = useState(null)
+  const [totalPages, setTotalPages] = useState(1)
   const [statusFilter, setStatusFilter] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
-  
+  const [searchTerm, setSearchTerm] = useState('')
+
   // Auto-save timer reference
   const autoSaveTimer = useRef(null)
   // Track if form has unsaved changes
   const hasUnsavedChanges = useRef(false)
-  
+
   const categories = [
     'Professional Coaching',
     'Business & Entrepreneurship Coaching',
@@ -166,7 +168,7 @@ export default function AdminJobsManagement() {
 
       const { data } = await api.get(`/admin/jobs?${params}`)
       setJobs(data.jobs)
-      setPagination(data.pagination)
+      setTotalPages(data.pagination.pages)
       setError('')
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load jobs')
@@ -505,625 +507,585 @@ export default function AdminJobsManagement() {
     hasUnsavedChanges.current = false; // Reset the unsaved changes flag
   }
 
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage)
+    }
+  }
+
   return (
-    <div>
-      <div className="header">
-        <h1 className="header-title">📋 Manage Job Postings</h1>
-        <Link to="/admin" className="btn btn-secondary">Back to Dashboard</Link>
+    <div className="admin-dashboard">
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Job Management</h1>
+        <button 
+          onClick={() => {
+            setEditingJob(null)
+            setFormData({
+              title: '',
+              description: '',
+              department: '',
+              category: '',
+              subcategories: [],
+              requirements: '',
+              qualifications: '',
+              responsibilities: '',
+              requiredDocuments: '',
+              baseSalaryMin: '',
+              baseSalaryMax: '',
+              salaryPaymentFrequency: 'Per Month',
+              amountPerSession: '',
+              modeOfPayment: '',
+              paymentTerms: '',
+              rateAdjustment: '',
+              benefits: '',
+              contractType: 'Indefinite',
+              contractDurationMonths: '',
+              workingHoursPerWeek: 40,
+              workingHoursStart: '',
+              workingHoursEnd: '',
+              workingHoursByDay: {},
+              remoteWorkPolicy: 'Flexible',
+              location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
+              startDate: '',
+              status: 'Draft'
+            })
+            setShowForm(true)
+          }}
+          className="btn btn-primary"
+        >
+          Create New Job
+        </button>
       </div>
 
-      <div className="container">
-        {error && <div className="alert alert-error">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
 
-        {stats && (
-          <div className="metrics-grid">
-            <div className="metric-card primary">
-              <div className="metric-icon">📊</div>
-              <div className="metric-content">
-                <div className="metric-value">{stats.totalJobs}</div>
-                <div className="metric-label">Total Jobs</div>
+      {success && (
+        <div className="success-message">
+          {success}
+        </div>
+      )}
+
+      {!showForm ? (
+        <>
+          <div className="jobs-section">
+            <div className="section-header">
+              <h2 className="section-title">Jobs List</h2>
+              <div className="search-controls">
+                <input
+                  type="text"
+                  placeholder="Search jobs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px', minWidth: '250px' }}
+                />
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px', marginLeft: '10px', minWidth: '150px' }}
+                >
+                  <option value="">All Statuses</option>
+                  <option value="Draft">Draft</option>
+                  <option value="Active">Active</option>
+                  <option value="Closed">Closed</option>
+                </select>
               </div>
             </div>
-            <div className="metric-card success">
-              <div className="metric-icon">✅</div>
-              <div className="metric-content">
-                <div className="metric-value">{stats.activeJobs}</div>
-                <div className="metric-label">Active</div>
-              </div>
-            </div>
-            <div className="metric-card info">
-              <div className="metric-icon">📝</div>
-              <div className="metric-content">
-                <div className="metric-value">{stats.draftJobs}</div>
-                <div className="metric-label">Draft</div>
-              </div>
-            </div>
-            <div className="metric-card warning">
-              <div className="metric-icon">🔒</div>
-              <div className="metric-content">
-                <div className="metric-value">{stats.closedJobs}</div>
-                <div className="metric-label">Closed</div>
-              </div>
-            </div>
-          </div>
-        )}
 
-        <div className="card" style={{ marginTop: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3>Job Postings</h3>
-            {!showForm && (
-              <button className="btn btn-primary" onClick={() => setShowForm(true)}>
-                ➕ Post New Job
-              </button>
-            )}
-          </div>
-
-          {showForm && (
-            <div className="form-container">
-              <h4>{editingJob ? 'Edit Job Posting' : 'Create New Job Posting'}</h4>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label>Job Title *</label>
-                  <input 
-                    type="text" 
-                    name="title" 
-                    value={formData.title} 
-                    onChange={handleInputChange} 
-                    required 
-                    placeholder="Enter job title"
-                  />
-                </div>
-
-                <div className="form-group full-width">
-                  <label>Description *</label>
-                  <textarea 
-                    name="description" 
-                    value={formData.description} 
-                    onChange={handleInputChange} 
-                    rows="5" 
-                    required 
-                    placeholder="Enter detailed job description"
-                  />
-                </div>
-
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Department *</label>
-                    <select 
-                      name="department" 
-                      value={formData.department} 
-                      onChange={handleInputChange} 
-                      required
-                    >
-                      <option value="">Select Department</option>
-                      {departments.map(dept => (
-                        <option key={dept} value={dept}>{dept}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Category *</label>
-                    <select 
-                      name="category" 
-                      value={formData.category} 
-                      onChange={handleInputChange} 
-                      required
-                    >
-                      <option value="">Select Category</option>
-                      {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {formData.category && categorySubcategories[formData.category] && (
-                  <div className="form-group">
-                    <label>Sub-categories (Select all that apply)</label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-                      {categorySubcategories[formData.category].map(sub => (
-                        <label 
-                          key={sub} 
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '8px',
-                            padding: '10px 15px',
-                            background: formData.subcategories.includes(sub) ? '#e0f2fe' : '#f8fafc',
-                            border: `2px solid ${formData.subcategories.includes(sub) ? '#3b82f6' : '#e2e8f0'}`,
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            fontWeight: formData.subcategories.includes(sub) ? '600' : 'normal'
-                          }}
+            <div className="table-responsive">
+              <table className="jobs-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Department</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobs.map(job => (
+                    <tr key={job._id}>
+                      <td>{job.title}</td>
+                      <td>{job.department}</td>
+                      <td>{job.category}</td>
+                      <td>
+                        <span className={`status-badge status-${job.status.toLowerCase()}`}>
+                          {job.status}
+                        </span>
+                      </td>
+                      <td>{new Date(job.createdAt).toLocaleDateString()}</td>
+                      <td>
+                        <button
+                          onClick={() => handleEdit(job)}
+                          className="btn btn-secondary"
+                          style={{ padding: '6px 12px', fontSize: '14px', marginRight: '5px' }}
                         >
-                          <input
-                            type="checkbox"
-                            checked={formData.subcategories.includes(sub)}
-                            onChange={() => handleSubcategoryChange(sub)}
-                            style={{ margin: 0 }}
-                          />
-                          {sub}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(job._id)}
+                          className="btn btn-secondary"
+                          style={{ padding: '6px 12px', fontSize: '14px' }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-                <div className="form-group full-width">
-                  <label>Requirements (comma-separated)</label>
-                  <textarea 
-                    value={formData.requirements} 
-                    onChange={(e) => handleArrayInputChange(e, 'requirements')} 
-                    rows="4"
-                    placeholder="e.g., 5 years experience, Bachelor's degree, certification"
-                  />
-                </div>
+            <div className="pagination">
+              <button 
+                onClick={() => handlePageChange(page - 1)} 
+                disabled={page === 1}
+              >
+                Previous
+              </button>
+              <span>Page {page} of {totalPages}</span>
+              <button 
+                onClick={() => handlePageChange(page + 1)} 
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="job-form">
+          <div className="form-header">
+            <h2 className="form-title">{editingJob ? 'Edit Job' : 'Create New Job'}</h2>
+            <div className="form-actions">
+              <button 
+                onClick={autoSaveJob}
+                className="btn btn-secondary"
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                💾 Save Draft
+              </button>
+              <button 
+                onClick={() => setShowForm(false)}
+                className="btn btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
 
-                <div className="form-group full-width">
-                  <label>Qualifications (comma-separated)</label>
-                  <textarea 
-                    value={formData.qualifications} 
-                    onChange={(e) => handleArrayInputChange(e, 'qualifications')} 
-                    rows="4"
-                    placeholder="e.g., Advanced Excel, Project Management, Leadership"
-                  />
-                </div>
+          <form onSubmit={handleSubmit}>
+            <div className="form-grid">
+              {/* Basic Information */}
+              <div className="form-group">
+                <label htmlFor="title">Job Title *</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-                <div className="form-group full-width">
-                  <label>Responsibilities (comma-separated)</label>
-                  <textarea 
-                    value={formData.responsibilities} 
-                    onChange={(e) => handleArrayInputChange(e, 'responsibilities')} 
-                    rows="4"
-                    placeholder="e.g., Team management, Client relations, Report generation"
-                  />
-                </div>
+              <div className="form-group">
+                <label htmlFor="department">Department *</label>
+                <input
+                  type="text"
+                  id="department"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-                <div className="form-group full-width">
-                  <label>Required Documents (comma-separated)</label>
-                  <textarea 
-                    value={formData.requiredDocuments} 
-                    onChange={(e) => handleArrayInputChange(e, 'requiredDocuments')} 
-                    rows="3"
-                    placeholder="e.g., CV, Cover Letter, Certificates, Passport Copy"
-                  />
-                </div>
+              <div className="form-group">
+                <label htmlFor="category">Category *</label>
+                <input
+                  type="text"
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
 
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Contract Type</label>
-                    <select 
-                      name="contractType" 
-                      value={formData.contractType} 
-                      onChange={handleInputChange}
+              <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                >
+                  <option value="Draft">Draft</option>
+                  <option value="Active">Active</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+
+              {/* Description */}
+              <div className="form-group full-width">
+                <label htmlFor="description">Job Description *</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows="4"
+                  required
+                />
+              </div>
+
+              {/* Subcategories */}
+              <div className="form-group full-width">
+                <label>Subcategories</label>
+                <div className="subcategory-grid">
+                  {['Teaching', 'Coaching', 'Training', 'Mentoring', 'Consulting', 'Speaking', 'Writing', 'Research'].map(sub => (
+                    <div 
+                      key={sub}
+                      className={`subcategory-item ${formData.subcategories.includes(sub) ? 'selected' : ''}`}
+                      onClick={() => handleSubcategoryChange(sub)}
                     >
-                      <option value="Indefinite">Indefinite</option>
-                      <option value="Fixed Term">Fixed Term</option>
-                      <option value="Temporary">Temporary</option>
-                    </select>
-                  </div>
-
-                  {formData.contractType === 'Fixed Term' && (
-                    <div className="form-group">
-                      <label>Duration (months)</label>
-                      <input 
-                        type="number" 
-                        name="contractDurationMonths" 
-                        value={formData.contractDurationMonths} 
-                        onChange={handleInputChange} 
-                        min="1"
-                        placeholder="Enter duration"
+                      <input
+                        type="checkbox"
+                        checked={formData.subcategories.includes(sub)}
+                        onChange={() => {}}
+                        style={{ margin: 0 }}
                       />
+                      <span>{sub}</span>
                     </div>
-                  )}
+                  ))}
                 </div>
+              </div>
 
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Working Hours/Week</label>
-                    <input 
-                      type="number" 
-                      name="workingHoursPerWeek" 
-                      value={formData.workingHoursPerWeek} 
-                      onChange={handleInputChange} 
-                      min="1"
-                      max="168"
-                      placeholder="Enter hours per week"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Working Hours Start</label>
-                    <input 
-                      type="time" 
-                      name="workingHoursStart" 
-                      value={formData.workingHoursStart} 
-                      onChange={handleInputChange} 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Working Hours End</label>
-                    <input 
-                      type="time" 
-                      name="workingHoursEnd" 
-                      value={formData.workingHoursEnd} 
-                      onChange={handleInputChange} 
-                    />
-                  </div>
-                </div>
+              {/* Requirements */}
+              <div className="form-group full-width">
+                <label htmlFor="requirements">Requirements (comma separated)</label>
+                <input
+                  type="text"
+                  id="requirements"
+                  value={formData.requirements}
+                  onChange={(e) => handleArrayInputChange(e, 'requirements')}
+                  placeholder="e.g., Bachelor's degree, 3+ years experience, Strong communication skills"
+                />
+              </div>
 
-                {/* Day-specific working hours */}
-                <div className="form-group full-width">
-                  <label>Working Hours by Day</label>
-                  <div className="working-hours-container">
-                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
-                      <div key={day} className="day-hours-row">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                          <input 
-                            type="checkbox" 
-                            id={`workingDay-${day}`}
-                            checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
-                            onChange={(e) => {
-                              const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                              if (e.target.checked) {
-                                newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
-                              } else {
-                                delete newWorkingHoursByDay[day];
-                              }
-                              setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              hasUnsavedChanges.current = true; // Mark as having unsaved changes
-                            }}
-                          />
-                          <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
-                        </div>
-                        {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
-                              <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
-                                <input 
-                                  type="time" 
-                                  value={formData.workingHoursByDay[day].start}
-                                  onChange={(e) => {
-                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                    newWorkingHoursByDay[day].start = e.target.value;
-                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                                    hasUnsavedChanges.current = true; // Mark as having unsaved changes
-                                  }}
-                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
-                                />
-                              </div>
-                              <div>
-                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
-                                <input 
-                                  type="time" 
-                                  value={formData.workingHoursByDay[day].end}
-                                  onChange={(e) => {
-                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                    newWorkingHoursByDay[day].end = e.target.value;
-                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                                    hasUnsavedChanges.current = true; // Mark as having unsaved changes
-                                  }}
-                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
-                                />
-                              </div>
-                            </div>
+              {/* Qualifications */}
+              <div className="form-group full-width">
+                <label htmlFor="qualifications">Qualifications (comma separated)</label>
+                <input
+                  type="text"
+                  id="qualifications"
+                  value={formData.qualifications}
+                  onChange={(e) => handleArrayInputChange(e, 'qualifications')}
+                  placeholder="e.g., Master's degree, Teaching certification, Industry expertise"
+                />
+              </div>
+
+              {/* Responsibilities */}
+              <div className="form-group full-width">
+                <label htmlFor="responsibilities">Responsibilities (comma separated)</label>
+                <input
+                  type="text"
+                  id="responsibilities"
+                  value={formData.responsibilities}
+                  onChange={(e) => handleArrayInputChange(e, 'responsibilities')}
+                  placeholder="e.g., Develop curriculum, Conduct classes, Mentor students"
+                />
+              </div>
+
+              {/* Required Documents */}
+              <div className="form-group full-width">
+                <label htmlFor="requiredDocuments">Required Documents (comma separated)</label>
+                <input
+                  type="text"
+                  id="requiredDocuments"
+                  value={formData.requiredDocuments}
+                  onChange={(e) => handleArrayInputChange(e, 'requiredDocuments')}
+                  placeholder="e.g., Resume, Cover letter, Certificates"
+                />
+              </div>
+
+              {/* Benefits */}
+              <div className="form-group full-width">
+                <label htmlFor="benefits">Benefits (comma separated)</label>
+                <input
+                  type="text"
+                  id="benefits"
+                  value={formData.benefits}
+                  onChange={(e) => handleArrayInputChange(e, 'benefits')}
+                  placeholder="e.g., Health insurance, Flexible hours, Professional development"
+                />
+              </div>
+
+              {/* Compensation */}
+              <div className="form-group">
+                <label htmlFor="baseSalaryMin">Base Salary Min</label>
+                <input
+                  type="text"
+                  id="baseSalaryMin"
+                  name="baseSalaryMin"
+                  value={formData.baseSalaryMin}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 200,000 RWF"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="baseSalaryMax">Base Salary Max</label>
+                <input
+                  type="text"
+                  id="baseSalaryMax"
+                  name="baseSalaryMax"
+                  value={formData.baseSalaryMax}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 500,000 RWF"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="salaryPaymentFrequency">Salary Payment Frequency</label>
+                <select
+                  id="salaryPaymentFrequency"
+                  name="salaryPaymentFrequency"
+                  value={formData.salaryPaymentFrequency}
+                  onChange={handleInputChange}
+                >
+                  <option value="Per Month">Per Month</option>
+                  <option value="Per Year">Per Year</option>
+                  <option value="Per Hour">Per Hour</option>
+                  <option value="Per Session">Per Session</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="amountPerSession">Amount Per Session</label>
+                <input
+                  type="text"
+                  id="amountPerSession"
+                  name="amountPerSession"
+                  value={formData.amountPerSession}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 15,000 RWF per hour"
+                />
+              </div>
+
+              {/* Contract Details */}
+              <div className="form-group">
+                <label htmlFor="contractType">Contract Type</label>
+                <select
+                  id="contractType"
+                  name="contractType"
+                  value={formData.contractType}
+                  onChange={handleInputChange}
+                >
+                  <option value="Indefinite">Indefinite</option>
+                  <option value="Fixed Term">Fixed Term</option>
+                  <option value="Part Time">Part Time</option>
+                  <option value="Freelance">Freelance</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="contractDurationMonths">Contract Duration (Months)</label>
+                <input
+                  type="number"
+                  id="contractDurationMonths"
+                  name="contractDurationMonths"
+                  value={formData.contractDurationMonths}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 12"
+                />
+              </div>
+
+              {/* Working Hours */}
+              <div className="form-group">
+                <label htmlFor="workingHoursPerWeek">Working Hours Per Week</label>
+                <input
+                  type="number"
+                  id="workingHoursPerWeek"
+                  name="workingHoursPerWeek"
+                  value={formData.workingHoursPerWeek}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 40"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="workingHoursStart">Working Hours Start</label>
+                <input
+                  type="time"
+                  id="workingHoursStart"
+                  name="workingHoursStart"
+                  value={formData.workingHoursStart}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="workingHoursEnd">Working Hours End</label>
+                <input
+                  type="time"
+                  id="workingHoursEnd"
+                  name="workingHoursEnd"
+                  value={formData.workingHoursEnd}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* Day-specific working hours */}
+              <div className="form-group full-width">
+                <label>Working Hours by Day</label>
+                <div className="working-hours-container">
+                  {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                    <div key={day} className="day-hours-row">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                        <input 
+                          type="checkbox" 
+                          id={`workingDay-${day}`}
+                          checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
+                          onChange={(e) => {
+                            const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                            if (e.target.checked) {
+                              newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
+                            } else {
+                              delete newWorkingHoursByDay[day];
+                            }
+                            setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                            hasUnsavedChanges.current = true; // Mark as having unsaved changes
+                          }}
+                        />
+                        <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
+                      </div>
+                      {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
                             <div>
-                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
                               <input 
-                                type="text" 
-                                value={formData.workingHoursByDay[day].payment || ''}
+                                type="time" 
+                                value={formData.workingHoursByDay[day].start}
                                 onChange={(e) => {
                                   const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                  newWorkingHoursByDay[day].payment = e.target.value;
+                                  newWorkingHoursByDay[day].start = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                                   hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
-                                placeholder="Payment details (e.g., 15,000 RWF per hour)"
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                            <div>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                              <input 
+                                type="time" 
+                                value={formData.workingHoursByDay[day].end}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].end = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
+                                }}
                                 style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
                               />
                             </div>
                           </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Salary Payment Frequency</label>
-                    <select 
-                      name="salaryPaymentFrequency" 
-                      value={formData.salaryPaymentFrequency} 
-                      onChange={handleInputChange}
-                    >
-                      <option value="Per Course">Per Course</option>
-                      <option value="Per Month">Per Month</option>
-                      <option value="Per Week">Per Week</option>
-                      <option value="Per Lesson">Per Lesson</option>
-                      <option value="Others">Others</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Payment Information Section */}
-                <div className="form-section payment-section">
-                  <h4 className="section-title payment-title">💳 Payment Information</h4>
-                  
-                  <div className="form-grid">
-                    <div className="form-group">
-                      <label>Base Salary Min</label>
-                      <input 
-                        type="text" 
-                        name="baseSalaryMin" 
-                        value={formData.baseSalaryMin} 
-                        onChange={handleInputChange} 
-                        placeholder="Enter minimum salary or details"
-                      />
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                            <input 
+                              type="text" 
+                              value={formData.workingHoursByDay[day].payment || ''}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].payment = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                hasUnsavedChanges.current = true; // Mark as having unsaved changes
+                              }}
+                              placeholder="Payment details (e.g., 15,000 RWF per hour)"
+                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="form-group">
-                      <label>Base Salary Max</label>
-                      <input 
-                        type="text" 
-                        name="baseSalaryMax" 
-                        value={formData.baseSalaryMax} 
-                        onChange={handleInputChange} 
-                        placeholder="Enter maximum salary or details"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-grid">
-                    <div className="form-group">
-                      <label>Amount to be Paid Per Session</label>
-                      <input 
-                        type="text" 
-                        name="amountPerSession" 
-                        value={formData.amountPerSession} 
-                        onChange={handleInputChange} 
-                        placeholder="Enter amount or payment details"
-                      />
-                      <div className="form-hint">
-                        💵 The amount or payment details for each session conducted.
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label>Mode of Payment</label>
-                      <input 
-                        type="text" 
-                        name="modeOfPayment" 
-                        value={formData.modeOfPayment} 
-                        onChange={handleInputChange} 
-                        placeholder="e.g., Bank Transfer, Mobile Money, Cash"
-                      />
-                      <div className="form-hint">
-                        💳 How payments will be made (Bank Transfer, Mobile Money, Cash, etc.)
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group full-width">
-                    <label>Terms and Conditions for Payment</label>
-                    <textarea 
-                      name="paymentTerms" 
-                      value={formData.paymentTerms} 
-                      onChange={handleInputChange} 
-                      rows="4"
-                      placeholder="Enter payment terms and conditions..."
-                    />
-                    <div className="form-hint">
-                      📋 Conditions that apply to payments (e.g., payment deadlines, late payment penalties, etc.)
-                    </div>
-                  </div>
-
-                  <div className="form-group full-width">
-                    <label>Rate Adjustment for Contract Renewal</label>
-                    <textarea 
-                      name="rateAdjustment" 
-                      value={formData.rateAdjustment} 
-                      onChange={handleInputChange} 
-                      rows="3"
-                      placeholder="Enter rate adjustment terms..."
-                    />
-                    <div className="form-hint">
-                      📈 Terms for adjusting payment rates during contract renewal
-                    </div>
-                  </div>
+                  ))}
                 </div>
-
-                <div className="form-group full-width">
-                  <label>Benefits (comma-separated)</label>
-                  <textarea 
-                    value={formData.benefits} 
-                    onChange={(e) => handleArrayInputChange(e, 'benefits')} 
-                    rows="3"
-                    placeholder="e.g., Health insurance, Dental coverage, Annual training budget"
-                  />
-                </div>
-
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Remote Work Policy</label>
-                    <select 
-                      name="remoteWorkPolicy" 
-                      value={formData.remoteWorkPolicy} 
-                      onChange={handleInputChange}
-                    >
-                      <option value="Flexible">Flexible</option>
-                      <option value="On-site">On-site</option>
-                      <option value="Hybrid">Hybrid</option>
-                      <option value="Full Remote">Full Remote</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Start Date</label>
-                    <input 
-                      type="date" 
-                      name="startDate" 
-                      value={formData.startDate} 
-                      onChange={handleInputChange} 
-                    />
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label>Status</label>
-                  <select 
-                    name="status" 
-                    value={formData.status} 
-                    onChange={handleInputChange}
-                  >
-                    <option value="Draft">Draft</option>
-                    <option value="Active">Active</option>
-                    <option value="Closed">Closed</option>
-                  </select>
-                </div>
-
-                <div className="form-actions">
-                  <button type="submit" className="btn btn-primary">
-                    {editingJob ? 'Update Job' : 'Create Job'}
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-secondary" 
-                    onClick={autoSaveJob}
-                    disabled={!hasUnsavedChanges.current}
-                  >
-                    💾 Save Draft
-                  </button>
-                  <button type="button" className="btn btn-secondary" onClick={handleCancel}>
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          <div className="filter-controls">
-            <div className="filter-group">
-              <label>Filter by Status:</label>
-              <select
-                value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value)
-                  setPage(1)
-                }}
-                className="filter-select"
-              >
-                <option value="">All Statuses</option>
-                <option value="Active">✅ Active</option>
-                <option value="Draft">📝 Draft</option>
-                <option value="Closed">🔒 Closed</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Filter by Category:</label>
-              <select
-                value={categoryFilter}
-                onChange={(e) => {
-                  setCategoryFilter(e.target.value)
-                  setPage(1)
-                }}
-                className="filter-select"
-              >
-                <option value="">All Categories</option>
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="loading-state">
-              <div className="spinner" style={{ width: '50px', height: '50px', margin: '0 auto 20px' }}></div>
-              <p>Loading jobs...</p>
-            </div>
-          ) : jobs.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
-              <p>No jobs found</p>
-            </div>
-          ) : (
-            <>
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0' }}>
-                  <thead>
-                    <tr style={{ backgroundColor: '#f5f5f5', borderBottom: '2px solid #ddd' }}>
-                      <th style={{ padding: '12px', textAlign: 'left' }}>Title</th>
-                      <th style={{ padding: '12px', textAlign: 'left' }}>Department</th>
-                      <th style={{ padding: '12px', textAlign: 'left' }}>Category</th>
-                      <th style={{ padding: '12px', textAlign: 'center' }}>Status</th>
-                      <th style={{ padding: '12px', textAlign: 'center' }}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {jobs.map(job => (
-                      <tr key={job._id} style={{ borderBottom: '1px solid #ddd' }}>
-                        <td style={{ padding: '12px' }}>{job.title}</td>
-                        <td style={{ padding: '12px' }}>{job.department}</td>
-                        <td style={{ padding: '12px' }}>{job.category}</td>
-                        <td style={{ padding: '12px', textAlign: 'center' }}>
-                          <span style={{
-                            padding: '4px 12px',
-                            borderRadius: '20px',
-                            fontSize: '12px',
-                            fontWeight: 'bold',
-                            backgroundColor: job.status === 'Active' ? '#d4edda' : job.status === 'Draft' ? '#fff3cd' : '#f8d7da',
-                            color: job.status === 'Active' ? '#155724' : job.status === 'Draft' ? '#856404' : '#721c24'
-                          }}>
-                            {job.status}
-                          </span>
-                        </td>
-                        <td style={{ padding: '12px', textAlign: 'center' }}>
-                          <button
-                            className="btn btn-small"
-                            onClick={() => handleEdit(job)}
-                            style={{ marginRight: '5px' }}
-                          >
-                            ✏️ Edit
-                          </button>
-                          <button
-                            className="btn btn-small btn-danger"
-                            onClick={() => handleDelete(job._id)}
-                          >
-                            🗑️ Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
 
-              {pagination && pagination.pages > 1 && (
-                <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <button
-                    className="btn btn-small"
-                    disabled={page === 1}
-                    onClick={() => setPage(page - 1)}
-                  >
-                    ← Previous
-                  </button>
-                  <span style={{ padding: '8px 12px' }}>
-                    Page {page} of {pagination.pages}
-                  </span>
-                  <button
-                    className="btn btn-small"
-                    disabled={page === pagination.pages}
-                    onClick={() => setPage(page + 1)}
-                  >
-                    Next →
-                  </button>
-                </div>
-              )}
-            </>
-          )}
+              {/* Other Details */}
+              <div className="form-group">
+                <label htmlFor="remoteWorkPolicy">Remote Work Policy</label>
+                <select
+                  id="remoteWorkPolicy"
+                  name="remoteWorkPolicy"
+                  value={formData.remoteWorkPolicy}
+                  onChange={handleInputChange}
+                >
+                  <option value="Flexible">Flexible</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Remote">Remote</option>
+                  <option value="On-site">On-site</option>
+                </select>
+              </div>
+
+              <div className="form-group full-width">
+                <label htmlFor="location">Location</label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Excellence Coaching Hub Office, Kigali, Rwanda"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="startDate">Start Date</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">
+                {editingJob ? 'Update Job' : 'Create Job'}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setShowForm(false)}
+                className="btn btn-secondary"
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                onClick={autoSaveJob}
+                className="btn btn-secondary"
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                💾 Save Draft
+              </button>
+            </div>
+          </form>
         </div>
-      </div>
+      )}
     </div>
   )
 }
+
+export default AdminJobsManagement
