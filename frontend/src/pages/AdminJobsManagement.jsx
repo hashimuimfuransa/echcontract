@@ -27,7 +27,7 @@ export default function AdminJobsManagement() {
   ]
 
   const departments = [
-    'Teaching',
+    'Coaching',
     'Technical',
     'HR & Administration',
     'Finance & Operations',
