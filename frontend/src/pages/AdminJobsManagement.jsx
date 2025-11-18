@@ -194,8 +194,8 @@ export default function AdminJobsManagement() {
     // Only auto-save if form is open and has changes
     if (!showForm || !hasUnsavedChanges.current) return;
     
-    // Don't auto-save if title is empty for new jobs
-    if (!editingJob && !formData.title) return;
+    // Don't auto-save if title is empty for new jobs (unless it's explicitly a draft)
+    if (!editingJob && !formData.title && formData.status !== 'Draft') return;
 
     try {
       // Convert string fields to arrays for backend
@@ -223,22 +223,45 @@ export default function AdminJobsManagement() {
           .filter(item => item)
       }
       
+      // Ensure status is set to Draft for auto-saved jobs
+      if (!editingJob) {
+        dataToSubmit.status = 'Draft';
+      }
+      
+      // Log the data being sent for debugging
+      console.log('Auto-saving job data:', dataToSubmit);
+      
       if (editingJob) {
-        await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
-        console.log('Job updated successfully')
+        const response = await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
+        console.log('Job updated successfully', response.data)
       } else {
         // For new jobs, we'll save as draft
-        const draftData = { ...dataToSubmit, status: 'Draft' }
-        const response = await api.post('/admin/jobs', draftData)
+        const response = await api.post('/admin/jobs', dataToSubmit)
         // Set the editing job to the newly created job
         setEditingJob(response.data.job)
-        console.log('Job created successfully')
+        console.log('Job created successfully', response.data)
       }
+      
       setError('')
       hasUnsavedChanges.current = false; // Reset the unsaved changes flag
     } catch (err) {
       console.error('Auto-save failed:', err)
-      setError(err.response?.data?.message || 'Auto-save failed')
+      console.error('Request data:', formData)
+      
+      // Log detailed error information
+      if (err.response) {
+        console.error('Error response:', err.response.data)
+        console.error('Error status:', err.response.status)
+        console.error('Error headers:', err.response.headers)
+      }
+      
+      // Only show error if it's not a network error or if it has a response
+      if (err.response) {
+        const errorMessage = err.response.data?.message || 'Auto-save failed. Please check your connection and try again.'
+        setError(errorMessage)
+      } else {
+        setError('Auto-save failed. Please check your connection and try again.')
+      }
     }
   }
 

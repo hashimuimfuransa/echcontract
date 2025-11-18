@@ -3,31 +3,32 @@ import Job from '../models/job.js'
 
 export const createJob = async (req, res, next) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
-
-    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, location, startDate, status } = req.body
-
     // For auto-save drafts, we allow creation without all required fields
     // But for non-draft jobs, we still enforce required fields
-    const isDraft = status === 'Draft'
+    const isDraft = req.body.status === 'Draft'
     
     if (!isDraft) {
-      if (!title) {
+      // Only validate required fields for non-draft jobs
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+      }
+      
+      if (!req.body.title) {
         return res.status(400).json({ message: 'Title is required for non-draft jobs' })
       }
-      if (!description) {
+      if (!req.body.description) {
         return res.status(400).json({ message: 'Description is required for non-draft jobs' })
       }
-      if (!department) {
+      if (!req.body.department) {
         return res.status(400).json({ message: 'Department is required for non-draft jobs' })
       }
-      if (!category) {
+      if (!req.body.category) {
         return res.status(400).json({ message: 'Category is required for non-draft jobs' })
       }
     }
+
+    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, location, startDate, status } = req.body
 
     const job = new Job({
       title: title || '',
@@ -69,28 +70,12 @@ export const createJob = async (req, res, next) => {
 
 export const updateJob = async (req, res, next) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
-
-    const { jobId } = req.params
-    const job = await Job.findById(jobId)
-
-    if (!job) {
-      return res.status(404).json({ message: 'Job not found' })
-    }
-
-    // Only admin who created the job can update it
-    if (job.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Not authorized to update this job' })
-    }
-
     // For auto-save updates, we allow partial updates
     // Only validate required fields if status is being changed from Draft to Active
-    const isStatusChangeToActive = req.body.status === 'Active' && job.status === 'Draft'
+    const isStatusChangeToActive = req.body.status === 'Active' && req.job.status === 'Draft'
     
     if (isStatusChangeToActive) {
+      // Only validate required fields when publishing a draft
       if (!req.body.title) {
         return res.status(400).json({ message: 'Title is required for active jobs' })
       }
@@ -103,6 +88,18 @@ export const updateJob = async (req, res, next) => {
       if (!req.body.category) {
         return res.status(400).json({ message: 'Category is required for active jobs' })
       }
+    }
+
+    const { jobId } = req.params
+    const job = await Job.findById(jobId)
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' })
+    }
+
+    // Only admin who created the job can update it
+    if (job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to update this job' })
     }
 
     // Handle array fields properly

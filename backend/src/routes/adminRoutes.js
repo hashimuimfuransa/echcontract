@@ -62,7 +62,7 @@ router.patch('/employees/:employeeId/status', [
 
 // Job Management Routes
 router.post('/jobs', [
-  body('title').optional().isString(), // Make title optional for auto-save drafts
+  body('title').optional().isString(),
   body('description').optional().isString(),
   body('department').optional().isString(),
   body('category').optional().isString(),
@@ -71,10 +71,10 @@ router.post('/jobs', [
   body('qualifications').optional().isArray(),
   body('responsibilities').optional().isArray(),
   body('requiredDocuments').optional().isArray(),
-  body('baseSalaryMin').optional().isString(), // Changed to string to support text input
-  body('baseSalaryMax').optional().isString(), // Changed to string to support text input
+  body('baseSalaryMin').optional().isString(),
+  body('baseSalaryMax').optional().isString(),
   body('salaryPaymentFrequency').optional().isString(),
-  body('amountPerSession').optional().isString(), // Changed to string to support text input
+  body('amountPerSession').optional().isString(),
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
   body('rateAdjustment').optional().isString(),
@@ -108,10 +108,10 @@ router.put('/jobs/:jobId', [
   body('qualifications').optional().isArray(),
   body('responsibilities').optional().isArray(),
   body('requiredDocuments').optional().isArray(),
-  body('baseSalaryMin').optional().isString(), // Changed to string to support text input
-  body('baseSalaryMax').optional().isString(), // Changed to string to support text input
+  body('baseSalaryMin').optional().isString(),
+  body('baseSalaryMax').optional().isString(),
   body('salaryPaymentFrequency').optional().isString(),
-  body('amountPerSession').optional().isString(), // Changed to string to support text input
+  body('amountPerSession').optional().isString(),
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
   body('rateAdjustment').optional().isString(),
