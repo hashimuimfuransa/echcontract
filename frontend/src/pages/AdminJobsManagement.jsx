@@ -128,6 +128,10 @@ export default function AdminJobsManagement() {
     baseSalaryMin: '',
     baseSalaryMax: '',
     salaryPaymentFrequency: 'Per Month',
+    amountPerSession: '',
+    modeOfPayment: '',
+    paymentTerms: '',
+    rateAdjustment: '',
     benefits: '',
     contractType: 'Indefinite',
     contractDurationMonths: '',
@@ -239,6 +243,10 @@ export default function AdminJobsManagement() {
         baseSalaryMin: '',
         baseSalaryMax: '',
         salaryPaymentFrequency: 'Per Month',
+        amountPerSession: '',
+        modeOfPayment: '',
+        paymentTerms: '',
+        rateAdjustment: '',
         benefits: '',
         contractType: 'Indefinite',
         contractDurationMonths: '',
@@ -272,6 +280,10 @@ export default function AdminJobsManagement() {
       baseSalaryMin: job.baseSalaryMin || '',
       baseSalaryMax: job.baseSalaryMax || '',
       salaryPaymentFrequency: job.salaryPaymentFrequency || 'Per Month',
+      amountPerSession: job.amountPerSession || '',
+      modeOfPayment: job.modeOfPayment || '',
+      paymentTerms: job.paymentTerms || '',
+      rateAdjustment: job.rateAdjustment || '',
       benefits: Array.isArray(job.benefits) ? job.benefits.join(', ') : '',
       contractType: job.contractType,
       contractDurationMonths: job.contractDurationMonths || '',
@@ -312,6 +324,10 @@ export default function AdminJobsManagement() {
       baseSalaryMin: '',
       baseSalaryMax: '',
       salaryPaymentFrequency: 'Per Month',
+      amountPerSession: '',
+      modeOfPayment: '',
+      paymentTerms: '',
+      rateAdjustment: '',
       benefits: '',
       contractType: 'Indefinite',
       contractDurationMonths: '',
@@ -478,6 +494,63 @@ export default function AdminJobsManagement() {
                   <div className="form-group">
                     <label>Base Salary Max</label>
                     <input type="number" name="baseSalaryMax" value={formData.baseSalaryMax} onChange={handleInputChange} />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div className="form-group">
+                    <label>Amount to be Paid Per Session</label>
+                    <input 
+                      type="number" 
+                      name="amountPerSession" 
+                      value={formData.amountPerSession} 
+                      onChange={handleInputChange} 
+                      placeholder="Enter amount in RWF"
+                    />
+                    <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                      💵 The fixed amount that will be paid for each session conducted.
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Mode of Payment</label>
+                    <input 
+                      type="text" 
+                      name="modeOfPayment" 
+                      value={formData.modeOfPayment} 
+                      onChange={handleInputChange} 
+                      placeholder="e.g., Bank Transfer, Mobile Money, Cash"
+                    />
+                    <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                      💳 How payments will be made (Bank Transfer, Mobile Money, Cash, etc.)
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group full-width">
+                  <label>Terms and Conditions for Payment</label>
+                  <textarea 
+                    name="paymentTerms" 
+                    value={formData.paymentTerms} 
+                    onChange={handleInputChange} 
+                    rows="3"
+                    placeholder="Enter payment terms and conditions..."
+                  />
+                  <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                    📋 Conditions that apply to payments (e.g., payment deadlines, late payment penalties, etc.)
+                  </div>
+                </div>
+
+                <div className="form-group full-width">
+                  <label>Rate Adjustment for Contract Renewal</label>
+                  <textarea 
+                    name="rateAdjustment" 
+                    value={formData.rateAdjustment} 
+                    onChange={handleInputChange} 
+                    rows="2"
+                    placeholder="Enter rate adjustment terms..."
+                  />
+                  <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                    📈 Terms for adjusting payment rates during contract renewal
                   </div>
                 </div>
 

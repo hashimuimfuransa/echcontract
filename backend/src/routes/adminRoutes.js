@@ -67,7 +67,11 @@ router.post('/jobs', [
   body('department').notEmpty().isString(),
   body('category').notEmpty().isString(),
   body('subcategories').optional().isArray(),
-  body('location').notEmpty().isString()
+  body('location').notEmpty().isString(),
+  body('amountPerSession').optional().isNumeric(),
+  body('modeOfPayment').optional().isString(),
+  body('paymentTerms').optional().isString(),
+  body('rateAdjustment').optional().isString()
 ], createJob)
 
 router.get('/jobs/stats', getJobStats)
@@ -78,7 +82,11 @@ router.get('/jobs/:jobId', param('jobId').isMongoId(), getJobById)
 
 router.put('/jobs/:jobId', [
   param('jobId').isMongoId(),
-  body('subcategories').optional().isArray()
+  body('subcategories').optional().isArray(),
+  body('amountPerSession').optional().isNumeric(),
+  body('modeOfPayment').optional().isString(),
+  body('paymentTerms').optional().isString(),
+  body('rateAdjustment').optional().isString()
 ], updateJob)
 
 router.delete('/jobs/:jobId', param('jobId').isMongoId(), deleteJob)
