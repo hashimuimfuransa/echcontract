@@ -8,7 +8,7 @@ export const createJob = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, remoteWorkPolicy, location, startDate, status } = req.body
+    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, remoteWorkPolicy, location, startDate, status } = req.body
 
     const job = new Job({
       title,
@@ -31,6 +31,8 @@ export const createJob = async (req, res, next) => {
       contractType,
       contractDurationMonths,
       workingHoursPerWeek,
+      workingHoursStart,
+      workingHoursEnd,
       remoteWorkPolicy,
       location,
       startDate,

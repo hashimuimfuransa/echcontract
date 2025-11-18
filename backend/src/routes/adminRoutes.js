@@ -71,7 +71,9 @@ router.post('/jobs', [
   body('amountPerSession').optional().isNumeric(),
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
-  body('rateAdjustment').optional().isString()
+  body('rateAdjustment').optional().isString(),
+  body('workingHoursStart').optional().isString(),
+  body('workingHoursEnd').optional().isString()
 ], createJob)
 
 router.get('/jobs/stats', getJobStats)
@@ -86,7 +88,9 @@ router.put('/jobs/:jobId', [
   body('amountPerSession').optional().isNumeric(),
   body('modeOfPayment').optional().isString(),
   body('paymentTerms').optional().isString(),
-  body('rateAdjustment').optional().isString()
+  body('rateAdjustment').optional().isString(),
+  body('workingHoursStart').optional().isString(),
+  body('workingHoursEnd').optional().isString()
 ], updateJob)
 
 router.delete('/jobs/:jobId', param('jobId').isMongoId(), deleteJob)

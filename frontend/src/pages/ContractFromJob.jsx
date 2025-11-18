@@ -242,6 +242,8 @@ export default function ContractFromJob() {
           remoteWorkPolicy: data.job.remoteWorkPolicy || 'Flexible',
           remoteWorkDescription: `${data.job.remoteWorkPolicy} remote work arrangement available.`,
           workingHoursPerWeek: data.job.workingHoursPerWeek?.toString() || '40',
+          workingHoursStart: data.job.workingHoursStart || '',
+          workingHoursEnd: data.job.workingHoursEnd || '',
           benefits: data.job.benefits?.join(', ') || 'Health insurance, dental coverage, lunch allowance, annual training budget, and mobile phone provision.',
           paymentFrequency: data.job.salaryPaymentFrequency || 'Per Month',
           amountPerSession: data.job.amountPerSession?.toString() || '',

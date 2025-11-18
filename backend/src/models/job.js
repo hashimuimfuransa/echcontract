@@ -21,6 +21,8 @@ const jobSchema = new mongoose.Schema({
   contractType: { type: String, enum: ['Indefinite', 'Fixed Term', 'Temporary'], default: 'Indefinite' },
   contractDurationMonths: { type: Number },
   workingHoursPerWeek: { type: Number, default: 40 },
+  workingHoursStart: { type: String },
+  workingHoursEnd: { type: String },
   remoteWorkPolicy: { type: String, default: 'Flexible' },
   location: { type: String, required: true },
   startDate: { type: Date },

@@ -103,6 +103,8 @@ export default function ContractForm() {
     
     // Work Hours and Leave (Pre-filled by HR - Read Only)
     workingHoursPerWeek: '40',
+    workingHoursStart: '',
+    workingHoursEnd: '',
     overtimePolicy: 'Overtime compensation is determined by mutual agreement. For salaried employees, overtime may be compensated through time off in lieu or additional remuneration.',
     annualLeaveDays: '20',
     sickLeavePolicy: 'Maximum 10 sick leave days per year with medical certificate required for absences exceeding 3 consecutive days.',
@@ -820,6 +822,28 @@ export default function ContractForm() {
                   hint="⏱️ Usually 40 hours"
                   readOnly={READ_ONLY_FIELDS.has('workingHoursPerWeek')}
                 />
+                <div className="form-group">
+                  <label>Working Hours Start Time</label>
+                  <input 
+                    type="time" 
+                    name="workingHoursStart" 
+                    value={formData.workingHoursStart} 
+                    onChange={handleInputChange} 
+                    readOnly={READ_ONLY_FIELDS.has('workingHoursStart')} 
+                    className={READ_ONLY_FIELDS.has('workingHoursStart') ? 'read-only' : ''}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Working Hours End Time</label>
+                  <input 
+                    type="time" 
+                    name="workingHoursEnd" 
+                    value={formData.workingHoursEnd} 
+                    onChange={handleInputChange} 
+                    readOnly={READ_ONLY_FIELDS.has('workingHoursEnd')} 
+                    className={READ_ONLY_FIELDS.has('workingHoursEnd') ? 'read-only' : ''}
+                  />
+                </div>
                 <FormField 
                   label="Annual Leave Days" 
                   name="annualLeaveDays"

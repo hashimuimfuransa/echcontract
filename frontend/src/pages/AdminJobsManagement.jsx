@@ -136,6 +136,8 @@ export default function AdminJobsManagement() {
     contractType: 'Indefinite',
     contractDurationMonths: '',
     workingHoursPerWeek: 40,
+    workingHoursStart: '',
+    workingHoursEnd: '',
     remoteWorkPolicy: 'Flexible',
     location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
     startDate: '',
@@ -251,6 +253,8 @@ export default function AdminJobsManagement() {
         contractType: 'Indefinite',
         contractDurationMonths: '',
         workingHoursPerWeek: 40,
+        workingHoursStart: '',
+        workingHoursEnd: '',
         remoteWorkPolicy: 'Flexible',
         location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
         startDate: '',
@@ -288,6 +292,8 @@ export default function AdminJobsManagement() {
       contractType: job.contractType,
       contractDurationMonths: job.contractDurationMonths || '',
       workingHoursPerWeek: job.workingHoursPerWeek,
+      workingHoursStart: job.workingHoursStart || '',
+      workingHoursEnd: job.workingHoursEnd || '',
       remoteWorkPolicy: job.remoteWorkPolicy,
       location: job.location,
       startDate: job.startDate ? job.startDate.split('T')[0] : '',
@@ -332,6 +338,8 @@ export default function AdminJobsManagement() {
       contractType: 'Indefinite',
       contractDurationMonths: '',
       workingHoursPerWeek: 40,
+      workingHoursStart: '',
+      workingHoursEnd: '',
       remoteWorkPolicy: 'Flexible',
       location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
       startDate: '',
@@ -584,6 +592,14 @@ export default function AdminJobsManagement() {
                   <div className="form-group">
                     <label>Working Hours/Week</label>
                     <input type="number" name="workingHoursPerWeek" value={formData.workingHoursPerWeek} onChange={handleInputChange} />
+                  </div>
+                  <div className="form-group">
+                    <label>Working Hours Start</label>
+                    <input type="time" name="workingHoursStart" value={formData.workingHoursStart} onChange={handleInputChange} />
+                  </div>
+                  <div className="form-group">
+                    <label>Working Hours End</label>
+                    <input type="time" name="workingHoursEnd" value={formData.workingHoursEnd} onChange={handleInputChange} />
                   </div>
                 </div>
 

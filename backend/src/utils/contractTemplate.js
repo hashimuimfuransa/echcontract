@@ -38,6 +38,8 @@ const contractTemplate = {
 
     // Work Hours and Leave
     { label: 'Working Hours Per Week', type: 'text', key: 'workingHoursPerWeek' },
+    { label: 'Working Hours Start Time', type: 'text', key: 'workingHoursStart' },
+    { label: 'Working Hours End Time', type: 'text', key: 'workingHoursEnd' },
     { label: 'Overtime Policy', type: 'textarea', key: 'overtimePolicy' },
     { label: 'Annual Leave Days', type: 'text', key: 'annualLeaveDays' },
     { label: 'Sick Leave Policy', type: 'textarea', key: 'sickLeavePolicy' },

@@ -138,6 +138,11 @@ export default function JobDetails() {
             <div>
               <p style={{ margin: '0 0 5px 0', color: '#7f8c8d', fontSize: '12px', fontWeight: 'bold' }}>⏰ WORKING HOURS</p>
               <p style={{ margin: 0, color: '#2c3e50', fontWeight: '500' }}>{job.workingHoursPerWeek} hours per week</p>
+              {job.workingHoursStart && job.workingHoursEnd && (
+                <p style={{ margin: '5px 0 0 0', color: '#2c3e50', fontSize: '14px' }}>
+                  {job.workingHoursStart} - {job.workingHoursEnd}
+                </p>
+              )}
             </div>
             <div>
               <p style={{ margin: '0 0 5px 0', color: '#7f8c8d', fontSize: '12px', fontWeight: 'bold' }}>🏢 CONTRACT TYPE</p>
