@@ -171,6 +171,41 @@ export default function JobDetails() {
             </>
           )}
 
+          {/* Additional Payment Information */}
+          {(job.amountPerSession || job.modeOfPayment || job.paymentTerms || job.rateAdjustment) && (
+            <>
+              <h3 style={{ marginBottom: '15px', color: '#2c3e50' }}>💳 Payment Details</h3>
+              <div style={{ padding: '20px', backgroundColor: '#e8f4f8', borderLeft: '4px solid #3498db', marginBottom: '30px', borderRadius: '4px' }}>
+                {job.amountPerSession && (
+                  <p style={{ margin: '0 0 10px 0', color: '#2c3e50', fontWeight: '500' }}>
+                    💵 Amount per Session: <strong>{job.amountPerSession.toLocaleString()} RWF</strong>
+                  </p>
+                )}
+                {job.modeOfPayment && (
+                  <p style={{ margin: '0 0 10px 0', color: '#555', fontSize: '14px' }}>
+                    💳 Mode of Payment: <strong>{job.modeOfPayment}</strong>
+                  </p>
+                )}
+                {job.paymentTerms && (
+                  <div style={{ margin: '15px 0' }}>
+                    <p style={{ margin: '0 0 5px 0', color: '#2c3e50', fontWeight: 'bold' }}>
+                      📋 Payment Terms & Conditions:
+                    </p>
+                    <p style={{ margin: 0, color: '#555', lineHeight: '1.6' }}>{job.paymentTerms}</p>
+                  </div>
+                )}
+                {job.rateAdjustment && (
+                  <div style={{ margin: '15px 0 0 0' }}>
+                    <p style={{ margin: '0 0 5px 0', color: '#2c3e50', fontWeight: 'bold' }}>
+                      📈 Rate Adjustment for Renewal:
+                    </p>
+                    <p style={{ margin: 0, color: '#555', lineHeight: '1.6' }}>{job.rateAdjustment}</p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
           {job.requirements && job.requirements.length > 0 && (
             <>
               <h3 style={{ marginBottom: '15px', color: '#2c3e50' }}>⚙️ Requirements</h3>
