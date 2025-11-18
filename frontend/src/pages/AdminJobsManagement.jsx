@@ -679,7 +679,7 @@ export default function AdminJobsManagement() {
                   <div className="working-hours-container">
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
                       <div key={day} className="day-hours-row">
-                        <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <input 
                             type="checkbox" 
                             id={`workingDay-${day}`}
@@ -697,41 +697,49 @@ export default function AdminJobsManagement() {
                           <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                         </div>
                         {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                          <>
-                            <input 
-                              type="time" 
-                              value={formData.workingHoursByDay[day].start}
-                              onChange={(e) => {
-                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                newWorkingHoursByDay[day].start = e.target.value;
-                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              }}
-                              placeholder="Start time"
-                            />
-                            <input 
-                              type="time" 
-                              value={formData.workingHoursByDay[day].end}
-                              onChange={(e) => {
-                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                newWorkingHoursByDay[day].end = e.target.value;
-                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              }}
-                              placeholder="End time"
-                            />
-                            <input 
-                              type="text" 
-                              value={formData.workingHoursByDay[day].payment || ''}
-                              onChange={(e) => {
-                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                newWorkingHoursByDay[day].payment = e.target.value;
-                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              }}
-                              placeholder="Payment details"
-                              className="payment-input"
-                            />
-                          </>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', alignItems: 'center' }}>
+                            <div>
+                              <input 
+                                type="time" 
+                                value={formData.workingHoursByDay[day].start}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].start = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                placeholder="Start time"
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div>
+                              <input 
+                                type="time" 
+                                value={formData.workingHoursByDay[day].end}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].end = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                placeholder="End time"
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div>
+                              <input 
+                                type="text" 
+                                value={formData.workingHoursByDay[day].payment || ''}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].payment = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                placeholder="Payment details"
+                                className="payment-input"
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                          </div>
                         )}
-
                       </div>
                     ))}
                   </div>
