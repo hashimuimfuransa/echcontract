@@ -10,10 +10,10 @@ const jobSchema = new mongoose.Schema({
   qualifications: [{ type: String }],
   responsibilities: [{ type: String }],
   requiredDocuments: [{ type: String }],
-  baseSalaryMin: { type: Number },
-  baseSalaryMax: { type: Number },
+  baseSalaryMin: { type: String }, // Changed from Number to String
+  baseSalaryMax: { type: String }, // Changed from Number to String
   salaryPaymentFrequency: { type: String, enum: ['Per Course', 'Per Month', 'Per Week', 'Per Lesson', 'Others'], default: 'Per Month' },
-  amountPerSession: { type: Number },
+  amountPerSession: { type: String }, // Changed from Number to String
   modeOfPayment: { type: String },
   paymentTerms: { type: String },
   rateAdjustment: { type: String },
@@ -28,7 +28,7 @@ const jobSchema = new mongoose.Schema({
     of: {
       start: String,
       end: String,
-      payment: { type: String, default: '' } // Changed from Number to String
+      payment: { type: String, default: '' }
     },
     default: {}
   },

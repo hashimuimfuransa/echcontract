@@ -479,23 +479,42 @@ export default function AdminJobsManagement() {
           </div>
 
           {showForm && (
-            <div className="form-container" style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+            <div className="form-container">
               <h4>{editingJob ? 'Edit Job Posting' : 'Create New Job Posting'}</h4>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label>Job Title *</label>
-                  <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
+                  <input 
+                    type="text" 
+                    name="title" 
+                    value={formData.title} 
+                    onChange={handleInputChange} 
+                    required 
+                    placeholder="Enter job title"
+                  />
                 </div>
 
                 <div className="form-group full-width">
                   <label>Description *</label>
-                  <textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" required />
+                  <textarea 
+                    name="description" 
+                    value={formData.description} 
+                    onChange={handleInputChange} 
+                    rows="5" 
+                    required 
+                    placeholder="Enter detailed job description"
+                  />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div className="form-grid">
                   <div className="form-group">
                     <label>Department *</label>
-                    <select name="department" value={formData.department} onChange={handleInputChange} required>
+                    <select 
+                      name="department" 
+                      value={formData.department} 
+                      onChange={handleInputChange} 
+                      required
+                    >
                       <option value="">Select Department</option>
                       {departments.map(dept => (
                         <option key={dept} value={dept}>{dept}</option>
@@ -505,7 +524,12 @@ export default function AdminJobsManagement() {
 
                   <div className="form-group">
                     <label>Category *</label>
-                    <select name="category" value={formData.category} onChange={handleInputChange} required>
+                    <select 
+                      name="category" 
+                      value={formData.category} 
+                      onChange={handleInputChange} 
+                      required
+                    >
                       <option value="">Select Category</option>
                       {categories.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -517,13 +541,28 @@ export default function AdminJobsManagement() {
                 {formData.category && categorySubcategories[formData.category] && (
                   <div className="form-group">
                     <label>Sub-categories (Select all that apply)</label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
                       {categorySubcategories[formData.category].map(sub => (
-                        <label key={sub} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <label 
+                          key={sub} 
+                          style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '8px',
+                            padding: '10px 15px',
+                            background: formData.subcategories.includes(sub) ? '#e0f2fe' : '#f8fafc',
+                            border: `2px solid ${formData.subcategories.includes(sub) ? '#3b82f6' : '#e2e8f0'}`,
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            fontWeight: formData.subcategories.includes(sub) ? '600' : 'normal'
+                          }}
+                        >
                           <input
                             type="checkbox"
                             checked={formData.subcategories.includes(sub)}
                             onChange={() => handleSubcategoryChange(sub)}
+                            style={{ margin: 0 }}
                           />
                           {sub}
                         </label>
@@ -537,7 +576,7 @@ export default function AdminJobsManagement() {
                   <textarea 
                     value={formData.requirements} 
                     onChange={(e) => handleArrayInputChange(e, 'requirements')} 
-                    rows="3"
+                    rows="4"
                     placeholder="e.g., 5 years experience, Bachelor's degree, certification"
                   />
                 </div>
@@ -547,7 +586,7 @@ export default function AdminJobsManagement() {
                   <textarea 
                     value={formData.qualifications} 
                     onChange={(e) => handleArrayInputChange(e, 'qualifications')} 
-                    rows="3"
+                    rows="4"
                     placeholder="e.g., Advanced Excel, Project Management, Leadership"
                   />
                 </div>
@@ -557,7 +596,7 @@ export default function AdminJobsManagement() {
                   <textarea 
                     value={formData.responsibilities} 
                     onChange={(e) => handleArrayInputChange(e, 'responsibilities')} 
-                    rows="3"
+                    rows="4"
                     placeholder="e.g., Team management, Client relations, Report generation"
                   />
                 </div>
@@ -567,17 +606,19 @@ export default function AdminJobsManagement() {
                   <textarea 
                     value={formData.requiredDocuments} 
                     onChange={(e) => handleArrayInputChange(e, 'requiredDocuments')} 
-                    rows="2"
+                    rows="3"
                     placeholder="e.g., CV, Cover Letter, Certificates, Passport Copy"
                   />
                 </div>
 
-                
-
                 <div className="form-grid">
                   <div className="form-group">
                     <label>Contract Type</label>
-                    <select name="contractType" value={formData.contractType} onChange={handleInputChange}>
+                    <select 
+                      name="contractType" 
+                      value={formData.contractType} 
+                      onChange={handleInputChange}
+                    >
                       <option value="Indefinite">Indefinite</option>
                       <option value="Fixed Term">Fixed Term</option>
                       <option value="Temporary">Temporary</option>
@@ -587,7 +628,14 @@ export default function AdminJobsManagement() {
                   {formData.contractType === 'Fixed Term' && (
                     <div className="form-group">
                       <label>Duration (months)</label>
-                      <input type="number" name="contractDurationMonths" value={formData.contractDurationMonths} onChange={handleInputChange} />
+                      <input 
+                        type="number" 
+                        name="contractDurationMonths" 
+                        value={formData.contractDurationMonths} 
+                        onChange={handleInputChange} 
+                        min="1"
+                        placeholder="Enter duration"
+                      />
                     </div>
                   )}
                 </div>
@@ -595,15 +643,33 @@ export default function AdminJobsManagement() {
                 <div className="form-grid">
                   <div className="form-group">
                     <label>Working Hours/Week</label>
-                    <input type="number" name="workingHoursPerWeek" value={formData.workingHoursPerWeek} onChange={handleInputChange} />
+                    <input 
+                      type="number" 
+                      name="workingHoursPerWeek" 
+                      value={formData.workingHoursPerWeek} 
+                      onChange={handleInputChange} 
+                      min="1"
+                      max="168"
+                      placeholder="Enter hours per week"
+                    />
                   </div>
                   <div className="form-group">
                     <label>Working Hours Start</label>
-                    <input type="time" name="workingHoursStart" value={formData.workingHoursStart} onChange={handleInputChange} />
+                    <input 
+                      type="time" 
+                      name="workingHoursStart" 
+                      value={formData.workingHoursStart} 
+                      onChange={handleInputChange} 
+                    />
                   </div>
                   <div className="form-group">
                     <label>Working Hours End</label>
-                    <input type="time" name="workingHoursEnd" value={formData.workingHoursEnd} onChange={handleInputChange} />
+                    <input 
+                      type="time" 
+                      name="workingHoursEnd" 
+                      value={formData.workingHoursEnd} 
+                      onChange={handleInputChange} 
+                    />
                   </div>
                 </div>
 
@@ -674,7 +740,11 @@ export default function AdminJobsManagement() {
                 <div className="form-grid">
                   <div className="form-group">
                     <label>Salary Payment Frequency</label>
-                    <select name="salaryPaymentFrequency" value={formData.salaryPaymentFrequency} onChange={handleInputChange}>
+                    <select 
+                      name="salaryPaymentFrequency" 
+                      value={formData.salaryPaymentFrequency} 
+                      onChange={handleInputChange}
+                    >
                       <option value="Per Course">Per Course</option>
                       <option value="Per Month">Per Month</option>
                       <option value="Per Week">Per Week</option>
@@ -691,11 +761,23 @@ export default function AdminJobsManagement() {
                   <div className="form-grid">
                     <div className="form-group">
                       <label>Base Salary Min</label>
-                      <input type="number" name="baseSalaryMin" value={formData.baseSalaryMin} onChange={handleInputChange} />
+                      <input 
+                        type="text" 
+                        name="baseSalaryMin" 
+                        value={formData.baseSalaryMin} 
+                        onChange={handleInputChange} 
+                        placeholder="Enter minimum salary or details"
+                      />
                     </div>
                     <div className="form-group">
                       <label>Base Salary Max</label>
-                      <input type="number" name="baseSalaryMax" value={formData.baseSalaryMax} onChange={handleInputChange} />
+                      <input 
+                        type="text" 
+                        name="baseSalaryMax" 
+                        value={formData.baseSalaryMax} 
+                        onChange={handleInputChange} 
+                        placeholder="Enter maximum salary or details"
+                      />
                     </div>
                   </div>
 
@@ -703,14 +785,14 @@ export default function AdminJobsManagement() {
                     <div className="form-group">
                       <label>Amount to be Paid Per Session</label>
                       <input 
-                        type="number" 
+                        type="text" 
                         name="amountPerSession" 
                         value={formData.amountPerSession} 
                         onChange={handleInputChange} 
-                        placeholder="Enter amount in RWF"
+                        placeholder="Enter amount or payment details"
                       />
                       <div className="form-hint">
-                        💵 The fixed amount that will be paid for each session conducted.
+                        💵 The amount or payment details for each session conducted.
                       </div>
                     </div>
                     <div className="form-group">
@@ -734,7 +816,7 @@ export default function AdminJobsManagement() {
                       name="paymentTerms" 
                       value={formData.paymentTerms} 
                       onChange={handleInputChange} 
-                      rows="3"
+                      rows="4"
                       placeholder="Enter payment terms and conditions..."
                     />
                     <div className="form-hint">
@@ -748,7 +830,7 @@ export default function AdminJobsManagement() {
                       name="rateAdjustment" 
                       value={formData.rateAdjustment} 
                       onChange={handleInputChange} 
-                      rows="2"
+                      rows="3"
                       placeholder="Enter rate adjustment terms..."
                     />
                     <div className="form-hint">
@@ -762,7 +844,7 @@ export default function AdminJobsManagement() {
                   <textarea 
                     value={formData.benefits} 
                     onChange={(e) => handleArrayInputChange(e, 'benefits')} 
-                    rows="2"
+                    rows="3"
                     placeholder="e.g., Health insurance, Dental coverage, Annual training budget"
                   />
                 </div>
@@ -770,7 +852,11 @@ export default function AdminJobsManagement() {
                 <div className="form-grid">
                   <div className="form-group">
                     <label>Remote Work Policy</label>
-                    <select name="remoteWorkPolicy" value={formData.remoteWorkPolicy} onChange={handleInputChange}>
+                    <select 
+                      name="remoteWorkPolicy" 
+                      value={formData.remoteWorkPolicy} 
+                      onChange={handleInputChange}
+                    >
                       <option value="Flexible">Flexible</option>
                       <option value="On-site">On-site</option>
                       <option value="Hybrid">Hybrid</option>
@@ -780,13 +866,22 @@ export default function AdminJobsManagement() {
 
                   <div className="form-group">
                     <label>Start Date</label>
-                    <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} />
+                    <input 
+                      type="date" 
+                      name="startDate" 
+                      value={formData.startDate} 
+                      onChange={handleInputChange} 
+                    />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label>Status</label>
-                  <select name="status" value={formData.status} onChange={handleInputChange}>
+                  <select 
+                    name="status" 
+                    value={formData.status} 
+                    onChange={handleInputChange}
+                  >
                     <option value="Draft">Draft</option>
                     <option value="Active">Active</option>
                     <option value="Closed">Closed</option>

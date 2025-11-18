@@ -178,7 +178,7 @@ export default function JobDetails() {
               <h3 style={{ marginBottom: '15px', color: '#2c3e50' }}>💰 Compensation</h3>
               <div style={{ padding: '20px', backgroundColor: '#f0fff4', borderLeft: '4px solid #27ae60', marginBottom: '30px', borderRadius: '4px' }}>
                 <p style={{ margin: '0 0 10px 0', color: '#2c3e50', fontWeight: '500', fontSize: '16px' }}>
-                  {job.baseSalaryMin?.toLocaleString()} - {job.baseSalaryMax?.toLocaleString() || 'Negotiable'} RWF
+                  {job.baseSalaryMin} - {job.baseSalaryMax}
                 </p>
                 {job.salaryPaymentFrequency && (
                   <p style={{ margin: 0, color: '#555', fontSize: '14px' }}>
@@ -196,7 +196,7 @@ export default function JobDetails() {
               <div style={{ padding: '20px', backgroundColor: '#e8f4f8', borderLeft: '4px solid #3498db', marginBottom: '30px', borderRadius: '4px' }}>
                 {job.amountPerSession && (
                   <p style={{ margin: '0 0 10px 0', color: '#2c3e50', fontWeight: '500' }}>
-                    💵 Amount per Session: <strong>{job.amountPerSession.toLocaleString()} RWF</strong>
+                    💵 Amount per Session: <strong>{job.amountPerSession}</strong>
                   </p>
                 )}
                 {job.modeOfPayment && (

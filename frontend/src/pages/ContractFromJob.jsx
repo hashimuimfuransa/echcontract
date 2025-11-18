@@ -476,7 +476,7 @@ export default function ContractFromJob() {
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Amount to be Paid Per Session" name="amountPerSession" type="number" value={formData.amountPerSession} readOnly={true} />
+              <FormField label="Amount to be Paid Per Session" name="amountPerSession" type="text" value={formData.amountPerSession} readOnly={true} />
               <FormField label="Mode of Payment" name="modeOfPayment" type="text" value={formData.modeOfPayment} readOnly={true} />
             </div>
             <FormField label="Terms and Conditions for Payment" name="paymentTerms" type="textarea" value={formData.paymentTerms} readOnly={true} />
