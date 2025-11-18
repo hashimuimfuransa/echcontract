@@ -210,54 +210,22 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
   currentPage.drawText('APPROVALS AND SIGNATURES', { x: margin, y: cursorY, size: 14, font: titleFont, color: rgb(0.12, 0.25, 0.69) })
   cursorY -= 28
 
-  // Chairman Section
-  const chairmanX = margin
-  const chairmanWidth = 160
-  currentPage.drawText('CHAIRMAN', { x: chairmanX, y: cursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
+  // Managing Director Section
+  const mdX = margin
+  const mdWidth = 160
+  currentPage.drawText('MANAGING DIRECTOR', { x: mdX, y: cursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
   cursorY -= 50
   currentPage.drawLine({
-    start: { x: chairmanX, y: cursorY },
-    end: { x: chairmanX + chairmanWidth, y: cursorY },
+    start: { x: mdX, y: cursorY },
+    end: { x: mdX + mdWidth, y: cursorY },
     thickness: 1,
     color: rgb(0.5, 0.5, 0.5)
   })
   cursorY -= 14
-  currentPage.drawText('Abdala Nzabandora', { x: chairmanX, y: cursorY, size: 10, font: bodyFont })
+  currentPage.drawText('Hashimu Imfuransa', { x: mdX, y: cursorY, size: 10, font: bodyFont })
   cursorY -= 12
-  currentPage.drawText('Signature & Stamp', { x: chairmanX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
+  currentPage.drawText('Signature & Stamp', { x: mdX, y: cursorY, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
   cursorY -= 40
-
-  // Managing Director Section
-  const mdX = chairmanX + 200
-  const mdWidth = 160
-  currentPage.drawText('MANAGING DIRECTOR', { x: mdX, y: cursorY + 40, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
-  cursorY -= 50
-  currentPage.drawLine({
-    start: { x: mdX, y: cursorY + 40 },
-    end: { x: mdX + mdWidth, y: cursorY + 40 },
-    thickness: 1,
-    color: rgb(0.5, 0.5, 0.5)
-  })
-  currentPage.drawText('Hashimu Imfuransa', { x: mdX, y: cursorY + 26, size: 10, font: bodyFont })
-  currentPage.drawText('Signature & Stamp', { x: mdX, y: cursorY + 14, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
-  
-  cursorY -= 70
-
-  // Chief Technology Officer Section
-  const ctoCursorY = cursorY + 40
-  const ctoX = chairmanX + 200
-  const ctoWidth = 160
-  currentPage.drawText('CHIEF TECHNOLOGY OFFICER', { x: ctoX, y: ctoCursorY, size: 11, font: titleFont, color: rgb(0.2, 0.2, 0.2) })
-  currentPage.drawLine({
-    start: { x: ctoX, y: ctoCursorY - 25 },
-    end: { x: ctoX + ctoWidth, y: ctoCursorY - 25 },
-    thickness: 1,
-    color: rgb(0.5, 0.5, 0.5)
-  })
-  currentPage.drawText('Tuyizere Dieudonne', { x: ctoX, y: ctoCursorY - 39, size: 10, font: bodyFont })
-  currentPage.drawText('Signature & Stamp', { x: ctoX, y: ctoCursorY - 51, size: 9, font: bodyFont, color: rgb(0.4, 0.4, 0.4) })
-  
-  cursorY -= 70
 
   // Dividing space
   cursorY -= 15
