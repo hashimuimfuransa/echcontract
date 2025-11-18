@@ -138,6 +138,7 @@ export default function AdminJobsManagement() {
     workingHoursPerWeek: 40,
     workingHoursStart: '',
     workingHoursEnd: '',
+    workingHoursByDay: {},
     remoteWorkPolicy: 'Flexible',
     location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
     startDate: '',
@@ -294,6 +295,7 @@ export default function AdminJobsManagement() {
       workingHoursPerWeek: job.workingHoursPerWeek,
       workingHoursStart: job.workingHoursStart || '',
       workingHoursEnd: job.workingHoursEnd || '',
+      workingHoursByDay: job.workingHoursByDay || {},
       remoteWorkPolicy: job.remoteWorkPolicy,
       location: job.location,
       startDate: job.startDate ? job.startDate.split('T')[0] : '',
@@ -340,6 +342,7 @@ export default function AdminJobsManagement() {
       workingHoursPerWeek: 40,
       workingHoursStart: '',
       workingHoursEnd: '',
+      workingHoursByDay: {},
       remoteWorkPolicy: 'Flexible',
       location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
       startDate: '',
@@ -600,6 +603,58 @@ export default function AdminJobsManagement() {
                   <div className="form-group">
                     <label>Working Hours End</label>
                     <input type="time" name="workingHoursEnd" value={formData.workingHoursEnd} onChange={handleInputChange} />
+                  </div>
+                </div>
+
+                {/* Day-specific working hours */}
+                <div className="form-group full-width">
+                  <label>Working Hours by Day</label>
+                  <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '15px', backgroundColor: '#f9f9f9' }}>
+                    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                      <div key={day} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', alignItems: 'center', marginBottom: '10px' }}>
+                        <div>
+                          <input 
+                            type="checkbox" 
+                            id={`workingDay-${day}`}
+                            checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
+                            onChange={(e) => {
+                              const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                              if (e.target.checked) {
+                                newWorkingHoursByDay[day] = { start: '', end: '' };
+                              } else {
+                                delete newWorkingHoursByDay[day];
+                              }
+                              setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                            }}
+                          />
+                          <label htmlFor={`workingDay-${day}`} style={{ marginLeft: '8px' }}>{day}</label>
+                        </div>
+                        {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
+                          <>
+                            <input 
+                              type="time" 
+                              value={formData.workingHoursByDay[day].start}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].start = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              placeholder="Start time"
+                            />
+                            <input 
+                              type="time" 
+                              value={formData.workingHoursByDay[day].end}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].end = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              placeholder="End time"
+                            />
+                          </>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
 

@@ -23,6 +23,14 @@ const jobSchema = new mongoose.Schema({
   workingHoursPerWeek: { type: Number, default: 40 },
   workingHoursStart: { type: String },
   workingHoursEnd: { type: String },
+  workingHoursByDay: {
+    type: Map,
+    of: {
+      start: String,
+      end: String
+    },
+    default: {}
+  },
   remoteWorkPolicy: { type: String, default: 'Flexible' },
   location: { type: String, required: true },
   startDate: { type: Date },

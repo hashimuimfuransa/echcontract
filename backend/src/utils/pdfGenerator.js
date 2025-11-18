@@ -168,27 +168,62 @@ export const generateContractPdf = async (contract, employee, options = {}) => {
     cursorY -= 16
 
     let value = formData[field.key] ?? ''
-    // Sanitize the value
-    value = sanitizeTextForPDF(value)
     
-    if (value !== '') {
-      // Use multiline text for textarea fields and long text fields
-      if (field.type === 'textarea' || String(value).length > 50) {
-        const result = drawMultilineText(currentPage, String(value), margin + 10, cursorY, {
-          font: bodyFont,
-          size: 11,
-          maxWidth: contentWidth - 10,
-          lineHeight: 14
-        }, addNewPage, margin, height)
-        cursorY = result.cursorY
-        currentPage = result.currentPage
+    // Special handling for working hours by day
+    if (field.key === 'workingHoursByDay') {
+      const workingHoursByDay = value;
+      if (workingHoursByDay && Object.keys(workingHoursByDay).length > 0) {
+        // Create a formatted string for working hours by day
+        let workingHoursText = '';
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        days.forEach(day => {
+          if (workingHoursByDay[day]) {
+            const start = workingHoursByDay[day].start || '';
+            const end = workingHoursByDay[day].end || '';
+            if (start && end) {
+              workingHoursText += `${day}: ${start} - ${end}\n`;
+            }
+          }
+        });
+        
+        if (workingHoursText) {
+          const result = drawMultilineText(currentPage, workingHoursText.trim(), margin + 10, cursorY, {
+            font: bodyFont,
+            size: 11,
+            maxWidth: contentWidth - 10,
+            lineHeight: 14
+          }, addNewPage, margin, height);
+          cursorY = result.cursorY;
+          currentPage = result.currentPage;
+        } else {
+          cursorY -= 14;
+        }
       } else {
-        // Single line for short text fields
-        currentPage.drawText(String(value), { x: margin + 10, y: cursorY, size: 11, font: bodyFont })
-        cursorY -= 14
+        cursorY -= 14;
       }
     } else {
-      cursorY -= 14
+      // Sanitize the value
+      value = sanitizeTextForPDF(value)
+      
+      if (value !== '') {
+        // Use multiline text for textarea fields and long text fields
+        if (field.type === 'textarea' || String(value).length > 50) {
+          const result = drawMultilineText(currentPage, String(value), margin + 10, cursorY, {
+            font: bodyFont,
+            size: 11,
+            maxWidth: contentWidth - 10,
+            lineHeight: 14
+          }, addNewPage, margin, height)
+          cursorY = result.cursorY
+          currentPage = result.currentPage
+        } else {
+          // Single line for short text fields
+          currentPage.drawText(String(value), { x: margin + 10, y: cursorY, size: 11, font: bodyFont })
+          cursorY -= 14
+        }
+      } else {
+        cursorY -= 14
+      }
     }
     cursorY -= 8 // Add extra space between fields
   })

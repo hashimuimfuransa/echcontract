@@ -143,6 +143,18 @@ export default function JobDetails() {
                   {job.workingHoursStart} - {job.workingHoursEnd}
                 </p>
               )}
+              {job.workingHoursByDay && Object.keys(job.workingHoursByDay).length > 0 && (
+                <div style={{ marginTop: '10px' }}>
+                  <p style={{ margin: '0 0 5px 0', color: '#7f8c8d', fontSize: '12px', fontWeight: 'bold' }}>Working Hours by Day:</p>
+                  {Object.entries(job.workingHoursByDay).map(([day, hours]) => (
+                    hours.start && hours.end ? (
+                      <p key={day} style={{ margin: '0 0 3px 0', color: '#2c3e50', fontSize: '13px' }}>
+                        {day}: {hours.start} - {hours.end}
+                      </p>
+                    ) : null
+                  ))}
+                </div>
+              )}
             </div>
             <div>
               <p style={{ margin: '0 0 5px 0', color: '#7f8c8d', fontSize: '12px', fontWeight: 'bold' }}>🏢 CONTRACT TYPE</p>

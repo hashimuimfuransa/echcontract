@@ -581,6 +581,20 @@ export default function ContractFromJob() {
             toggleSection={toggleSection}
           >
             <FormField label="Working Hours per Week" name="workingHoursPerWeek" type="number" value={formData.workingHoursPerWeek} readOnly={true} />
+            {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
+              <div className="form-group">
+                <label>Working Hours by Day</label>
+                <div style={{ padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '4px', fontSize: '14px' }}>
+                  {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
+                    hours.start && hours.end ? (
+                      <div key={day} style={{ marginBottom: '5px' }}>
+                        <strong>{day}:</strong> {hours.start} - {hours.end}
+                      </div>
+                    ) : null
+                  ))}
+                </div>
+              </div>
+            )}
             <FormField label="Overtime Policy" name="overtimePolicy" type="textarea" value={formData.overtimePolicy} readOnly={true} />
             <FormField label="Annual Leave Days" name="annualLeaveDays" type="number" value={formData.annualLeaveDays} readOnly={true} />
             <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />

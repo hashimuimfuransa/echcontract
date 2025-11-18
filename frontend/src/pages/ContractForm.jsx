@@ -844,6 +844,21 @@ export default function ContractForm() {
                     className={READ_ONLY_FIELDS.has('workingHoursEnd') ? 'read-only' : ''}
                   />
                 </div>
+                {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
+                  <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                    <label>Working Hours by Day</label>
+                    <div style={{ padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px', border: '1px solid #e9ecef' }}>
+                      {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
+                        hours.start && hours.end ? (
+                          <div key={day} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
+                            <span style={{ fontWeight: '500', minWidth: '120px' }}>{day}:</span>
+                            <span>{hours.start} - {hours.end}</span>
+                          </div>
+                        ) : null
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <FormField 
                   label="Annual Leave Days" 
                   name="annualLeaveDays"
