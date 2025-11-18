@@ -4,55 +4,7 @@ import api from '../utils/api'
 import '../styles/employee.css'
 import '../styles/contractForm.css'
 
-// FormField component
-const FormField = ({ label, name, type = 'text', placeholder = '', required = false, hint = '', fullWidth = false, value, onChange, readOnly = false, loading = false }) => (
-  <div className={`form-group ${fullWidth ? 'full-width' : ''} ${readOnly ? 'read-only-field' : ''}`}>
-    <label>
-      {label}
-      {required && <span className="required-star">*</span>}
-      {readOnly && <span className="read-only-badge">Pre-filled by HR</span>}
-    </label>
-    {type === 'textarea' ? (
-      <textarea
-        name={name}
-        value={value}
-        onChange={readOnly ? undefined : onChange}
-        required={required}
-        disabled={loading || readOnly}
-        placeholder={placeholder}
-        rows="4"
-        className={readOnly ? 'read-only' : ''}
-      />
-    ) : (
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={readOnly ? undefined : onChange}
-        required={required}
-        disabled={loading || readOnly}
-        placeholder={placeholder}
-        className={readOnly ? 'read-only' : ''}
-      />
-    )}
-    {hint && <p className="form-hint">{hint}</p>}
-  </div>
-)
-
-// CollapsibleSection component
-const CollapsibleSection = ({ id, icon, title, subtitle, children, expandedSections, toggleSection }) => (
-  <div className="form-section">
-    <div className="section-header" onClick={() => toggleSection(id)}>
-      <span className="section-icon">{icon}</span>
-      <div className="section-title-group">
-        <h2 className="section-title">{title}</h2>
-        <p className="section-subtitle">{subtitle}</p>
-      </div>
-      <span className={`toggle-icon ${expandedSections[id] ? 'expanded' : ''}`}>▼</span>
-    </div>
-    {expandedSections[id] && <div className="section-content">{children}</div>}
-  </div>
-)
+// FormField and CollapsibleSection components are shared components (duplicated for performance optimization)
 
 export default function ContractFromJob() {
   const navigate = useNavigate()
@@ -131,93 +83,7 @@ export default function ContractFromJob() {
     documents: false
   })
 
-  const coachingCategories = [
-    'Professional Coaching',
-    'Business & Entrepreneurship Coaching',
-    'Academic Coaching',
-    'Language Coaching',
-    'Technical & Digital Coaching',
-    'Job Seeker Coaching',
-    'Personal & Corporate Development'
-  ]
-
-  // Subcategories for each coaching category
-  const coachingSubcategories = {
-    'Professional Coaching': [
-      'Leadership',
-      'Executive',
-      'Project Management',
-      'CPA/CAT/ACCA',
-      'Business Consulting',
-      'Career Coaching'
-    ],
-    'Business & Entrepreneurship Coaching': [
-      'Startup',
-      'Strategy',
-      'Finance',
-      'Marketing',
-      'Innovation',
-      'Business Planning'
-    ],
-    'Academic Coaching': [
-      'Nursery',
-      'Primary',
-      'Secondary',
-      'University',
-      'Exams',
-      'Research'
-    ],
-    'Language Coaching': [
-      'English',
-      'French',
-      'Kinyarwanda',
-      'Business Communication',
-      'Technical Writing'
-    ],
-    'Technical & Digital Coaching': [
-      'AI',
-      'Data',
-      'Cybersecurity',
-      'Cloud',
-      'Dev',
-      'Digital Marketing',
-      'Software Development',
-      'Network Engineering'
-    ],
-    'Job Seeker Coaching': [
-      'Software Developer',
-      'Data Analyst',
-      'Project Manager',
-      'Marketing Manager',
-      'Sales Representative',
-      'Business Analyst',
-      'Financial Analyst',
-      'HR Specialist',
-      'Operations Manager',
-      'Quality Assurance Engineer',
-      'UX/UI Designer',
-      'DevOps Engineer',
-      'Content Writer',
-      'Graphic Designer',
-      'System Administrator',
-      'Customer Service Manager',
-      'Product Manager',
-      'Business Development Executive',
-      'Accounting',
-      'Engineering',
-      'Legal',
-      'Healthcare',
-      'Education'
-    ],
-    'Personal & Corporate Development': [
-      'Communication',
-      'Emotional Intelligence',
-      'Time Management',
-      'Team Building',
-      'HR Development',
-      'Ethics'
-    ]
-  }
+  // Coaching categories and subcategories are managed in AdminJobsManagement.jsx
 
   useEffect(() => {
     const fetchJob = async () => {
