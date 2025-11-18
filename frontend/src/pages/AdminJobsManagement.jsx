@@ -759,7 +759,7 @@ export default function AdminJobsManagement() {
                   <div className="working-hours-container">
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
                       <div key={day} className="day-hours-row">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                           <input 
                             type="checkbox" 
                             id={`workingDay-${day}`}
@@ -778,36 +778,39 @@ export default function AdminJobsManagement() {
                           <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                         </div>
                         {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '15px', alignItems: 'center', width: '100%' }}>
-                            <div>
-                              <input 
-                                type="time" 
-                                value={formData.workingHoursByDay[day].start}
-                                onChange={(e) => {
-                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                  newWorkingHoursByDay[day].start = e.target.value;
-                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
-                                }}
-                                placeholder="Start time"
-                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
-                              />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
+                                <input 
+                                  type="time" 
+                                  value={formData.workingHoursByDay[day].start}
+                                  onChange={(e) => {
+                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                    newWorkingHoursByDay[day].start = e.target.value;
+                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                    hasUnsavedChanges.current = true; // Mark as having unsaved changes
+                                  }}
+                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                />
+                              </div>
+                              <div>
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                                <input 
+                                  type="time" 
+                                  value={formData.workingHoursByDay[day].end}
+                                  onChange={(e) => {
+                                    const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                    newWorkingHoursByDay[day].end = e.target.value;
+                                    setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                    hasUnsavedChanges.current = true; // Mark as having unsaved changes
+                                  }}
+                                  style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                />
+                              </div>
                             </div>
                             <div>
-                              <input 
-                                type="time" 
-                                value={formData.workingHoursByDay[day].end}
-                                onChange={(e) => {
-                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                  newWorkingHoursByDay[day].end = e.target.value;
-                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                                  hasUnsavedChanges.current = true; // Mark as having unsaved changes
-                                }}
-                                placeholder="End time"
-                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
-                              />
-                            </div>
-                            <div>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
                               <input 
                                 type="text" 
                                 value={formData.workingHoursByDay[day].payment || ''}
@@ -818,8 +821,7 @@ export default function AdminJobsManagement() {
                                   hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="Payment details (e.g., 15,000 RWF per hour)"
-                                className="payment-input"
-                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
                               />
                             </div>
                           </div>
