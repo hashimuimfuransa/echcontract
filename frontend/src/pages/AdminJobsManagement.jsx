@@ -778,7 +778,7 @@ export default function AdminJobsManagement() {
                           <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                         </div>
                         {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', alignItems: 'center' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '15px', alignItems: 'center', width: '100%' }}>
                             <div>
                               <input 
                                 type="time" 
@@ -790,7 +790,7 @@ export default function AdminJobsManagement() {
                                   hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="Start time"
-                                style={{ width: '100%' }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
                               />
                             </div>
                             <div>
@@ -804,7 +804,7 @@ export default function AdminJobsManagement() {
                                   hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
                                 placeholder="End time"
-                                style={{ width: '100%' }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
                               />
                             </div>
                             <div>
@@ -817,9 +817,9 @@ export default function AdminJobsManagement() {
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                                   hasUnsavedChanges.current = true; // Mark as having unsaved changes
                                 }}
-                                placeholder="Payment details"
+                                placeholder="Payment details (e.g., 15,000 RWF per hour)"
                                 className="payment-input"
-                                style={{ width: '100%' }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px' }}
                               />
                             </div>
                           </div>

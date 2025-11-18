@@ -527,6 +527,7 @@ tr:hover td {
   font-family: inherit;
   box-sizing: border-box;
   transition: all 0.3s ease;
+  min-height: 45px; /* Increased height for better visibility */
 }
 
 .payment-input:focus {
