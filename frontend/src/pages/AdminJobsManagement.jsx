@@ -497,17 +497,6 @@ export default function AdminJobsManagement() {
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                  <div className="form-group">
-                    <label>Base Salary Min</label>
-                    <input type="number" name="baseSalaryMin" value={formData.baseSalaryMin} onChange={handleInputChange} />
-                  </div>
-                  <div className="form-group">
-                    <label>Base Salary Max</label>
-                    <input type="number" name="baseSalaryMax" value={formData.baseSalaryMax} onChange={handleInputChange} />
-                  </div>
-                </div>
-
                 
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px' }}>
