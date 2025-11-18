@@ -95,7 +95,7 @@ export default function ContractFromJob() {
     groundsForDismissal: 'Gross misconduct, repeated poor performance, insubordination.',
     severancePay: 'Severance pay of one month salary per year of service.',
     confidentialityAgreement: 'Employee acknowledges and agrees to maintain strict confidentiality.',
-    intellectualPropertyClause: 'All intellectual property shall be the exclusive property of Excellence Coaching Hub.',
+    intellectualPropertyClause: 'All work, ideas, or content created for the company will belong only to Excellence Coaching Hub.',
     nonCompeteClause: 'During employment and for 12 months after termination, employee shall not engage in competitive business.',
     nonSolicitationClause: 'Employee shall not solicit clients or employees during and 12 months after employment.',
     disputeResolution: 'Mediation',

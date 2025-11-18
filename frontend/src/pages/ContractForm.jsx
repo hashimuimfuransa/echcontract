@@ -116,7 +116,7 @@ export default function ContractForm() {
     
     // Confidentiality & IP (Pre-filled by HR - Read Only)
     confidentialityAgreement: 'Employee acknowledges and agrees to maintain strict confidentiality regarding all proprietary information, business strategies, financial data, and client information belonging to Excellence Coaching Hub. This obligation continues for 2 years after employment termination.',
-    intellectualPropertyClause: 'All intellectual property, work products, inventions, and creative content developed by the employee during employment, whether on company time or using company resources, shall be the exclusive property of Excellence Coaching Hub.',
+    intellectualPropertyClause: 'All work, ideas, or content created for the company will belong only to Excellence Coaching Hub.',
     
     // Restrictive Covenants (Pre-filled by HR - Read Only)
     nonCompeteClause: 'During employment and for 12 months after termination, employee shall not directly or indirectly engage in any business competitive with Excellence Coaching Hub within Rwanda.',
