@@ -939,6 +939,14 @@ export default function AdminJobsManagement() {
                   <button type="submit" className="btn btn-primary">
                     {editingJob ? 'Update Job' : 'Create Job'}
                   </button>
+                  <button 
+                    type="button" 
+                    className="btn btn-secondary" 
+                    onClick={autoSaveJob}
+                    disabled={!hasUnsavedChanges.current}
+                  >
+                    💾 Save Draft
+                  </button>
                   <button type="button" className="btn btn-secondary" onClick={handleCancel}>
                     Cancel
                   </button>
