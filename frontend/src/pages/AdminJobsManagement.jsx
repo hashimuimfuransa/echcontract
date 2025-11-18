@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api'
 import '../styles/admin.css'
@@ -15,7 +15,10 @@ export default function AdminJobsManagement() {
   const [pagination, setPagination] = useState(null)
   const [statusFilter, setStatusFilter] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
-
+  
+  // Auto-save timer reference
+  const autoSaveTimer = useRef(null)
+  
   const categories = [
     'Professional Coaching',
     'Business & Entrepreneurship Coaching',
@@ -177,6 +180,73 @@ export default function AdminJobsManagement() {
     if (page === 1) fetchStats()
   }, [page, statusFilter, categoryFilter])
 
+  // Auto-save function
+  const autoSaveJob = async () => {
+    if (!showForm || (!editingJob && !formData.title)) return;
+    
+    try {
+      // Convert string fields to arrays for backend
+      const dataToSubmit = {
+        ...formData,
+        requirements: formData.requirements
+          .split(',')
+          .map(item => item.trim())
+          .filter(item => item),
+        qualifications: formData.qualifications
+          .split(',')
+          .map(item => item.trim())
+          .filter(item => item),
+        responsibilities: formData.responsibilities
+          .split(',')
+          .map(item => item.trim())
+          .filter(item => item),
+        requiredDocuments: formData.requiredDocuments
+          .split(',')
+          .map(item => item.trim())
+          .filter(item => item),
+        benefits: formData.benefits
+          .split(',')
+          .map(item => item.trim())
+          .filter(item => item)
+      }
+      
+      if (editingJob) {
+        await api.put(`/admin/jobs/${editingJob._id}`, dataToSubmit)
+      } else {
+        // For new jobs, we'll save as draft
+        const draftData = { ...dataToSubmit, status: 'Draft' }
+        const response = await api.post('/admin/jobs', draftData)
+        // Set the editing job to the newly created job
+        setEditingJob(response.data.job)
+      }
+      setError('')
+    } catch (err) {
+      console.error('Auto-save failed:', err)
+    }
+  }
+
+  // Set up auto-save effect
+  useEffect(() => {
+    if (showForm) {
+      // Clear any existing timer
+      if (autoSaveTimer.current) {
+        clearInterval(autoSaveTimer.current)
+      }
+      
+      // Set up new auto-save timer (every 60 seconds)
+      autoSaveTimer.current = setInterval(() => {
+        autoSaveJob()
+      }, 60000)
+    }
+    
+    // Clean up timer on unmount or when form is closed
+    return () => {
+      if (autoSaveTimer.current) {
+        clearInterval(autoSaveTimer.current)
+      }
+    }
+  }, [showForm, formData, editingJob])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -256,6 +326,7 @@ export default function AdminJobsManagement() {
         workingHoursPerWeek: 40,
         workingHoursStart: '',
         workingHoursEnd: '',
+        workingHoursByDay: {},
         remoteWorkPolicy: 'Flexible',
         location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
         startDate: '',
@@ -319,6 +390,10 @@ export default function AdminJobsManagement() {
   const handleCancel = () => {
     setShowForm(false)
     setEditingJob(null)
+    // Clear auto-save timer
+    if (autoSaveTimer.current) {
+      clearInterval(autoSaveTimer.current)
+    }
     setFormData({
       title: '',
       description: '',
@@ -546,7 +621,7 @@ export default function AdminJobsManagement() {
                             onChange={(e) => {
                               const newWorkingHoursByDay = { ...formData.workingHoursByDay };
                               if (e.target.checked) {
-                                newWorkingHoursByDay[day] = { start: '', end: '' };
+                                newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
                               } else {
                                 delete newWorkingHoursByDay[day];
                               }
@@ -576,6 +651,17 @@ export default function AdminJobsManagement() {
                                 setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                               }}
                               placeholder="End time"
+                            />
+                            <input 
+                              type="number" 
+                              value={formData.workingHoursByDay[day].payment || ''}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].payment = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              placeholder="Payment (RWF)"
+                              className="payment-input"
                             />
                           </>
                         )}
