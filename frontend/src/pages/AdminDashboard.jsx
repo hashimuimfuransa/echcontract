@@ -6,8 +6,6 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalJobs: 0,
     activeJobs: 0,
-    applications: 0,
-    interviews: 0,
     pendingContracts: 0,
     totalContracts: 0
   })
@@ -78,18 +76,6 @@ const AdminDashboard = () => {
           <div className="metric-title">Active Jobs</div>
           <div className="metric-value">{stats.activeJobs}</div>
           <div className="metric-trend">Currently open</div>
-        </div>
-        
-        <div className="metric-card">
-          <div className="metric-title">Applications</div>
-          <div className="metric-value">{stats.applications}</div>
-          <div className="metric-trend">This month</div>
-        </div>
-        
-        <div className="metric-card">
-          <div className="metric-title">Interviews</div>
-          <div className="metric-value">{stats.interviews}</div>
-          <div className="metric-trend">Scheduled</div>
         </div>
         
         <div className="metric-card">
