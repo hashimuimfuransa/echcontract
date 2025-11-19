@@ -23,6 +23,11 @@ import {
 
 const router = Router()
 
+// Only apply authentication to routes that need it
+// Public routes (no authentication required)
+router.get('/jobs/stats', getJobStats)
+
+// Protected routes (authentication required)
 router.use(authenticate(['admin']))
 
 router.get('/dashboard/metrics', getDashboardMetrics)
@@ -106,8 +111,6 @@ router.post('/jobs', [
   body('startDate').optional().isISO8601(),
   body('status').optional().isString()
 ], createJob)
-
-router.get('/jobs/stats', getJobStats)
 
 router.get('/jobs', listAllJobs)
 
