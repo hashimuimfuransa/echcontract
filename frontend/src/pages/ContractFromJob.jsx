@@ -388,58 +388,78 @@ export default function ContractFromJob() {
           </CollapsibleSection>
 
           {/* Job Information */}
-          <CollapsibleSection
-            id="jobInfo"
-            icon="💼"
-            title="Job Information"
-            subtitle="Position and role details"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Job Title" name="jobTitle" value={formData.jobTitle} readOnly={true} />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Coaching Category" name="teachingCategory" value={formData.teachingCategory} readOnly={true} />
-              <FormField label="Department" name="department" value={formData.department} readOnly={true} />
-            </div>
-            
-            {formData.coachingSubcategories && formData.coachingSubcategories.length > 0 && (
-              <div className="form-group">
-                <label>Coaching Subcategories</label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
-                  {formData.coachingSubcategories.map(sub => (
-                    <span key={sub} style={{ backgroundColor: '#f1f5f9', padding: '5px 10px', borderRadius: '4px' }}>
-                      {sub}
-                    </span>
-                  ))}
-                </div>
+          {(formData.jobTitle || formData.teachingCategory || formData.department || formData.coachingSubcategories?.length > 0 || formData.reportsTo || formData.jobDescription) && (
+            <CollapsibleSection
+              id="jobInfo"
+              icon="💼"
+              title="Job Information"
+              subtitle="Position and role details"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.jobTitle && (
+                <FormField label="Job Title" name="jobTitle" value={formData.jobTitle} readOnly={true} />
+              )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.teachingCategory && (
+                  <FormField label="Coaching Category" name="teachingCategory" value={formData.teachingCategory} readOnly={true} />
+                )}
+                {formData.department && (
+                  <FormField label="Department" name="department" value={formData.department} readOnly={true} />
+                )}
               </div>
-            )}
-            <FormField label="Reports To (Manager)" name="reportsTo" value={formData.reportsTo} onChange={handleInputChange} placeholder="Enter manager name" />
-            <FormField label="Job Description" name="jobDescription" type="textarea" value={formData.jobDescription} readOnly={true} />
-          </CollapsibleSection>
+              
+              {formData.coachingSubcategories && formData.coachingSubcategories.length > 0 && (
+                <div className="form-group">
+                  <label>Coaching Subcategories</label>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+                    {formData.coachingSubcategories.map(sub => (
+                      <span key={sub} style={{ backgroundColor: '#f1f5f9', padding: '5px 10px', borderRadius: '4px' }}>
+                        {sub}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {formData.reportsTo && (
+                <FormField label="Reports To (Manager)" name="reportsTo" value={formData.reportsTo} onChange={handleInputChange} placeholder="Enter manager name" />
+              )}
+              {formData.jobDescription && (
+                <FormField label="Job Description" name="jobDescription" type="textarea" value={formData.jobDescription} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Work Location */}
-          <CollapsibleSection
-            id="workLocation"
-            icon="📍"
-            title="Place of Work"
-            subtitle="Work location details"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Primary Work Location" name="primaryWorkLocation" value={formData.primaryWorkLocation} readOnly={true} />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <div className="form-group">
-                <label>Remote Work Policy <span className="read-only-badge">Pre-filled by HR</span></label>
-                <select name="remoteWorkPolicy" value={formData.remoteWorkPolicy} disabled className="read-only">
-                  <option value="Flexible">Flexible</option>
-                  <option value="On-site">On-site</option>
-                  <option value="Hybrid">Hybrid</option>
-                </select>
+          {(formData.primaryWorkLocation || formData.remoteWorkPolicy || formData.remoteWorkDescription || formData.relocationConditions) && (
+            <CollapsibleSection
+              id="workLocation"
+              icon="📍"
+              title="Place of Work"
+              subtitle="Work location details"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.primaryWorkLocation && (
+                <FormField label="Primary Work Location" name="primaryWorkLocation" value={formData.primaryWorkLocation} readOnly={true} />
+              )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.remoteWorkPolicy && (
+                  <div className="form-group">
+                    <label>Remote Work Policy <span className="read-only-badge">Pre-filled by HR</span></label>
+                    <select name="remoteWorkPolicy" value={formData.remoteWorkPolicy} disabled className="read-only">
+                      <option value="Flexible">Flexible</option>
+                      <option value="On-site">On-site</option>
+                      <option value="Hybrid">Hybrid</option>
+                    </select>
+                  </div>
+                )}
+                {formData.remoteWorkDescription && (
+                  <FormField label="Remote Work Description" name="remoteWorkDescription" value={formData.remoteWorkDescription} readOnly={true} />
+                )}
               </div>
-              <FormField label="Remote Work Description" name="remoteWorkDescription" value={formData.remoteWorkDescription} readOnly={true} />
-            </div>
-          </CollapsibleSection>
+            </CollapsibleSection>
+          )}
 
           {/* Relocation Conditions */}
           {formData.relocationConditions && (
@@ -456,28 +476,34 @@ export default function ContractFromJob() {
           )}
 
           {/* Start Date and Duration */}
-          <CollapsibleSection
-            id="startDuration"
-            icon="📅"
-            title="Start Date and Contract Duration"
-            subtitle="Employment timeline"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Start Date" name="startDate" type="date" value={formData.startDate} readOnly={true} />
-              <div className="form-group">
-                <label>Contract Type <span className="read-only-badge">Pre-filled by HR</span></label>
-                <select name="contractType" value={formData.contractType} disabled className="read-only">
-                  <option value="Indefinite">Indefinite</option>
-                  <option value="Fixed Term">Fixed Term</option>
-                </select>
+          {(formData.startDate || formData.contractType) && (
+            <CollapsibleSection
+              id="startDuration"
+              icon="📅"
+              title="Start Date and Contract Duration"
+              subtitle="Employment timeline"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.startDate && (
+                  <FormField label="Start Date" name="startDate" type="date" value={formData.startDate} readOnly={true} />
+                )}
+                {formData.contractType && (
+                  <div className="form-group">
+                    <label>Contract Type <span className="read-only-badge">Pre-filled by HR</span></label>
+                    <select name="contractType" value={formData.contractType} disabled className="read-only">
+                      <option value="Indefinite">Indefinite</option>
+                      <option value="Fixed Term">Fixed Term</option>
+                    </select>
+                  </div>
+                )}
               </div>
-            </div>
-            {formData.contractType === 'Fixed Term' && (
-              <FormField label="End Date" name="endDate" type="date" value={formData.endDate} readOnly={true} />
-            )}
-          </CollapsibleSection>
+              {formData.contractType === 'Fixed Term' && formData.endDate && (
+                <FormField label="End Date" name="endDate" type="date" value={formData.endDate} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Compensation */}
           {(formData.baseSalary || formData.paymentFrequency || formData.amountPerSession || formData.modeOfPayment || formData.paymentTerms || formData.rateAdjustment || formData.bonusesCommissions || formData.benefits) && (
