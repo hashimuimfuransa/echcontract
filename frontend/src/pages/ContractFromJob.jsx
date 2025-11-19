@@ -75,7 +75,6 @@ export default function ContractFromJob() {
     reportsTo: '',
     jobDescription: '',
     primaryWorkLocation: 'Excellence Coaching Hub Office, Kigali, Rwanda',
-    relocationConditions: 'Relocation is possible with mutual agreement and advance notice of at least 30 days.',
     remoteWorkPolicy: 'Flexible',
     remoteWorkDescription: '',
     startDate: '',
@@ -408,7 +407,6 @@ export default function ContractFromJob() {
             toggleSection={toggleSection}
           >
             <FormField label="Primary Work Location" name="primaryWorkLocation" value={formData.primaryWorkLocation} readOnly={true} />
-            <FormField label="Relocation Conditions" name="relocationConditions" type="textarea" value={formData.relocationConditions} readOnly={true} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>Remote Work Policy <span className="read-only-badge">Pre-filled by HR</span></label>

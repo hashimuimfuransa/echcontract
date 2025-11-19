@@ -80,7 +80,6 @@ export default function ContractForm() {
     
     // Place of Work (Pre-filled by HR)
     primaryWorkLocation: 'Excellence Coaching Hub Office, Kigali, Rwanda',
-    relocationConditions: 'Relocation is possible with mutual agreement and advance notice of at least 30 days.',
     remoteWorkPolicy: 'Flexible',
     remoteWorkDescription: 'Up to 2 days per week remote work is allowed with manager approval. Remote work must align with organizational needs.',
     
@@ -591,18 +590,6 @@ export default function ContractForm() {
                   fullWidth
                   readOnly={READ_ONLY_FIELDS.has('primaryWorkLocation')}
                 />
-                <div style={{ gridColumn: '1 / -1' }}></div>
-                <FormField 
-                  label="Relocation Conditions" 
-                  name="relocationConditions"
-                  type="textarea"
-                  value={formData.relocationConditions}
-                  onChange={handleInputChange}
-                  placeholder="Any conditions for temporary or permanent relocation..."
-                  fullWidth
-                  readOnly={READ_ONLY_FIELDS.has('relocationConditions')}
-                />
-                <div style={{ gridColumn: '1 / -1' }}></div>
                 <div className="form-group">
                   <label>
                     Remote Work Policy
