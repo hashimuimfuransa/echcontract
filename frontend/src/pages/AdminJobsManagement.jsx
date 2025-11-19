@@ -141,6 +141,8 @@ const AdminJobsManagement = () => {
     qualifications: '',
     responsibilities: '',
     requiredDocuments: '',
+    baseSalaryMin: '',
+    baseSalaryMax: '',
     salaryPaymentFrequency: 'Per Month',
     amountPerSession: '',
     modeOfPayment: '',
@@ -162,6 +164,14 @@ const AdminJobsManagement = () => {
     severancePay: '',
     disputeResolution: '',
     jurisdiction: '',
+    annualLeaveDays: 20,
+    overtimePolicy: '',
+    sickLeavePolicy: '',
+    unpaidLeaveConditions: '',
+    confidentialityAgreement: '',
+    intellectualPropertyClause: '',
+    nonCompeteClause: '',
+    nonSolicitationClause: '',
     location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
     startDate: '',
     status: 'Draft'
@@ -444,6 +454,8 @@ const AdminJobsManagement = () => {
       qualifications: Array.isArray(job.qualifications) ? job.qualifications.join(', ') : '',
       responsibilities: Array.isArray(job.responsibilities) ? job.responsibilities.join(', ') : '',
       requiredDocuments: Array.isArray(job.requiredDocuments) ? job.requiredDocuments.join(', ') : '',
+      baseSalaryMin: job.baseSalaryMin || '',
+      baseSalaryMax: job.baseSalaryMax || '',
       salaryPaymentFrequency: job.salaryPaymentFrequency || 'Per Month',
       amountPerSession: job.amountPerSession || '',
       modeOfPayment: job.modeOfPayment || '',
@@ -465,6 +477,14 @@ const AdminJobsManagement = () => {
       severancePay: job.severancePay || '',
       disputeResolution: job.disputeResolution || '',
       jurisdiction: job.jurisdiction || '',
+      annualLeaveDays: job.annualLeaveDays || 20,
+      overtimePolicy: job.overtimePolicy || '',
+      sickLeavePolicy: job.sickLeavePolicy || '',
+      unpaidLeaveConditions: job.unpaidLeaveConditions || '',
+      confidentialityAgreement: job.confidentialityAgreement || '',
+      intellectualPropertyClause: job.intellectualPropertyClause || '',
+      nonCompeteClause: job.nonCompeteClause || '',
+      nonSolicitationClause: job.nonSolicitationClause || '',
       location: job.location,
       startDate: job.startDate ? job.startDate.split('T')[0] : '',
       status: job.status
@@ -506,6 +526,8 @@ const AdminJobsManagement = () => {
       qualifications: '',
       responsibilities: '',
       requiredDocuments: '',
+      baseSalaryMin: '',
+      baseSalaryMax: '',
       salaryPaymentFrequency: 'Per Month',
       amountPerSession: '',
       modeOfPayment: '',
@@ -527,6 +549,14 @@ const AdminJobsManagement = () => {
       severancePay: '',
       disputeResolution: '',
       jurisdiction: '',
+      annualLeaveDays: 20,
+      overtimePolicy: '',
+      sickLeavePolicy: '',
+      unpaidLeaveConditions: '',
+      confidentialityAgreement: '',
+      intellectualPropertyClause: '',
+      nonCompeteClause: '',
+      nonSolicitationClause: '',
       location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
       startDate: '',
       status: 'Draft'
@@ -558,6 +588,8 @@ const AdminJobsManagement = () => {
                 qualifications: '',
                 responsibilities: '',
                 requiredDocuments: '',
+                baseSalaryMin: '',
+                baseSalaryMax: '',
                 salaryPaymentFrequency: 'Per Month',
                 amountPerSession: '',
                 modeOfPayment: '',
@@ -579,6 +611,14 @@ const AdminJobsManagement = () => {
                 severancePay: '',
                 disputeResolution: '',
                 jurisdiction: '',
+                annualLeaveDays: 20,
+                overtimePolicy: '',
+                sickLeavePolicy: '',
+                unpaidLeaveConditions: '',
+                confidentialityAgreement: '',
+                intellectualPropertyClause: '',
+                nonCompeteClause: '',
+                nonSolicitationClause: '',
                 location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
                 startDate: '',
                 status: 'Draft'
@@ -1148,6 +1188,72 @@ const AdminJobsManagement = () => {
               </div>
             </div>
 
+            {/* Work Hours and Leave Policies */}
+            <div className="form-section">
+              <h3>Work Hours and Leave Policies</h3>
+              <div className="form-grid">
+                <div className="form-group">
+                  <label htmlFor="workingHoursPerWeek">Working Hours Per Week</label>
+                  <input
+                    type="number"
+                    id="workingHoursPerWeek"
+                    name="workingHoursPerWeek"
+                    value={formData.workingHoursPerWeek}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 40"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="annualLeaveDays">Annual Leave Days</label>
+                  <input
+                    type="number"
+                    id="annualLeaveDays"
+                    name="annualLeaveDays"
+                    value={formData.annualLeaveDays}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 20"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="overtimePolicy">Overtime Policy</label>
+                  <textarea
+                    id="overtimePolicy"
+                    name="overtimePolicy"
+                    value={formData.overtimePolicy}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Overtime compensation policy"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="sickLeavePolicy">Sick Leave Policy</label>
+                  <textarea
+                    id="sickLeavePolicy"
+                    name="sickLeavePolicy"
+                    value={formData.sickLeavePolicy}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Sick leave conditions and procedures"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="unpaidLeaveConditions">Unpaid Leave Conditions</label>
+                  <textarea
+                    id="unpaidLeaveConditions"
+                    name="unpaidLeaveConditions"
+                    value={formData.unpaidLeaveConditions}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Conditions for unpaid leave"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Legal and Policy Clauses */}
             <div className="form-section">
               <h3>Legal and Policy Clauses</h3>
@@ -1239,6 +1345,66 @@ const AdminJobsManagement = () => {
                     value={formData.jurisdiction}
                     onChange={handleInputChange}
                     placeholder="Legal jurisdiction"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Confidentiality & Intellectual Property */}
+            <div className="form-section">
+              <h3>Confidentiality & Intellectual Property</h3>
+              <div className="form-grid">
+                <div className="form-group full-width">
+                  <label htmlFor="confidentialityAgreement">Confidentiality Agreement</label>
+                  <textarea
+                    id="confidentialityAgreement"
+                    name="confidentialityAgreement"
+                    value={formData.confidentialityAgreement}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Confidentiality terms and conditions"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="intellectualPropertyClause">Intellectual Property Clause</label>
+                  <textarea
+                    id="intellectualPropertyClause"
+                    name="intellectualPropertyClause"
+                    value={formData.intellectualPropertyClause}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Intellectual property ownership terms"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Restrictive Covenants */}
+            <div className="form-section">
+              <h3>Restrictive Covenants</h3>
+              <div className="form-grid">
+                <div className="form-group full-width">
+                  <label htmlFor="nonCompeteClause">Non-Compete Clause</label>
+                  <textarea
+                    id="nonCompeteClause"
+                    name="nonCompeteClause"
+                    value={formData.nonCompeteClause}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Non-compete restrictions and duration"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="nonSolicitationClause">Non-Solicitation Clause</label>
+                  <textarea
+                    id="nonSolicitationClause"
+                    name="nonSolicitationClause"
+                    value={formData.nonSolicitationClause}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Non-solicitation terms and conditions"
                   />
                 </div>
               </div>

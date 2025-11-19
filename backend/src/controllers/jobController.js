@@ -23,7 +23,7 @@ export const createJob = async (req, res, next) => {
       }
     }
 
-    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, location, startDate, status } = req.body
+    const { title, description, department, category, subcategories, requirements, qualifications, responsibilities, requiredDocuments, baseSalaryMin, baseSalaryMax, salaryPaymentFrequency, amountPerSession, modeOfPayment, paymentTerms, rateAdjustment, benefits, contractType, contractDurationMonths, workingHoursPerWeek, workingHoursStart, workingHoursEnd, workingHoursByDay, remoteWorkPolicy, relocationConditions, terminationConditions, employeeNoticePeriod, employerNoticePeriod, groundsForDismissal, severancePay, disputeResolution, jurisdiction, annualLeaveDays, overtimePolicy, sickLeavePolicy, unpaidLeaveConditions, confidentialityAgreement, intellectualPropertyClause, nonCompeteClause, nonSolicitationClause, location, startDate, status } = req.body
 
     // Handle array fields properly for create
     const processArrayField = (field) => {
@@ -59,6 +59,22 @@ export const createJob = async (req, res, next) => {
       workingHoursEnd,
       workingHoursByDay: workingHoursByDay || {},
       remoteWorkPolicy,
+      relocationConditions,
+      terminationConditions,
+      employeeNoticePeriod,
+      employerNoticePeriod,
+      groundsForDismissal,
+      severancePay,
+      disputeResolution,
+      jurisdiction,
+      annualLeaveDays,
+      overtimePolicy,
+      sickLeavePolicy,
+      unpaidLeaveConditions,
+      confidentialityAgreement,
+      intellectualPropertyClause,
+      nonCompeteClause,
+      nonSolicitationClause,
       location,
       startDate,
       status: status || 'Draft',

@@ -480,143 +480,169 @@ export default function ContractFromJob() {
           </CollapsibleSection>
 
           {/* Compensation */}
-          <CollapsibleSection
-            id="compensation"
-            icon="💰"
-            title="Compensation and Benefits"
-            subtitle="Salary and benefits information"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Base Salary" name="baseSalary" type="text" value={formData.baseSalary} onChange={handleInputChange} required={true} placeholder="e.g., 1,000,000 - 1,500,000" />
-              <div className="form-group">
-                <label>Payment Frequency <span className="read-only-badge">Pre-filled by HR</span></label>
-                <select name="paymentFrequency" value={formData.paymentFrequency} disabled className="read-only">
-                  <option value="Per Month">Per Month</option>
-                  <option value="Per Week">Per Week</option>
-                  <option value="Per Course">Per Course</option>
-                  <option value="Per Lesson">Per Lesson</option>
-                  <option value="Others">Others</option>
-                </select>
+          {(formData.baseSalary || formData.paymentFrequency || formData.amountPerSession || formData.modeOfPayment || formData.paymentTerms || formData.rateAdjustment || formData.bonusesCommissions || formData.benefits) && (
+            <CollapsibleSection
+              id="compensation"
+              icon="💰"
+              title="Compensation and Benefits"
+              subtitle="Salary and benefits information"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.baseSalary && (
+                  <FormField label="Base Salary" name="baseSalary" type="text" value={formData.baseSalary} onChange={handleInputChange} required={true} placeholder="e.g., 1,000,000 - 1,500,000" />
+                )}
+                <div className="form-group">
+                  <label>Payment Frequency <span className="read-only-badge">Pre-filled by HR</span></label>
+                  <select name="paymentFrequency" value={formData.paymentFrequency} disabled className="read-only">
+                    <option value="Per Month">Per Month</option>
+                    <option value="Per Week">Per Week</option>
+                    <option value="Per Course">Per Course</option>
+                    <option value="Per Lesson">Per Lesson</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Amount to be Paid Per Session" name="amountPerSession" type="text" value={formData.amountPerSession} readOnly={true} />
-              <FormField label="Mode of Payment" name="modeOfPayment" type="text" value={formData.modeOfPayment} readOnly={true} />
-            </div>
-            <FormField label="Terms and Conditions for Payment" name="paymentTerms" type="textarea" value={formData.paymentTerms} readOnly={true} />
-            <FormField label="Rate Adjustment for Contract Renewal" name="rateAdjustment" type="textarea" value={formData.rateAdjustment} readOnly={true} />
-            <FormField label="Bonuses/Commissions" name="bonusesCommissions" type="textarea" value={formData.bonusesCommissions} onChange={handleInputChange} placeholder="Enter bonus and commission details (if applicable)" />
-            <FormField label="Benefits" name="benefits" type="textarea" value={formData.benefits} readOnly={true} />
-          </CollapsibleSection>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.amountPerSession && (
+                  <FormField label="Amount to be Paid Per Session" name="amountPerSession" type="text" value={formData.amountPerSession} readOnly={true} />
+                )}
+                {formData.modeOfPayment && (
+                  <FormField label="Mode of Payment" name="modeOfPayment" type="text" value={formData.modeOfPayment} readOnly={true} />
+                )}
+              </div>
+              {formData.paymentTerms && (
+                <FormField label="Terms and Conditions for Payment" name="paymentTerms" type="textarea" value={formData.paymentTerms} readOnly={true} />
+              )}
+              {formData.rateAdjustment && (
+                <FormField label="Rate Adjustment for Contract Renewal" name="rateAdjustment" type="textarea" value={formData.rateAdjustment} readOnly={true} />
+              )}
+              <FormField label="Bonuses/Commissions" name="bonusesCommissions" type="textarea" value={formData.bonusesCommissions} onChange={handleInputChange} placeholder="Enter bonus and commission details (if applicable)" />
+              {formData.benefits && (
+                <FormField label="Benefits" name="benefits" type="textarea" value={formData.benefits} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Work Hours and Leave */}
-          <CollapsibleSection
-            id="workHours"
-            icon="⏰"
-            title="Work Hours and Leave"
-            subtitle="Work schedule and leave policies"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Working Hours per Week" name="workingHoursPerWeek" type="number" value={formData.workingHoursPerWeek} readOnly={true} />
-            {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
-              <div className="form-group">
+          {(formData.workingHoursPerWeek || formData.workingHoursByDay || formData.overtimePolicy || formData.annualLeaveDays || formData.sickLeavePolicy || formData.unpaidLeaveConditions) && (
+            <CollapsibleSection
+              id="workHours"
+              icon="⏰"
+              title="Work Hours and Leave"
+              subtitle="Work schedule and leave policies"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.workingHoursPerWeek && (
+                <FormField label="Working Hours per Week" name="workingHoursPerWeek" type="number" value={formData.workingHoursPerWeek} readOnly={true} />
+              )}
+              {formData.workingHoursByDay && Object.keys(formData.workingHoursByDay).length > 0 && (
+                <div className="form-group">
+                  <label>Working Hours by Day</label>
+                  <div className="working-hours-display">
+                    {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
+                      hours.start && hours.end ? (
+                        <div key={day} className="working-hours-day">
+                          <strong>{day}:</strong> {hours.start} - {hours.end}
+                          {job.workingHoursByDay && job.workingHoursByDay[day] && job.workingHoursByDay[day].payment && (
+                            <span> (Payment: {job.workingHoursByDay[day].payment})</span>
+                          )}
+                        </div>
+                      ) : null
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Day-specific working hours */}
+              <div className="form-group full-width">
                 <label>Working Hours by Day</label>
-                <div className="working-hours-display">
-                  {Object.entries(formData.workingHoursByDay).map(([day, hours]) => (
-                    hours.start && hours.end ? (
-                      <div key={day} className="working-hours-day">
-                        <strong>{day}:</strong> {hours.start} - {hours.end}
-                        {job.workingHoursByDay && job.workingHoursByDay[day] && job.workingHoursByDay[day].payment && (
-                          <span> (Payment: {job.workingHoursByDay[day].payment})</span>
-                        )}
+                <div className="working-hours-container">
+                  {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                    <div key={day} className="day-hours-row">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                        <input 
+                          type="checkbox" 
+                          id={`workingDay-${day}`}
+                          checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
+                          onChange={(e) => {
+                            const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                            if (e.target.checked) {
+                              newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
+                            } else {
+                              delete newWorkingHoursByDay[day];
+                            }
+                            setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                          }}
+                        />
+                        <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                       </div>
-                    ) : null
+                      {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
+                            <div>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
+                              <input 
+                                type="time" 
+                                value={formData.workingHoursByDay[day].start}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].start = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                            <div>
+                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                              <input 
+                                type="time" 
+                                value={formData.workingHoursByDay[day].end}
+                                onChange={(e) => {
+                                  const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                  newWorkingHoursByDay[day].end = e.target.value;
+                                  setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                                }}
+                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                            <input 
+                              type="text" 
+                              value={formData.workingHoursByDay[day].payment || ''}
+                              onChange={(e) => {
+                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
+                                newWorkingHoursByDay[day].payment = e.target.value;
+                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
+                              }}
+                              placeholder="Payment details (e.g., 15,000 RWF per hour)"
+                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
-            )}
-            
-            {/* Day-specific working hours */}
-            <div className="form-group full-width">
-              <label>Working Hours by Day</label>
-              <div className="working-hours-container">
-                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
-                  <div key={day} className="day-hours-row">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                      <input 
-                        type="checkbox" 
-                        id={`workingDay-${day}`}
-                        checked={formData.workingHoursByDay && formData.workingHoursByDay[day]}
-                        onChange={(e) => {
-                          const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                          if (e.target.checked) {
-                            newWorkingHoursByDay[day] = { start: '', end: '', payment: '' };
-                          } else {
-                            delete newWorkingHoursByDay[day];
-                          }
-                          setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                        }}
-                      />
-                      <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
-                    </div>
-                    {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
-                          <div>
-                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
-                            <input 
-                              type="time" 
-                              value={formData.workingHoursByDay[day].start}
-                              onChange={(e) => {
-                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                newWorkingHoursByDay[day].start = e.target.value;
-                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              }}
-                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
-                            />
-                          </div>
-                          <div>
-                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
-                            <input 
-                              type="time" 
-                              value={formData.workingHoursByDay[day].end}
-                              onChange={(e) => {
-                                const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                                newWorkingHoursByDay[day].end = e.target.value;
-                                setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                              }}
-                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
-                          <input 
-                            type="text" 
-                            value={formData.workingHoursByDay[day].payment || ''}
-                            onChange={(e) => {
-                              const newWorkingHoursByDay = { ...formData.workingHoursByDay };
-                              newWorkingHoursByDay[day].payment = e.target.value;
-                              setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
-                            }}
-                            placeholder="Payment details (e.g., 15,000 RWF per hour)"
-                            style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <FormField label="Overtime Policy" name="overtimePolicy" type="textarea" value={formData.overtimePolicy} readOnly={true} />
-            <FormField label="Annual Leave Days" name="annualLeaveDays" type="number" value={formData.annualLeaveDays} readOnly={true} />
-            <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />
-            <FormField label="Unpaid Leave Conditions" name="unpaidLeaveConditions" type="textarea" value={formData.unpaidLeaveConditions} readOnly={true} />
-          </CollapsibleSection>
+              {formData.overtimePolicy && (
+                <FormField label="Overtime Policy" name="overtimePolicy" type="textarea" value={formData.overtimePolicy} readOnly={true} />
+              )}
+              {formData.annualLeaveDays && (
+                <FormField label="Annual Leave Days" name="annualLeaveDays" type="number" value={formData.annualLeaveDays} readOnly={true} />
+              )}
+              {formData.sickLeavePolicy && (
+                <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />
+              )}
+              {formData.unpaidLeaveConditions && (
+                <FormField label="Unpaid Leave Conditions" name="unpaidLeaveConditions" type="textarea" value={formData.unpaidLeaveConditions} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Legal and Policy Clauses */}
           {(formData.terminationConditions || formData.employeeNoticePeriod || formData.employerNoticePeriod || formData.groundsForDismissal || formData.severancePay) && (
@@ -670,30 +696,42 @@ export default function ContractFromJob() {
           )}
 
           {/* Confidentiality & IP */}
-          <CollapsibleSection
-            id="confidentiality"
-            icon="🔒"
-            title="Confidentiality & Intellectual Property"
-            subtitle="Confidentiality and IP ownership clauses"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Confidentiality Agreement" name="confidentialityAgreement" type="textarea" value={formData.confidentialityAgreement} readOnly={true} />
-            <FormField label="Intellectual Property Clause" name="intellectualPropertyClause" type="textarea" value={formData.intellectualPropertyClause} readOnly={true} />
-          </CollapsibleSection>
+          {(formData.confidentialityAgreement || formData.intellectualPropertyClause) && (
+            <CollapsibleSection
+              id="confidentiality"
+              icon="🔒"
+              title="Confidentiality & Intellectual Property"
+              subtitle="Confidentiality and IP ownership clauses"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.confidentialityAgreement && (
+                <FormField label="Confidentiality Agreement" name="confidentialityAgreement" type="textarea" value={formData.confidentialityAgreement} readOnly={true} />
+              )}
+              {formData.intellectualPropertyClause && (
+                <FormField label="Intellectual Property Clause" name="intellectualPropertyClause" type="textarea" value={formData.intellectualPropertyClause} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Restrictive Covenants */}
-          <CollapsibleSection
-            id="covenants"
-            icon="🚫"
-            title="Restrictive Covenants"
-            subtitle="Non-compete and non-solicitation clauses"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Non-Compete Clause" name="nonCompeteClause" type="textarea" value={formData.nonCompeteClause} readOnly={true} />
-            <FormField label="Non-Solicitation Clause" name="nonSolicitationClause" type="textarea" value={formData.nonSolicitationClause} readOnly={true} />
-          </CollapsibleSection>
+          {(formData.nonCompeteClause || formData.nonSolicitationClause) && (
+            <CollapsibleSection
+              id="covenants"
+              icon="🚫"
+              title="Restrictive Covenants"
+              subtitle="Non-compete and non-solicitation clauses"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.nonCompeteClause && (
+                <FormField label="Non-Compete Clause" name="nonCompeteClause" type="textarea" value={formData.nonCompeteClause} readOnly={true} />
+              )}
+              {formData.nonSolicitationClause && (
+                <FormField label="Non-Solicitation Clause" name="nonSolicitationClause" type="textarea" value={formData.nonSolicitationClause} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Supporting Documents */}
           <CollapsibleSection

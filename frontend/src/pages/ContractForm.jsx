@@ -1102,6 +1102,84 @@ export default function ContractForm() {
               )}
             </CollapsibleSection>
 
+            {/* CONFIDENTIALITY & INTELLECTUAL PROPERTY */}
+            {(formData.confidentialityAgreement || formData.intellectualPropertyClause) && (
+              <CollapsibleSection 
+                id="confidentiality"
+                icon="🔒"
+                title="Confidentiality & Intellectual Property"
+                subtitle="Confidentiality and IP ownership clauses"
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+              >
+                <div className="form-grid">
+                  {formData.confidentialityAgreement && (
+                    <FormField 
+                      label="Confidentiality Agreement" 
+                      name="confidentialityAgreement"
+                      type="textarea"
+                      value={formData.confidentialityAgreement}
+                      onChange={handleInputChange}
+                      placeholder="Confidentiality terms and conditions"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('confidentialityAgreement')}
+                    />
+                  )}
+                  {formData.intellectualPropertyClause && (
+                    <FormField 
+                      label="Intellectual Property Clause" 
+                      name="intellectualPropertyClause"
+                      type="textarea"
+                      value={formData.intellectualPropertyClause}
+                      onChange={handleInputChange}
+                      placeholder="Intellectual property ownership terms"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('intellectualPropertyClause')}
+                    />
+                  )}
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* RESTRICTIVE COVENANTS */}
+            {(formData.nonCompeteClause || formData.nonSolicitationClause) && (
+              <CollapsibleSection 
+                id="covenants"
+                icon="🚫"
+                title="Restrictive Covenants"
+                subtitle="Non-compete and non-solicitation clauses"
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+              >
+                <div className="form-grid">
+                  {formData.nonCompeteClause && (
+                    <FormField 
+                      label="Non-Compete Clause" 
+                      name="nonCompeteClause"
+                      type="textarea"
+                      value={formData.nonCompeteClause}
+                      onChange={handleInputChange}
+                      placeholder="Non-compete restrictions and duration"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('nonCompeteClause')}
+                    />
+                  )}
+                  {formData.nonSolicitationClause && (
+                    <FormField 
+                      label="Non-Solicitation Clause" 
+                      name="nonSolicitationClause"
+                      type="textarea"
+                      value={formData.nonSolicitationClause}
+                      onChange={handleInputChange}
+                      placeholder="Non-solicitation terms and conditions"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('nonSolicitationClause')}
+                    />
+                  )}
+                </div>
+              </CollapsibleSection>
+            )}
+
             {/* Form Actions */}
             <div className="form-actions">
               <button 
