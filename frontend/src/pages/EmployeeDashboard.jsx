@@ -59,16 +59,16 @@ export default function EmployeeDashboard() {
   return (
     <div>
       <div className="header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '25px' }}>
           <div className="logo-container">
-            <img src="/logo1.png" alt="Excellence Coaching Hub" style={{ height: '60px', width: 'auto', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
+            <img src="/logo1.png" alt="Excellence Coaching Hub" style={{ height: '65px', width: 'auto', borderRadius: '14px', boxShadow: '0 6px 15px rgba(0,0,0,0.2)' }} />
           </div>
           <div>
             <h1 className="header-title">👤 Employee Portal</h1>
-            <p style={{ color: 'rgba(255,255,255,0.9)', marginBottom: 0, fontSize: '16px' }}>Welcome back, <strong>{user.name}</strong></p>
+            <p style={{ color: 'rgba(255,255,255,0.95)', marginBottom: 0, fontSize: '17px', fontWeight: '500' }}>Welcome back, <strong>{user.name}</strong></p>
           </div>
         </div>
-        <button className="btn btn-secondary" onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}>
+        <button className="btn btn-secondary" onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', color: 'white', padding: '12px 24px', borderRadius: '10px', fontWeight: '600', fontSize: '16px', transition: 'all 0.3s ease' }}>
           🚪 Logout
         </button>
       </div>
@@ -77,10 +77,10 @@ export default function EmployeeDashboard() {
         {error && <div className="alert alert-error"><span>⚠️</span><div>{error}</div></div>}
 
         <div className="welcome-section">
-          <div className="welcome-card">
+          <div className="welcome-card pulse-animation">
             <div className="welcome-content">
               <h2>👋 Welcome to Your Employee Portal</h2>
-              <p>Manage your employment contract and track your progress</p>
+              <p>Manage your employment contract and track your progress with our modern dashboard</p>
             </div>
             <div className="welcome-stats">
               <div className="stat-item">
@@ -100,7 +100,7 @@ export default function EmployeeDashboard() {
         </div>
 
         <div className="dashboard-grid">
-          <div className="profile-card">
+          <div className="profile-card float-animation">
             <div className="card-header">
               <div className="card-icon">👤</div>
               <h2>My Profile</h2>
@@ -137,7 +137,7 @@ export default function EmployeeDashboard() {
             </div>
           </div>
 
-          {contract && (<div className="contract-card">
+          {contract && (<div className="contract-card float-animation">
             <div className="card-header">
               <div className="card-icon">📄</div>
               <h2>My Employment Contract</h2>
@@ -249,17 +249,17 @@ export default function EmployeeDashboard() {
               </div>
             )}
           </div>)}
-          {!contract && (<div className="empty-state-card">
+          {!contract && (<div className="empty-state-card float-animation">
             <div className="empty-state-content">
               <div className="empty-icon">📋</div>
               <h2>Get Started with Your Contract</h2>
               <p>You haven't submitted an employment contract yet. Browse available positions or create your contract now.</p>
               <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-                <Link to="/jobs" className="action-btn primary" style={{ marginBottom: '10px' }}>
+                <Link to="/jobs" className="action-btn primary" style={{ marginBottom: '10px', transition: 'all 0.3s ease' }}>
                   <span className="btn-icon">💼</span>
                   <span className="btn-text">Browse Available Jobs</span>
                 </Link>
-                <Link to="/jobs" className="action-btn primary">
+                <Link to="/jobs" className="action-btn primary" style={{ transition: 'all 0.3s ease' }}>
                   <span className="btn-icon">✍️</span>
                   <span className="btn-text">Apply for a Job</span>
                 </Link>
@@ -269,10 +269,10 @@ export default function EmployeeDashboard() {
           )}
         </div>
 
-        <div style={{ marginTop: '40px' }}>
+        <div style={{ marginTop: '50px' }}>
           <div className="section-header">
             <h2>💼 Quick Actions</h2>
-            <p>Access key features</p>
+            <p>Access key features and manage your employment journey</p>
           </div>
           <div className="quick-actions-grid">
             <Link to="/jobs" className="action-card">
@@ -287,7 +287,7 @@ export default function EmployeeDashboard() {
               <div className="action-icon">📝</div>
               <div className="action-content">
                 <h4>Apply for Jobs</h4>
-                <p>Find and apply for available positions</p>
+                <p>Find and apply for available positions that align with your career goals</p>
               </div>
               <div className="action-arrow">→</div>
             </Link>
