@@ -148,9 +148,14 @@ export default function JobDetails() {
                   <p style={{ margin: '0 0 5px 0', color: '#7f8c8d', fontSize: '12px', fontWeight: 'bold' }}>Working Hours by Day:</p>
                   {Object.entries(job.workingHoursByDay).map(([day, hours]) => (
                     hours.start && hours.end ? (
-                      <p key={day} style={{ margin: '0 0 3px 0', color: '#2c3e50', fontSize: '13px' }}>
-                        {day}: {hours.start} - {hours.end}
-                        {hours.payment && ` (Payment: ${hours.payment})`}
+                      <p key={day} style={{ margin: '0 0 3px 0', color: '#2c3e50', fontSize: '13px', wordBreak: 'break-word' }}>
+                        <span style={{ display: 'inline-block', minWidth: '80px', fontWeight: '500' }}>{day}:</span> 
+                        <span style={{ display: 'inline-block', margin: '0 5px' }}>{hours.start} - {hours.end}</span>
+                        {hours.payment && (
+                          <span style={{ display: 'block', marginLeft: '80px', fontSize: '12px', color: '#555' }}>
+                            Payment: {hours.payment}
+                          </span>
+                        )}
                       </p>
                     ) : null
                   ))}

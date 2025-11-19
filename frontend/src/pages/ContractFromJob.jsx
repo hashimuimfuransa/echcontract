@@ -611,10 +611,10 @@ export default function ContractFromJob() {
                         <label htmlFor={`workingDay-${day}`} className="day-label">{day}</label>
                       </div>
                       {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
-                            <div>
-                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
+                        <div className="day-hours-content">
+                          <div className="time-inputs-grid">
+                            <div className="time-input-group">
+                              <label className="time-input-label">Start Time</label>
                               <input 
                                 type="time" 
                                 value={formData.workingHoursByDay[day].start}
@@ -623,11 +623,11 @@ export default function ContractFromJob() {
                                   newWorkingHoursByDay[day].start = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                                 }}
-                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                className="time-input"
                               />
                             </div>
-                            <div>
-                              <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
+                            <div className="time-input-group">
+                              <label className="time-input-label">End Time</label>
                               <input 
                                 type="time" 
                                 value={formData.workingHoursByDay[day].end}
@@ -636,12 +636,12 @@ export default function ContractFromJob() {
                                   newWorkingHoursByDay[day].end = e.target.value;
                                   setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                                 }}
-                                style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                                className="time-input"
                               />
                             </div>
                           </div>
-                          <div>
-                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
+                          <div className="payment-input-group">
+                            <label className="payment-input-label">Payment Details</label>
                             <input 
                               type="text" 
                               value={formData.workingHoursByDay[day].payment || ''}
@@ -651,7 +651,7 @@ export default function ContractFromJob() {
                                 setFormData(prev => ({ ...prev, workingHoursByDay: newWorkingHoursByDay }));
                               }}
                               placeholder="Payment details (e.g., 15,000 RWF per hour)"
-                              style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
+                              className="payment-input"
                             />
                           </div>
                         </div>

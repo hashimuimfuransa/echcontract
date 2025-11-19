@@ -49,13 +49,16 @@ export default function JobListings() {
       'English',
       'French',
       'Kinyarwanda',
-      'Business Communication'
+      'Spanish',
+      'Chinese'
     ],
     'Technical & Digital Coaching': [
-      'AI',
-      'Data',
+      'Programming',
+      'Web Development',
+      'Mobile App Development',
+      'Data Science',
       'Cybersecurity',
-      'Cloud',
+      'Cloud Computing',
       'Dev',
       'Digital Marketing'
     ],
@@ -137,22 +140,22 @@ export default function JobListings() {
   }
 
   return (
-    <div>
+    <div className="jobs-page">
       <div className="header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="header-content">
           <div className="logo-container">
-            <img src="/logo1.png" alt="Excellence Coaching Hub" style={{ height: '60px', width: 'auto', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
+            <img src="/logo1.png" alt="Excellence Coaching Hub" className="logo" />
           </div>
-          <div>
+          <div className="header-text">
             <h1 className="header-title">💼 Available Job Positions</h1>
-            <p style={{ color: 'rgba(255,255,255,0.9)', marginBottom: 0, fontSize: '16px' }}>Find your next opportunity</p>
+            <p>Find your next opportunity</p>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Link to="/employee" className="btn btn-secondary" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
+        <div className="header-actions">
+          <Link to="/employee" className="btn btn-secondary">
             Back
           </Link>
-          <button className="btn btn-secondary" onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}>
+          <button className="btn btn-secondary" onClick={handleLogout}>
             🚪 Logout
           </button>
         </div>
@@ -161,166 +164,139 @@ export default function JobListings() {
       <div className="container">
         {error && <div className="alert alert-error">{error}</div>}
 
-        <div className="card" style={{ marginBottom: '30px' }}>
-          <div className="filter-section">
-            <div className="filter-header">
-              <h3>🔍 Search & Filter Jobs</h3>
-              <p>Browse available positions matching your interests</p>
+        <div className="filter-section">
+          <div className="filter-header">
+            <h2>🔍 Search & Filter Jobs</h2>
+            <p>Browse available positions matching your interests</p>
+          </div>
+          <div className="filter-controls">
+            <div className="filter-group">
+              <label htmlFor="search">Search:</label>
+              <input
+                type="text"
+                id="search"
+                placeholder="Search by job title or keywords..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="filter-input"
+              />
             </div>
-            <div className="filter-controls">
-              <div className="filter-group">
-                <label>Search:</label>
-                <input
-                  type="text"
-                  placeholder="Search by job title or keywords..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="filter-input"
-                />
-              </div>
 
-              <div className="filter-group">
-                <label>Category:</label>
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="filter-select"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
-              </div>
+            <div className="filter-group">
+              <label htmlFor="category">Category:</label>
+              <select
+                id="category"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="filter-select"
+              >
+                <option value="">All Categories</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
 
         {loading ? (
-          <div className="card loading-card">
-            <div className="loading-content">
-              <div className="spinner" style={{ width: '50px', height: '50px', margin: '0 auto 20px' }}></div>
-              <h3>Loading job positions...</h3>
-              <p>Please wait while we fetch available positions</p>
-            </div>
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <h3>Loading job positions...</h3>
+            <p>Please wait while we fetch available positions</p>
           </div>
         ) : jobs.length === 0 ? (
-          <div className="card" style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🔍</div>
+          <div className="empty-state">
+            <div className="empty-icon">🔍</div>
             <h3>No Jobs Found</h3>
             <p>There are currently no available positions matching your criteria. Please check back later or try different filters.</p>
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: '20px', color: '#666' }}>
+            <div className="results-info">
               <p>Found {pagination?.total || 0} available position(s)</p>
             </div>
 
-            {jobs.map(job => (
-              <div key={job._id} className="card" style={{ marginBottom: '20px', cursor: 'pointer', transition: 'transform 0.2s, boxShadow 0.2s' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-5px)'
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '15px' }}>
-                  <div>
-                    <h3 style={{ margin: '0 0 8px 0', color: '#2c3e50' }}>{job.title}</h3>
-                    <div style={{ display: 'flex', gap: '20px', fontSize: '14px', color: '#7f8c8d', marginBottom: '10px' }}>
-                      <span>📁 {job.department}</span>
-                      <span>🏷️ {job.category}</span>
-                      <span>📍 {job.location}</span>
-                    </div>
+            <div className="jobs-grid">
+              {jobs.map(job => (
+                <div key={job._id} className="job-card">
+                  <div className="job-header">
+                    <h3 className="job-title">{job.title}</h3>
+                    <span className="job-status">✅ Active</span>
                   </div>
-                  <span style={{
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    backgroundColor: '#d4edda',
-                    color: '#155724'
-                  }}>
-                    ✅ Active
-                  </span>
-                </div>
 
-                <p style={{ color: '#555', marginBottom: '15px', lineHeight: '1.6' }}>
-                  {job.description.length > 200 ? job.description.substring(0, 200) + '...' : job.description}
-                </p>
-
-                {job.subcategories && job.subcategories.length > 0 && (
-                  <div style={{ marginBottom: '15px' }}>
-                    <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', fontSize: '12px', color: '#7f8c8d' }}>Sub-categories:</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                      {job.subcategories.map(sub => (
-                        <span key={sub} style={{
-                          padding: '4px 10px',
-                          backgroundColor: '#e8f4f8',
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          color: '#2c3e50'
-                        }}>
-                          {sub}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="job-meta">
+                    <span className="job-meta-item">📁 {job.department}</span>
+                    <span className="job-meta-item">🏷️ {job.category}</span>
+                    <span className="job-meta-item">📍 {job.location}</span>
                   </div>
-                )}
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px', marginBottom: '15px', fontSize: '13px' }}>
-                  {job.baseSalaryMin && (
-                    <div>
-                      <span style={{ color: '#7f8c8d' }}>💰 Salary Range:</span>
-                      <p style={{ margin: '5px 0 0 0' }}>{job.baseSalaryMin.toLocaleString()} - {job.baseSalaryMax?.toLocaleString() || 'Negotiable'}</p>
+                  <p className="job-description">
+                    {job.description.length > 200 ? job.description.substring(0, 200) + '...' : job.description}
+                  </p>
+
+                  {job.subcategories && job.subcategories.length > 0 && (
+                    <div className="job-subcategories">
+                      <p className="subcategories-label">Sub-categories:</p>
+                      <div className="subcategories-list">
+                        {job.subcategories.map(sub => (
+                          <span key={sub} className="subcategory-tag">
+                            {sub}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
-                  <div>
-                    <span style={{ color: '#7f8c8d' }}>⏰ Working Hours:</span>
-                    <p style={{ margin: '5px 0 0 0' }}>{job.workingHoursPerWeek} hours/week</p>
-                  </div>
-                  <div>
-                    <span style={{ color: '#7f8c8d' }}>🏢 Contract:</span>
-                    <p style={{ margin: '5px 0 0 0' }}>{job.contractType}</p>
-                  </div>
-                </div>
 
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Link
-                    to={`/jobs/${job._id}`}
-                    className="btn btn-primary"
-                    style={{ flex: 1, textAlign: 'center' }}
-                  >
-                    👁️ View Details
-                  </Link>
-                  <Link
-                    to={`/employee/contract-from-job?jobId=${job._id}`}
-                    className="btn btn-success"
-                    style={{ flex: 1, textAlign: 'center', backgroundColor: '#27ae60', border: 'none' }}
-                  >
-                    📝 Apply Now
-                  </Link>
+                  <div className="job-details">
+                    {job.baseSalaryMin && (
+                      <div className="job-detail-item">
+                        <span className="detail-label">💰 Salary Range:</span>
+                        <p className="detail-value">{job.baseSalaryMin.toLocaleString()} - {job.baseSalaryMax?.toLocaleString() || 'Negotiable'}</p>
+                      </div>
+                    )}
+                    <div className="job-detail-item">
+                      <span className="detail-label">⏰ Working Hours:</span>
+                      <p className="detail-value">{job.workingHoursPerWeek} hours/week</p>
+                    </div>
+                    <div className="job-detail-item">
+                      <span className="detail-label">🏢 Contract:</span>
+                      <p className="detail-value">{job.contractType}</p>
+                    </div>
+                  </div>
+
+                  <div className="job-actions">
+                    <Link
+                      to={`/jobs/${job._id}`}
+                      className="btn btn-primary job-action-btn"
+                    >
+                      👁️ View Details
+                    </Link>
+                    <Link
+                      to={`/employee/contract-from-job?jobId=${job._id}`}
+                      className="btn btn-success job-action-btn"
+                    >
+                      📝 Apply Now
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             {pagination && pagination.pages > 1 && (
-              <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              <div className="pagination">
                 <button
-                  className="btn btn-small"
+                  className="btn btn-secondary pagination-btn"
                   disabled={page === 1}
                   onClick={() => setPage(page - 1)}
                 >
                   ← Previous
                 </button>
-                <span style={{ padding: '8px 12px' }}>
+                <span className="pagination-info">
                   Page {page} of {pagination.pages}
                 </span>
                 <button
-                  className="btn btn-small"
+                  className="btn btn-secondary pagination-btn"
                   disabled={page === pagination.pages}
                   onClick={() => setPage(page + 1)}
                 >
