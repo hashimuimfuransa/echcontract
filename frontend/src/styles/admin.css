@@ -641,12 +641,179 @@ tr:hover td {
     padding: 12px 14px;
     font-size: 14px;
   }
+  
+  /* Admin Contracts Modal */
+  .modal-content {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .contract-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .detail-item {
+    padding: 12px;
+  }
+  
+  .detail-label {
+    font-size: 13px;
+  }
+  
+  .detail-value {
+    font-size: 14px;
+  }
 }
 
 /* Desktop improvements for larger screens */
 @media (min-width: 1200px) {
   .day-hours-row {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+/* Admin Contracts Responsive Styles */
+@media (max-width: 768px) {
+  /* Modal adjustments */
+  .modal-content {
+    margin: 20px;
+    max-width: calc(100% - 40px);
+    padding: 15px;
+  }
+  
+  .modal-header {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .modal-footer {
+    padding: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .modal-footer > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Contract details grid */
+  .contract-details-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  /* Detail items */
+  .detail-item {
+    padding: 15px;
+  }
+  
+  /* Documents section */
+  .documents-section {
+    max-height: 200px;
+  }
+  
+  /* Contract history */
+  .contract-history {
+    max-height: 150px;
+  }
+  
+  /* Table adjustments */
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 600px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+  
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .header {
+    padding: 20px 15px;
+    text-align: center;
+  }
+  
+  .header > div:first-child {
+    width: 100%;
+  }
+  
+  .header-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    margin: 5px;
+    max-width: calc(100% - 10px);
+    padding: 10px;
+  }
+  
+  .modal-header {
+    padding: 15px;
+  }
+  
+  .modal-header h2 {
+    font-size: 22px;
+  }
+  
+  .modal-footer {
+    padding: 15px;
+  }
+  
+  .detail-item {
+    padding: 12px;
+  }
+  
+  .detail-label {
+    font-size: 12px;
+  }
+  
+  .detail-value {
+    font-size: 13px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+  }
+  
+  .document-item {
+    padding: 10px;
+  }
+  
+  .document-link {
+    font-size: 13px;
+  }
+  
+  th, td {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+  
+  .header-title {
+    font-size: 24px;
+  }
+  
+  .header p {
+    font-size: 14px;
   }
 }
 

@@ -123,7 +123,7 @@ export default function AdminContracts() {
 
   return (
     <div>
-      <div className="header" style={{
+      <div className="header contract-header" style={{
         background: 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)',
         color: 'white',
         padding: '30px',
@@ -185,7 +185,7 @@ export default function AdminContracts() {
           boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
           border: '1px solid rgba(255, 255, 255, 0.8)'
         }}>
-          <div className="filter-section" style={{
+          <div className="filter-section contract-filter-section" style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -244,8 +244,8 @@ export default function AdminContracts() {
             </div>
           ) : contracts.length > 0 ? (
             <>
-              <div className="table-container">
-                <table className="table">
+              <div className="table-container" style={{ overflowX: 'auto' }}>
+                <table className="table" style={{ minWidth: '600px' }}>
                   <thead>
                     <tr>
                       <th>Employee Name</th>
@@ -313,15 +313,17 @@ export default function AdminContracts() {
 
       {showReviewModal && contractDetails && (
         <div className="modal active" style={{ zIndex: 1000 }}>
-          <div className="modal-content" style={{ 
+          <div className="modal-content contract-modal-content" style={{ 
             maxWidth: '1200px', 
             maxHeight: '90vh', 
             overflowY: 'auto',
             borderRadius: '16px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.2)',
-            border: '1px solid rgba(0, 0, 0, 0.1)'
+            border: '1px solid rgba(0, 0, 0, 0.1)',
+            margin: '20px',
+            width: 'calc(100% - 40px)'
           }}>
-            <div className="modal-header" style={{
+            <div className="modal-header contract-modal-header" style={{
               padding: '25px 30px',
               backgroundColor: '#f8fafc',
               borderBottom: '2px solid #e2e8f0',
@@ -374,8 +376,8 @@ export default function AdminContracts() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '25px', marginBottom: '25px', flexWrap: 'wrap' }}>
-              <div style={{ flex: 2, minWidth: '300px' }}>
+            <div className="contract-details-container" style={{ display: 'flex', gap: '25px', marginBottom: '25px', flexWrap: 'wrap' }}>
+              <div className="contract-main-content" style={{ flex: 2, minWidth: '300px' }}>
                 <div className="card" style={{ marginBottom: '25px' }}>
                   <h3 style={{ 
                     margin: '0 0 20px 0', 
@@ -393,7 +395,7 @@ export default function AdminContracts() {
                     gap: '20px' 
                   }}>
                     {contractDetails.formData && Object.entries(contractDetails.formData).map(([key, value]) => (
-                      <div key={key} className="detail-item" style={{
+                      <div key={key} className="detail-item contract-detail-item" style={{
                         padding: '15px',
                         backgroundColor: '#f8fafc',
                         borderRadius: '10px',
@@ -452,7 +454,7 @@ export default function AdminContracts() {
                 </div>
               </div>
               
-              <div style={{ flex: 1, minWidth: '300px' }}>
+              <div className="contract-sidebar" style={{ flex: 1, minWidth: '300px' }}>
                 <div className="card" style={{ marginBottom: '25px' }}>
                   <h3 style={{ 
                     margin: '0 0 20px 0', 
@@ -464,7 +466,7 @@ export default function AdminContracts() {
                   }}>
                     👤 Employee Information
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <div className="employee-info-section" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                     <div>
                       <label style={{
                         display: 'block',
@@ -531,7 +533,7 @@ export default function AdminContracts() {
                   }}>
                     📎 Uploaded Documents
                   </h3>
-                  <div className="documents-section" style={{
+                  <div className="documents-section contract-documents-section" style={{
                     maxHeight: '300px',
                     overflowY: 'auto',
                     paddingRight: '10px'
@@ -595,7 +597,7 @@ export default function AdminContracts() {
                   }}>
                     📅 Contract History
                   </h3>
-                  <div style={{
+                  <div className="contract-history contract-history-section" style={{
                     maxHeight: '200px',
                     overflowY: 'auto',
                     paddingRight: '10px'
@@ -659,7 +661,7 @@ export default function AdminContracts() {
               </div>
             </div>
 
-            <div className="modal-footer" style={{ 
+            <div className="modal-footer contract-modal-footer" style={{ 
               borderTop: '2px solid #e2e8f0', 
               padding: '25px 30px', 
               backgroundColor: '#f8fafc',
@@ -732,7 +734,7 @@ export default function AdminContracts() {
 
       {showEditModal && (
         <div className="modal active">
-          <div className="modal-content" style={{ maxWidth: '800px', maxHeight: '80vh', overflowY: 'auto' }}>
+          <div className="modal-content contract-edit-modal" style={{ maxWidth: '800px', maxHeight: '80vh', overflowY: 'auto', margin: '20px', width: 'calc(100% - 40px)' }}>
             <div className="modal-header">
               <h2>Edit Contract - {contractDetails?.employee?.name}</h2>
             </div>
