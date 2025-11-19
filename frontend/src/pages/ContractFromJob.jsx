@@ -97,11 +97,7 @@ export default function ContractFromJob() {
     annualLeaveDays: '20',
     sickLeavePolicy: 'Maximum 10 sick leave days per year.',
     unpaidLeaveConditions: 'Unpaid leave may be granted for valid reasons with prior written request.',
-    terminationConditions: 'Employment may be terminated by either party with written notice.',
-    employeeNoticePeriod: '30 days written notice to employer',
-    employerNoticePeriod: '30 days written notice to employee',
-    groundsForDismissal: 'Gross misconduct, repeated poor performance, insubordination.',
-    severancePay: 'Severance pay of one month salary per year of service.',
+    
     confidentialityAgreement: 'Employee acknowledges and agrees to maintain strict confidentiality.',
     intellectualPropertyClause: 'All work, ideas, or content created for the company will belong only to Excellence Coaching Hub.',
     nonCompeteClause: 'During employment and for 12 months after termination, employee shall not engage in competitive business.',
@@ -121,7 +117,6 @@ export default function ContractFromJob() {
     startDuration: false,
     compensation: false,
     workHours: false,
-    legal: false,
     confidentiality: false,
     covenants: false,
     
@@ -588,24 +583,6 @@ export default function ContractFromJob() {
             <FormField label="Annual Leave Days" name="annualLeaveDays" type="number" value={formData.annualLeaveDays} readOnly={true} />
             <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />
             <FormField label="Unpaid Leave Conditions" name="unpaidLeaveConditions" type="textarea" value={formData.unpaidLeaveConditions} readOnly={true} />
-          </CollapsibleSection>
-
-          {/* Legal and Policy Clauses */}
-          <CollapsibleSection
-            id="legal"
-            icon="⚖️"
-            title="Legal and Policy Clauses"
-            subtitle="Termination and employment conditions"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Termination Conditions" name="terminationConditions" type="textarea" value={formData.terminationConditions} readOnly={true} />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <FormField label="Employee Notice Period" name="employeeNoticePeriod" value={formData.employeeNoticePeriod} readOnly={true} />
-              <FormField label="Employer Notice Period" name="employerNoticePeriod" value={formData.employerNoticePeriod} readOnly={true} />
-            </div>
-            <FormField label="Grounds for Dismissal" name="groundsForDismissal" type="textarea" value={formData.groundsForDismissal} readOnly={true} />
-            <FormField label="Severance Pay" name="severancePay" type="textarea" value={formData.severancePay} readOnly={true} />
           </CollapsibleSection>
 
           {/* Confidentiality & IP */}
