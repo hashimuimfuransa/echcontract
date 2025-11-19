@@ -117,6 +117,12 @@ const AdminDashboard = () => {
           <Link to="/admin/jobs/new" className="btn btn-primary" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
             Create New Job
           </Link>
+          <Link to="/admin/contracts" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
+            Manage Contracts
+          </Link>
+          <Link to="/admin/contracts?status=Under%20Review" className="btn btn-primary" style={{ textDecoration: 'none', display: 'block', textAlign: 'center' }}>
+            Review Pending Contracts
+          </Link>
         </div>
       </div>
     </div>
