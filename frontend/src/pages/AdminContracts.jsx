@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api'
 import '../styles/admin.css'
 import '../styles/contractForm.css'
 
 export default function AdminContracts() {
+  const navigate = useNavigate()
   const [contracts, setContracts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')

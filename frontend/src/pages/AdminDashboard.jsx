@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api'
 
 const AdminDashboard = () => {
+  const navigate = useNavigate()
   const [stats, setStats] = useState({
     totalJobs: 0,
     activeJobs: 0,
@@ -39,6 +40,13 @@ const AdminDashboard = () => {
     }
   }
 
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem('token')
+    // Redirect to login page
+    navigate('/login')
+  }
+
   if (loading) {
     return (
       <div className="admin-dashboard">
@@ -54,9 +62,14 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <h1 className="dashboard-title">Admin Dashboard</h1>
-        <Link to="/admin/jobs" className="btn btn-primary">
-          Manage Jobs
-        </Link>
+        <div className="header-actions">
+          <Link to="/admin/jobs" className="btn btn-primary">
+            Manage Jobs
+          </Link>
+          <button onClick={handleLogout} className="btn btn-secondary">
+            Logout
+          </button>
+        </div>
       </div>
 
       {error && (

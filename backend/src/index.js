@@ -21,10 +21,14 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://www.contract.excellencecoachinghub.com',
-    'https://echcontractbackend.onrender.com'
+    'https://echcontractbackend.onrender.com',
+    'https://contract.excellencecoachinghub.com'
   ],
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  exposedHeaders: ['Authorization']
 }))
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))

@@ -560,7 +560,6 @@ const AdminJobsManagement = () => {
           <button 
             onClick={() => window.history.back()}
             className="btn btn-secondary"
-            style={{ marginLeft: '10px' }}
           >
             Back
           </button>
@@ -591,12 +590,12 @@ const AdminJobsManagement = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
-                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px', minWidth: '250px' }}
+                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px' }}
                 />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px', marginLeft: '10px', minWidth: '150px' }}
+                  style={{ padding: '10px 15px', borderRadius: '8px', border: '2px solid #e2e8f0', fontSize: '15px' }}
                 >
                   <option value="">All Statuses</option>
                   <option value="Draft">Draft</option>
@@ -677,7 +676,7 @@ const AdminJobsManagement = () => {
               <button 
                 onClick={autoSaveJob}
                 className="btn btn-secondary"
-                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}
               >
                 💾 Save Draft
               </button>
@@ -947,7 +946,7 @@ const AdminJobsManagement = () => {
                 <div className="working-hours-container">
                   {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
                     <div key={day} className="day-hours-row">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <div className="day-checkbox-container" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                         <input 
                           type="checkbox" 
                           id={`workingDay-${day}`}
@@ -967,8 +966,8 @@ const AdminJobsManagement = () => {
                       </div>
                       {formData.workingHoursByDay && formData.workingHoursByDay[day] && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
-                            <div>
+                          <div className="time-inputs-container" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', width: '100%' }}>
+                            <div className="time-input-group">
                               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Start Time</label>
                               <input 
                                 type="time" 
@@ -982,7 +981,7 @@ const AdminJobsManagement = () => {
                                 style={{ width: '100%', minHeight: '45px', fontSize: '16px', padding: '10px 15px', border: '2px solid #e2e8f0', borderRadius: '8px', boxSizing: 'border-box' }}
                               />
                             </div>
-                            <div>
+                            <div className="time-input-group">
                               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>End Time</label>
                               <input 
                                 type="time" 
@@ -997,7 +996,7 @@ const AdminJobsManagement = () => {
                               />
                             </div>
                           </div>
-                          <div>
+                          <div className="payment-details-group">
                             <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', color: '#2d3748' }}>Payment Details</label>
                             <input 
                               type="text" 
@@ -1074,7 +1073,7 @@ const AdminJobsManagement = () => {
                 type="button" 
                 onClick={autoSaveJob}
                 className="btn btn-secondary"
-                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center' }}
               >
                 💾 Save Draft
               </button>

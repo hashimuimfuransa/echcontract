@@ -61,9 +61,7 @@ const contractTemplate = {
     { label: 'Non-Compete Clause', type: 'textarea', key: 'nonCompeteClause' },
     { label: 'Non-Solicitation Clause', type: 'textarea', key: 'nonSolicitationClause' },
 
-    // Dispute Resolution
-    { label: 'Dispute Resolution', type: 'text', key: 'disputeResolution' },
-    { label: 'Jurisdiction', type: 'text', key: 'jurisdiction' }
+    
   ]
 }
 

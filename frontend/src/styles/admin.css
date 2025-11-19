@@ -840,6 +840,19 @@ tr:hover td {
   margin: 0;
 }
 
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1192,11 +1205,19 @@ tr:hover td {
   .dashboard-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
   }
   
   .dashboard-title {
     font-size: 24px;
     text-align: center;
+  }
+  
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
   }
   
   .metrics-grid {
@@ -1210,6 +1231,7 @@ tr:hover td {
   .section-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
   }
   
   .section-title {
@@ -1217,9 +1239,22 @@ tr:hover td {
     text-align: center;
   }
   
+  .search-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .search-input {
+    margin-left: 0 !important;
+    min-width: auto !important;
+  }
+  
   .btn {
     width: 100%;
     justify-content: center;
+    padding: 12px;
   }
   
   .job-form {
@@ -1229,6 +1264,7 @@ tr:hover td {
   .form-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
   }
   
   .form-title {
@@ -1243,6 +1279,7 @@ tr:hover td {
   
   .form-actions {
     flex-direction: column;
+    gap: 10px;
   }
   
   .form-actions .btn {
@@ -1252,6 +1289,7 @@ tr:hover td {
   .jobs-table {
     display: block;
     overflow-x: auto;
+    min-width: 600px;
   }
   
   .subcategory-grid {
@@ -1265,6 +1303,22 @@ tr:hover td {
   
   .pagination button {
     width: 100%;
+  }
+  
+  .day-hours-row {
+    padding: 15px;
+  }
+  
+  .day-hours-row > div:first-child {
+    margin-bottom: 10px;
+  }
+  
+  .working-hours-container {
+    gap: 15px;
+  }
+  
+  .form-group.full-width {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1312,6 +1366,16 @@ tr:hover td {
   
   .day-hours-row {
     padding: 12px;
+  }
+  
+  .time-inputs-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .time-input-group,
+  .payment-details-group {
+    width: 100%;
   }
 }
 

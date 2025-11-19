@@ -106,12 +106,7 @@ export default function ContractFromJob() {
     intellectualPropertyClause: 'All work, ideas, or content created for the company will belong only to Excellence Coaching Hub.',
     nonCompeteClause: 'During employment and for 12 months after termination, employee shall not engage in competitive business.',
     nonSolicitationClause: 'Employee shall not solicit clients or employees during and 12 months after employment.',
-    disputeResolution: 'Mediation',
-    jurisdiction: 'Rwanda',
-    employeeHandbookRef: 'Employee Handbook Version 2.0 - Available in digital format.',
-    workplaceConduct: 'Employee agrees to conduct themselves professionally.',
-    technologySecurity: 'All company technology resources must be used for business purposes only.',
-    healthSafetyAcknowledgment: 'Employee acknowledges receipt of health and safety policies.'
+    
   })
 
   const [documents, setDocuments] = useState([])
@@ -129,8 +124,7 @@ export default function ContractFromJob() {
     legal: false,
     confidentiality: false,
     covenants: false,
-    dispute: false,
-    policies: false,
+    
     documents: false
   })
 
@@ -638,46 +632,6 @@ export default function ContractFromJob() {
           >
             <FormField label="Non-Compete Clause" name="nonCompeteClause" type="textarea" value={formData.nonCompeteClause} readOnly={true} />
             <FormField label="Non-Solicitation Clause" name="nonSolicitationClause" type="textarea" value={formData.nonSolicitationClause} readOnly={true} />
-          </CollapsibleSection>
-
-          {/* Dispute Resolution */}
-          <CollapsibleSection
-            id="dispute"
-            icon="⚠️"
-            title="Dispute Resolution"
-            subtitle="Mediation and jurisdiction"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <div className="form-group">
-                <label>Dispute Resolution <span className="read-only-badge">Pre-filled by HR</span></label>
-                <select name="disputeResolution" value={formData.disputeResolution} disabled className="read-only">
-                  <option value="Mediation">Mediation</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Jurisdiction <span className="read-only-badge">Pre-filled by HR</span></label>
-                <select name="jurisdiction" value={formData.jurisdiction} disabled className="read-only">
-                  <option value="Rwanda">Rwanda</option>
-                </select>
-              </div>
-            </div>
-          </CollapsibleSection>
-
-          {/* Company Policies */}
-          <CollapsibleSection
-            id="policies"
-            icon="📋"
-            title="Company Policies"
-            subtitle="Workplace conduct and policies"
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-          >
-            <FormField label="Employee Handbook Reference" name="employeeHandbookRef" type="textarea" value={formData.employeeHandbookRef} readOnly={true} />
-            <FormField label="Workplace Conduct" name="workplaceConduct" type="textarea" value={formData.workplaceConduct} readOnly={true} />
-            <FormField label="Technology and Security" name="technologySecurity" type="textarea" value={formData.technologySecurity} readOnly={true} />
-            <FormField label="Health and Safety Acknowledgment" name="healthSafetyAcknowledgment" type="textarea" value={formData.healthSafetyAcknowledgment} readOnly={true} />
           </CollapsibleSection>
 
           {/* Supporting Documents */}
