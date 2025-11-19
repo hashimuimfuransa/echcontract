@@ -17,19 +17,69 @@ import { connectDatabase } from './config/db.js'
 
 const app = express()
 
-app.use(cors({
+// Enhanced CORS configuration
+const corsOptions = {
   origin: [
     'http://localhost:5173',
+    'http://localhost:3000',
     'https://www.contract.excellencecoachinghub.com',
-    'https://echcontractbackend.onrender.com',
-    'https://contract.excellencecoachinghub.com'
+    'https://contract.excellencecoachinghub.com',
+    'https://echcontractbackend.onrender.com'
   ],
   credentials: true,
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-  exposedHeaders: ['Authorization']
-}))
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Origin', 
+    'X-Requested-With', 
+    'Content-Type', 
+    'Accept', 
+    'Authorization',
+    'X-HTTP-Method-Override'
+  ],
+  exposedHeaders: [
+    'Authorization',
+    'Content-Type',
+    'X-Total-Count'
+  ]
+}
+
+app.use(cors(corsOptions))
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions))
+
+// Manual CORS headers middleware as fallback
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://www.contract.excellencecoachinghub.com',
+    'https://contract.excellencecoachinghub.com',
+    'https://echcontractbackend.onrender.com'
+  ];
+  
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+  
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override');
+  res.header('Access-Control-Expose-Headers', 'Authorization, Content-Type, X-Total-Count');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    return;
+  }
+  
+  next();
+});
+
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))
 
