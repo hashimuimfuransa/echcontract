@@ -882,6 +882,11 @@ const AdminJobsManagement = () => {
               </div>
 
               {/* Compensation */}
+              <div className="form-section-header">
+                <h3>Compensation and Payment Details</h3>
+                <p>Configure salary, payment frequency, and payment terms</p>
+              </div>
+
               <div className="form-group">
                 <label htmlFor="salaryPaymentFrequency">Salary Payment Frequency</label>
                 <select
@@ -907,6 +912,46 @@ const AdminJobsManagement = () => {
                   onChange={handleInputChange}
                   placeholder="e.g., 15,000 RWF per hour"
                 />
+                <p className="form-hint">The fixed amount that will be paid for each session conducted</p>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="modeOfPayment">Mode of Payment</label>
+                <input
+                  type="text"
+                  id="modeOfPayment"
+                  name="modeOfPayment"
+                  value={formData.modeOfPayment}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Bank Transfer, Mobile Money, Cash"
+                />
+                <p className="form-hint">How payments will be made (Bank Transfer, Mobile Money, Cash, etc.)</p>
+              </div>
+
+              <div className="form-group full-width">
+                <label htmlFor="paymentTerms">Terms and Conditions for Payment</label>
+                <textarea
+                  id="paymentTerms"
+                  name="paymentTerms"
+                  value={formData.paymentTerms}
+                  onChange={handleInputChange}
+                  rows="3"
+                  placeholder="Enter payment terms and conditions..."
+                />
+                <p className="form-hint">Conditions that apply to payments (e.g., payment deadlines, late payment penalties, etc.)</p>
+              </div>
+
+              <div className="form-group full-width">
+                <label htmlFor="rateAdjustment">Rate Adjustment for Contract Renewal</label>
+                <textarea
+                  id="rateAdjustment"
+                  name="rateAdjustment"
+                  value={formData.rateAdjustment}
+                  onChange={handleInputChange}
+                  rows="3"
+                  placeholder="How the payment rate will be adjusted when the contract is renewed (e.g., annual cost of living adjustments, performance-based increases, etc.)"
+                />
+                <p className="form-hint">How the payment rate will be adjusted when the contract is renewed (e.g., annual cost of living adjustments, performance-based increases, etc.)</p>
               </div>
 
               {/* Contract Details */}

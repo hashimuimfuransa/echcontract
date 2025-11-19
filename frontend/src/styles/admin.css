@@ -1178,6 +1178,35 @@ tr:hover td {
   box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.15);
 }
 
+.form-section-header {
+  grid-column: 1 / -1;
+  padding: 20px 0 10px 0;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.form-section-header h3 {
+  margin: 0 0 5px 0;
+  color: #2d3748;
+  font-size: 1.2em;
+}
+
+.form-section-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 0.9em;
+}
+
+.form-section.payment-section {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  margin-top: 25px;
+}
+
+.form-section.payment-section .section-title {
+  color: #2563eb;
+}
+
 .error-message {
   color: #e53e3e;
   background-color: #fef2f2;
