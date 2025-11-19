@@ -75,6 +75,7 @@ export default function ContractFromJob() {
     reportsTo: '',
     jobDescription: '',
     primaryWorkLocation: 'Excellence Coaching Hub Office, Kigali, Rwanda',
+    relocationConditions: '',
     remoteWorkPolicy: 'Flexible',
     remoteWorkDescription: '',
     startDate: '',
@@ -97,6 +98,17 @@ export default function ContractFromJob() {
     sickLeavePolicy: 'Maximum 10 sick leave days per year.',
     unpaidLeaveConditions: 'Unpaid leave may be granted for valid reasons with prior written request.',
     
+    // Legal and Policy Clauses
+    terminationConditions: '',
+    employeeNoticePeriod: '',
+    employerNoticePeriod: '',
+    groundsForDismissal: '',
+    severancePay: '',
+    
+    // Dispute Resolution
+    disputeResolution: '',
+    jurisdiction: '',
+    
     confidentialityAgreement: 'Employee acknowledges and agrees to maintain strict confidentiality.',
     intellectualPropertyClause: 'All work, ideas, or content created for the company will belong only to Excellence Coaching Hub.',
     nonCompeteClause: 'During employment and for 12 months after termination, employee shall not engage in competitive business.',
@@ -116,9 +128,10 @@ export default function ContractFromJob() {
     startDuration: false,
     compensation: false,
     workHours: false,
+    legal: false,
     confidentiality: false,
     covenants: false,
-    
+    dispute: false,
     documents: false
   })
 
@@ -160,7 +173,15 @@ export default function ContractFromJob() {
           endDate: data.job.contractDurationMonths ? calculateEndDate(data.job.startDate, data.job.contractDurationMonths) : '',
           startDate: data.job.startDate ? data.job.startDate.split('T')[0] : '',
           baseSalary: data.job.baseSalaryMin ? `${data.job.baseSalaryMin} - ${data.job.baseSalaryMax}` : '',
-          primaryWorkLocation: data.job.location || 'Excellence Coaching Hub Office, Kigali, Rwanda'
+          primaryWorkLocation: data.job.location || 'Excellence Coaching Hub Office, Kigali, Rwanda',
+          relocationConditions: data.job.relocationConditions || '',
+          terminationConditions: data.job.terminationConditions || '',
+          employeeNoticePeriod: data.job.employeeNoticePeriod || '',
+          employerNoticePeriod: data.job.employerNoticePeriod || '',
+          groundsForDismissal: data.job.groundsForDismissal || '',
+          severancePay: data.job.severancePay || '',
+          disputeResolution: data.job.disputeResolution || '',
+          jurisdiction: data.job.jurisdiction || ''
         }))
 
         setJobError('')
@@ -420,6 +441,20 @@ export default function ContractFromJob() {
             </div>
           </CollapsibleSection>
 
+          {/* Relocation Conditions */}
+          {formData.relocationConditions && (
+            <CollapsibleSection
+              id="relocation"
+              icon="🚚"
+              title="Relocation Conditions"
+              subtitle="Relocation terms and conditions"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              <FormField label="Relocation Conditions" name="relocationConditions" type="textarea" value={formData.relocationConditions} readOnly={true} />
+            </CollapsibleSection>
+          )}
+
           {/* Start Date and Duration */}
           <CollapsibleSection
             id="startDuration"
@@ -582,6 +617,57 @@ export default function ContractFromJob() {
             <FormField label="Sick Leave Policy" name="sickLeavePolicy" type="textarea" value={formData.sickLeavePolicy} readOnly={true} />
             <FormField label="Unpaid Leave Conditions" name="unpaidLeaveConditions" type="textarea" value={formData.unpaidLeaveConditions} readOnly={true} />
           </CollapsibleSection>
+
+          {/* Legal and Policy Clauses */}
+          {(formData.terminationConditions || formData.employeeNoticePeriod || formData.employerNoticePeriod || formData.groundsForDismissal || formData.severancePay) && (
+            <CollapsibleSection
+              id="legal"
+              icon="⚖️"
+              title="Legal and Policy Clauses"
+              subtitle="Termination and employment conditions"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              {formData.terminationConditions && (
+                <FormField label="Termination Conditions" name="terminationConditions" type="textarea" value={formData.terminationConditions} readOnly={true} />
+              )}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.employeeNoticePeriod && (
+                  <FormField label="Employee Notice Period" name="employeeNoticePeriod" value={formData.employeeNoticePeriod} readOnly={true} />
+                )}
+                {formData.employerNoticePeriod && (
+                  <FormField label="Employer Notice Period" name="employerNoticePeriod" value={formData.employerNoticePeriod} readOnly={true} />
+                )}
+              </div>
+              {formData.groundsForDismissal && (
+                <FormField label="Grounds for Dismissal" name="groundsForDismissal" type="textarea" value={formData.groundsForDismissal} readOnly={true} />
+              )}
+              {formData.severancePay && (
+                <FormField label="Severance Pay" name="severancePay" type="textarea" value={formData.severancePay} readOnly={true} />
+              )}
+            </CollapsibleSection>
+          )}
+
+          {/* Dispute Resolution */}
+          {(formData.disputeResolution || formData.jurisdiction) && (
+            <CollapsibleSection
+              id="dispute"
+              icon="🤝"
+              title="Dispute Resolution"
+              subtitle="Dispute resolution process"
+              expandedSections={expandedSections}
+              toggleSection={toggleSection}
+            >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {formData.disputeResolution && (
+                  <FormField label="Dispute Resolution" name="disputeResolution" value={formData.disputeResolution} readOnly={true} />
+                )}
+                {formData.jurisdiction && (
+                  <FormField label="Jurisdiction" name="jurisdiction" value={formData.jurisdiction} readOnly={true} />
+                )}
+              </div>
+            </CollapsibleSection>
+          )}
 
           {/* Confidentiality & IP */}
           <CollapsibleSection

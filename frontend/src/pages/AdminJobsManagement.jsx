@@ -154,6 +154,14 @@ const AdminJobsManagement = () => {
     workingHoursEnd: '',
     workingHoursByDay: {},
     remoteWorkPolicy: 'Flexible',
+    relocationConditions: '',
+    terminationConditions: '',
+    employeeNoticePeriod: '',
+    employerNoticePeriod: '',
+    groundsForDismissal: '',
+    severancePay: '',
+    disputeResolution: '',
+    jurisdiction: '',
     location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
     startDate: '',
     status: 'Draft'
@@ -449,6 +457,14 @@ const AdminJobsManagement = () => {
       workingHoursEnd: job.workingHoursEnd || '',
       workingHoursByDay: job.workingHoursByDay || {},
       remoteWorkPolicy: job.remoteWorkPolicy,
+      relocationConditions: job.relocationConditions || '',
+      terminationConditions: job.terminationConditions || '',
+      employeeNoticePeriod: job.employeeNoticePeriod || '',
+      employerNoticePeriod: job.employerNoticePeriod || '',
+      groundsForDismissal: job.groundsForDismissal || '',
+      severancePay: job.severancePay || '',
+      disputeResolution: job.disputeResolution || '',
+      jurisdiction: job.jurisdiction || '',
       location: job.location,
       startDate: job.startDate ? job.startDate.split('T')[0] : '',
       status: job.status
@@ -503,6 +519,14 @@ const AdminJobsManagement = () => {
       workingHoursEnd: '',
       workingHoursByDay: {},
       remoteWorkPolicy: 'Flexible',
+      relocationConditions: '',
+      terminationConditions: '',
+      employeeNoticePeriod: '',
+      employerNoticePeriod: '',
+      groundsForDismissal: '',
+      severancePay: '',
+      disputeResolution: '',
+      jurisdiction: '',
       location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
       startDate: '',
       status: 'Draft'
@@ -547,6 +571,14 @@ const AdminJobsManagement = () => {
                 workingHoursEnd: '',
                 workingHoursByDay: {},
                 remoteWorkPolicy: 'Flexible',
+                relocationConditions: '',
+                terminationConditions: '',
+                employeeNoticePeriod: '',
+                employerNoticePeriod: '',
+                groundsForDismissal: '',
+                severancePay: '',
+                disputeResolution: '',
+                jurisdiction: '',
                 location: 'Excellence Coaching Hub Office, Kigali, Rwanda',
                 startDate: '',
                 status: 'Draft'
@@ -1046,6 +1078,19 @@ const AdminJobsManagement = () => {
                 />
               </div>
 
+              {/* Relocation Conditions */}
+              <div className="form-group full-width">
+                <label htmlFor="relocationConditions">Relocation Conditions</label>
+                <textarea
+                  id="relocationConditions"
+                  name="relocationConditions"
+                  value={formData.relocationConditions}
+                  onChange={handleInputChange}
+                  rows="3"
+                  placeholder="Conditions for relocation, if applicable"
+                />
+              </div>
+
               <div className="form-group">
                 <label htmlFor="startDate">Start Date</label>
                 <input
@@ -1055,6 +1100,102 @@ const AdminJobsManagement = () => {
                   value={formData.startDate}
                   onChange={handleInputChange}
                 />
+              </div>
+            </div>
+
+            {/* Legal and Policy Clauses */}
+            <div className="form-section">
+              <h3>Legal and Policy Clauses</h3>
+              <div className="form-grid">
+                <div className="form-group full-width">
+                  <label htmlFor="terminationConditions">Termination Conditions</label>
+                  <textarea
+                    id="terminationConditions"
+                    name="terminationConditions"
+                    value={formData.terminationConditions}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Conditions for employment termination"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="employeeNoticePeriod">Employee Notice Period</label>
+                  <input
+                    type="text"
+                    id="employeeNoticePeriod"
+                    name="employeeNoticePeriod"
+                    value={formData.employeeNoticePeriod}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 30 days written notice to employer"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="employerNoticePeriod">Employer Notice Period</label>
+                  <input
+                    type="text"
+                    id="employerNoticePeriod"
+                    name="employerNoticePeriod"
+                    value={formData.employerNoticePeriod}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 30 days written notice to employee"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="groundsForDismissal">Grounds for Dismissal</label>
+                  <textarea
+                    id="groundsForDismissal"
+                    name="groundsForDismissal"
+                    value={formData.groundsForDismissal}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Grounds for employment dismissal"
+                  />
+                </div>
+
+                <div className="form-group full-width">
+                  <label htmlFor="severancePay">Severance Pay</label>
+                  <textarea
+                    id="severancePay"
+                    name="severancePay"
+                    value={formData.severancePay}
+                    onChange={handleInputChange}
+                    rows="3"
+                    placeholder="Severance pay conditions"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Dispute Resolution */}
+            <div className="form-section">
+              <h3>Dispute Resolution</h3>
+              <div className="form-grid">
+                <div className="form-group">
+                  <label htmlFor="disputeResolution">Dispute Resolution</label>
+                  <input
+                    type="text"
+                    id="disputeResolution"
+                    name="disputeResolution"
+                    value={formData.disputeResolution}
+                    onChange={handleInputChange}
+                    placeholder="Dispute resolution process"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="jurisdiction">Jurisdiction</label>
+                  <input
+                    type="text"
+                    id="jurisdiction"
+                    name="jurisdiction"
+                    value={formData.jurisdiction}
+                    onChange={handleInputChange}
+                    placeholder="Legal jurisdiction"
+                  />
+                </div>
               </div>
             </div>
 

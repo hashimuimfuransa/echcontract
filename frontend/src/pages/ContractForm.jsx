@@ -80,6 +80,7 @@ export default function ContractForm() {
     
     // Place of Work (Pre-filled by HR)
     primaryWorkLocation: 'Excellence Coaching Hub Office, Kigali, Rwanda',
+    relocationConditions: '',
     remoteWorkPolicy: 'Flexible',
     remoteWorkDescription: 'Up to 2 days per week remote work is allowed with manager approval. Remote work must align with organizational needs.',
     
@@ -104,7 +105,18 @@ export default function ContractForm() {
     workingHoursPerWeek: '40',
     workingHoursStart: '',
     workingHoursEnd: '',
-    workingHoursByDay: {}
+    workingHoursByDay: {},
+    
+    // Legal and Policy Clauses
+    terminationConditions: '',
+    employeeNoticePeriod: '',
+    employerNoticePeriod: '',
+    groundsForDismissal: '',
+    severancePay: '',
+    
+    // Dispute Resolution
+    disputeResolution: '',
+    jurisdiction: ''
   })
 
   const [documents, setDocuments] = useState([])
@@ -121,6 +133,8 @@ export default function ContractForm() {
     startDuration: false,
     compensation: false,
     workHours: false,
+    legal: false,
+    dispute: false,
     documents: false
   })
 
@@ -615,6 +629,31 @@ export default function ContractForm() {
               </div>
             </CollapsibleSection>
 
+            {/* RELOCATION CONDITIONS */}
+            {formData.relocationConditions && (
+              <CollapsibleSection 
+                id="relocation"
+                icon="🚚"
+                title="Relocation Conditions"
+                subtitle="Relocation terms and conditions"
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+              >
+                <div className="form-grid">
+                  <FormField 
+                    label="Relocation Conditions" 
+                    name="relocationConditions"
+                    type="textarea"
+                    value={formData.relocationConditions}
+                    onChange={handleInputChange}
+                    placeholder="Conditions for relocation, if applicable"
+                    fullWidth
+                    readOnly={READ_ONLY_FIELDS.has('relocationConditions')}
+                  />
+                </div>
+              </CollapsibleSection>
+            )}
+
             {/* START DATE AND DURATION */}
             <CollapsibleSection 
               id="startDuration"
@@ -886,6 +925,120 @@ export default function ContractForm() {
                 </div>
               </div>
             </CollapsibleSection>
+
+            {/* LEGAL AND POLICY CLAUSES */}
+            {(formData.terminationConditions || formData.employeeNoticePeriod || formData.employerNoticePeriod || formData.groundsForDismissal || formData.severancePay) && (
+              <CollapsibleSection 
+                id="legal"
+                icon="⚖️"
+                title="Legal and Policy Clauses"
+                subtitle="Termination and employment conditions"
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+              >
+                <div className="form-grid">
+                  {formData.terminationConditions && (
+                    <FormField 
+                      label="Termination Conditions" 
+                      name="terminationConditions"
+                      type="textarea"
+                      value={formData.terminationConditions}
+                      onChange={handleInputChange}
+                      placeholder="Conditions for employment termination"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('terminationConditions')}
+                    />
+                  )}
+                  <div className="form-group">
+                    {formData.employeeNoticePeriod && (
+                      <FormField 
+                        label="Employee Notice Period" 
+                        name="employeeNoticePeriod"
+                        value={formData.employeeNoticePeriod}
+                        onChange={handleInputChange}
+                        placeholder="e.g., 30 days written notice to employer"
+                        readOnly={READ_ONLY_FIELDS.has('employeeNoticePeriod')}
+                      />
+                    )}
+                  </div>
+                  <div className="form-group">
+                    {formData.employerNoticePeriod && (
+                      <FormField 
+                        label="Employer Notice Period" 
+                        name="employerNoticePeriod"
+                        value={formData.employerNoticePeriod}
+                        onChange={handleInputChange}
+                        placeholder="e.g., 30 days written notice to employee"
+                        readOnly={READ_ONLY_FIELDS.has('employerNoticePeriod')}
+                      />
+                    )}
+                  </div>
+                  {formData.groundsForDismissal && (
+                    <FormField 
+                      label="Grounds for Dismissal" 
+                      name="groundsForDismissal"
+                      type="textarea"
+                      value={formData.groundsForDismissal}
+                      onChange={handleInputChange}
+                      placeholder="Grounds for employment dismissal"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('groundsForDismissal')}
+                    />
+                  )}
+                  {formData.severancePay && (
+                    <FormField 
+                      label="Severance Pay" 
+                      name="severancePay"
+                      type="textarea"
+                      value={formData.severancePay}
+                      onChange={handleInputChange}
+                      placeholder="Severance pay conditions"
+                      fullWidth
+                      readOnly={READ_ONLY_FIELDS.has('severancePay')}
+                    />
+                  )}
+                </div>
+              </CollapsibleSection>
+            )}
+
+            {/* DISPUTE RESOLUTION */}
+            {(formData.disputeResolution || formData.jurisdiction) && (
+              <CollapsibleSection 
+                id="dispute"
+                icon="🤝"
+                title="Dispute Resolution"
+                subtitle="Dispute resolution process"
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+              >
+                <div className="form-grid">
+                  <div className="form-group">
+                    {formData.disputeResolution && (
+                      <FormField 
+                        label="Dispute Resolution" 
+                        name="disputeResolution"
+                        value={formData.disputeResolution}
+                        onChange={handleInputChange}
+                        placeholder="Dispute resolution process"
+                        readOnly={READ_ONLY_FIELDS.has('disputeResolution')}
+                      />
+                    )}
+                  </div>
+                  <div className="form-group">
+                    {formData.jurisdiction && (
+                      <FormField 
+                        label="Jurisdiction" 
+                        name="jurisdiction"
+                        value={formData.jurisdiction}
+                        onChange={handleInputChange}
+                        placeholder="Legal jurisdiction"
+                        readOnly={READ_ONLY_FIELDS.has('jurisdiction')}
+                      />
+                    )}
+                  </div>
+                </div>
+              </CollapsibleSection>
+            )}
 
             {/* SUPPORTING DOCUMENTS */}
             <CollapsibleSection 

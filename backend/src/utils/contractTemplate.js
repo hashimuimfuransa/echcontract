@@ -46,6 +46,17 @@ const contractTemplate = {
     { label: 'Sick Leave Policy', type: 'textarea', key: 'sickLeavePolicy' },
     { label: 'Unpaid Leave Conditions', type: 'textarea', key: 'unpaidLeaveConditions' },
 
+    // Legal and Policy Clauses
+    { label: 'Termination Conditions', type: 'textarea', key: 'terminationConditions' },
+    { label: 'Employee Notice Period', type: 'text', key: 'employeeNoticePeriod' },
+    { label: 'Employer Notice Period', type: 'text', key: 'employerNoticePeriod' },
+    { label: 'Grounds for Dismissal', type: 'textarea', key: 'groundsForDismissal' },
+    { label: 'Severance Pay', type: 'textarea', key: 'severancePay' },
+    
+    // Dispute Resolution
+    { label: 'Dispute Resolution', type: 'text', key: 'disputeResolution' },
+    { label: 'Jurisdiction', type: 'text', key: 'jurisdiction' },
+    
     // Confidentiality & IP
     { label: 'Confidentiality Agreement', type: 'textarea', key: 'confidentialityAgreement' },
     { label: 'Intellectual Property Clause', type: 'textarea', key: 'intellectualPropertyClause' },
