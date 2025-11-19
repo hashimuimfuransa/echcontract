@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login'
 import Register from './pages/Register'
 import EmployeeDashboard from './pages/EmployeeDashboard'
-import ContractForm from './pages/ContractForm'
+// Removed ContractForm import
 import AdminDashboard from './pages/AdminDashboard'
 import AdminEmployees from './pages/AdminEmployees'
 import AdminContracts from './pages/AdminContracts'
@@ -63,14 +63,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/employee/contract"
-          element={
-            <ProtectedRoute requiredRole="employee">
-              <ContractForm />
-            </ProtectedRoute>
-          }
-        />
+        {/* Removed standalone contract form route */}
         
         <Route
           path="/admin"

@@ -208,14 +208,14 @@ export default function EmployeeDashboard() {
               )}
 
               {(contract.status === 'Rejected' || contract.status === 'Draft') && (
-                <Link to="/employee/contract" className="action-btn primary">
+                <Link to={`/employee/contract-from-job?jobId=${contract.job?._id || ''}`} className="action-btn primary">
                   <span className="btn-icon">✏️</span>
                   <span className="btn-text">Update & Resubmit Contract</span>
                 </Link>
               )}
 
               {contract.status === 'Under Review' && (
-                <Link to="/employee/contract" className="action-btn secondary">
+                <Link to={`/employee/contract-from-job?jobId=${contract.job?._id || ''}`} className="action-btn secondary">
                   <span className="btn-icon">👁️</span>
                   <span className="btn-text">View Contract Details</span>
                 </Link>
@@ -259,9 +259,9 @@ export default function EmployeeDashboard() {
                   <span className="btn-icon">💼</span>
                   <span className="btn-text">Browse Available Jobs</span>
                 </Link>
-                <Link to="/employee/contract" className="action-btn primary">
+                <Link to="/jobs" className="action-btn primary">
                   <span className="btn-icon">✍️</span>
-                  <span className="btn-text">Create & Submit Contract</span>
+                  <span className="btn-text">Apply for a Job</span>
                 </Link>
               </div>
             </div>
@@ -283,17 +283,17 @@ export default function EmployeeDashboard() {
               </div>
               <div className="action-arrow">→</div>
             </Link>
-            <Link to="/employee/contract" className="action-card">
+            <Link to="/jobs" className="action-card">
               <div className="action-icon">📝</div>
               <div className="action-content">
-                <h4>Create Contract</h4>
-                <p>Create and submit your employment contract</p>
+                <h4>Apply for Jobs</h4>
+                <p>Find and apply for available positions</p>
               </div>
               <div className="action-arrow">→</div>
             </Link>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-)
+  )
 }
