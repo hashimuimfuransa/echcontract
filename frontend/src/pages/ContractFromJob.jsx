@@ -93,10 +93,10 @@ export default function ContractFromJob() {
     workingHoursStart: '',
     workingHoursEnd: '',
     workingHoursByDay: {},
-    overtimePolicy: 'Overtime compensation is determined by mutual agreement.',
-    annualLeaveDays: '20',
-    sickLeavePolicy: 'Maximum 10 sick leave days per year.',
-    unpaidLeaveConditions: 'Unpaid leave may be granted for valid reasons with prior written request.',
+    overtimePolicy: '',
+    annualLeaveDays: '',
+    sickLeavePolicy: '',
+    unpaidLeaveConditions: '',
     
     // Legal and Policy Clauses
     terminationConditions: '',
@@ -181,7 +181,12 @@ export default function ContractFromJob() {
           groundsForDismissal: data.job.groundsForDismissal || '',
           severancePay: data.job.severancePay || '',
           disputeResolution: data.job.disputeResolution || '',
-          jurisdiction: data.job.jurisdiction || ''
+          jurisdiction: data.job.jurisdiction || '',
+          // Add these lines to pre-fill the leave policy fields from job data
+          overtimePolicy: data.job.overtimePolicy || 'Overtime compensation is determined by mutual agreement.',
+          annualLeaveDays: data.job.annualLeaveDays?.toString() || '20',
+          sickLeavePolicy: data.job.sickLeavePolicy || 'Maximum 10 sick leave days per year.',
+          unpaidLeaveConditions: data.job.unpaidLeaveConditions || 'Unpaid leave may be granted for valid reasons with prior written request.'
         }))
 
         setJobError('')

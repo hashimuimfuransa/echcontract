@@ -1236,7 +1236,7 @@ const AdminJobsManagement = () => {
                     value={formData.sickLeavePolicy}
                     onChange={handleInputChange}
                     rows="3"
-                    placeholder="Sick leave conditions and procedures"
+                    placeholder="Sick leave policy"
                   />
                 </div>
 
@@ -1248,7 +1248,7 @@ const AdminJobsManagement = () => {
                     value={formData.unpaidLeaveConditions}
                     onChange={handleInputChange}
                     rows="3"
-                    placeholder="Conditions for unpaid leave"
+                    placeholder="Unpaid leave conditions"
                   />
                 </div>
               </div>
